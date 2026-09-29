@@ -1,0 +1,23 @@
+# API BRKGA-MP-IPR (baixada separadamente; licenca e autoria proprias)
+/external/brkga_mp_ipr_cpp/
+/external/brkga_mp_ipr/
+
+# Artefatos de compilacao
+*.o
+*.d
+/bin/
+brkga-mp
+brkga-mp-ipr
+
+# Saidas de execucao (descomente se NAO quiser versionar os resultados)
+# /results/**/*.csv
+
+# Ambiente Python do PLI
+/pli/.venv/
+__pycache__/
+*.pyc
+
+# Editores e sistema
+.vscode/
+.idea/
+.DS_Store

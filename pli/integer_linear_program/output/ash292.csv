@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+ash292,292,958,0.0225486042461046,13,3,136.0,61125,TIME_LIMIT

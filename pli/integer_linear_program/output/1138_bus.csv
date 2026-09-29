@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+1138_bus,1138,1458,0.0022536413000635285,17,1,762.0,61401,TIME_LIMIT

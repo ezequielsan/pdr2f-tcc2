@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+bcspwr02,49,59,0.050170068027210885,6,1,35.0,1316,OPTIMAL
