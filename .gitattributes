@@ -1,0 +1,12 @@
+# Fim de linha: o repositorio guarda sempre LF.
+#
+# As instancias sao matrizes de adjacencia lidas por Julia (pli.jl) e por C++.
+# Mante-las em LF tambem no disco evita que o leitor receba "1\r" no ultimo
+# campo de cada linha. Os .jl e .sh seguem a mesma regra.
+* text=auto
+*.txt text eol=lf
+*.jl  text eol=lf
+*.sh  text eol=lf
+
+# Binarios: o git nao deve tocar.
+*.pdf binary
