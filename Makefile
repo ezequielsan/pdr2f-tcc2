@@ -1,5 +1,14 @@
 ###############################################################################
 # Makefile do projeto PDR2F (TCC 2).
+#
+# Alvos:
+#   make                 compila tudo o que ja' existe
+#   make instance_info   utilitario de leitura/inspecao de instancias
+#   make test            testes do leitor + auditoria do formato das instancias
+#   make check-api       verifica se a API BRKGA-MP-IPR foi clonada
+#   make clean           remove objetos, dependencias e binarios
+#
+# Compilacao com simbolos de depuracao:  make OPT=dbg
 ###############################################################################
 
 OPT = opt
@@ -14,12 +23,22 @@ INCLUDES = \
 	-I$(API_DIR) \
 	-I$(API_DIR)/brkga_mp_ipr
 
-# Fontes compartilhadas (preencher conforme os arquivos forem criados).
-OBJS =
+# Fontes compartilhadas por todos os programas.
+OBJS = \
+	src/pdr2f/pdr2f_instance.o
+
+# Objetos dos programas principais, um por executavel.
+APP_OBJS = apps/instance_info.o
 
 CXX = g++
 
 USER_FLAGS += -std=c++20
+
+# -MMD -MP: o compilador gera os arquivos .d com as dependencias de cabecalho,
+# para que editar um .hpp recompile quem o inclui. Sem isso, mudar um
+# cabecalho nao dispara recompilacao e o binario fica inconsistente em
+# silencio.
+USER_FLAGS += -MMD -MP
 
 ifneq ($(OPT), opt)
 	USER_FLAGS += -ggdb3 -fexceptions -fno-omit-frame-pointer \
@@ -40,16 +59,28 @@ USER_FLAGS += -Wall -Wextra -Wcast-align -Wcast-qual -Wdisabled-optimization \
 
 CXXFLAGS = $(USER_FLAGS)
 
-.PHONY: all clean check-api
+.PHONY: all clean check-api test
 .SUFFIXES: .cpp .o
 
-all: check-api
+all: instance_info
+
+# O instance_info nao usa a API: le instancias e imprime suas caracteristicas.
+instance_info: $(OBJS) apps/instance_info.o
+	@echo "--> Ligando $@..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
+# Testes do leitor (casos sinteticos) e auditoria do formato das instancias.
+test: instance_info
+	@./scripts/teste_leitor.sh
+	@echo ""
+	@python3 scripts/valida_formato.py
 
 check-api:
 	@test -f $(API_DIR)/brkga_mp_ipr/brkga_mp_ipr.hpp || \
 		(echo "ERRO: API nao encontrada em $(API_DIR). Rode:"; \
-		 echo "  git clone --depth 1 https://github.com/ceandrade/brkga_mp_ipr_cpp $(API_DIR)"; \
+		 echo "  git clone --depth 1 --branch v3.1.1 https://github.com/ceandrade/brkga_mp_ipr_cpp $(API_DIR)"; \
 		 exit 1)
+	@echo "API encontrada em $(API_DIR)."
 
 .cpp.o:
 	@echo "--> Compilando $<..."
@@ -57,4 +88,10 @@ check-api:
 
 clean:
 	@echo "--> Limpando..."
-	rm -rf $(OBJS) *.o bin/
+	rm -rf $(OBJS) $(APP_OBJS) $(OBJS:.o=.d) $(APP_OBJS:.o=.d) \
+		apps/*.o apps/*.d *.o *.d bin/ instance_info
+
+# Dependencias de cabecalho geradas por -MMD. O '-' silencia a primeira
+# compilacao, quando os .d ainda nao existem.
+-include $(OBJS:.o=.d)
+-include $(APP_OBJS:.o=.d)

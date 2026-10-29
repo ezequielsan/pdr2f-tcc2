@@ -11,6 +11,10 @@
 # configs/brkga-mp/ e configs/brkga-mp-ipr/.
 /brkga-mp
 /brkga-mp-ipr
+/instance_info
+
+# Saidas temporarias de validacao
+/leitor.csv
 
 # Saidas de execucao (descomente se NAO quiser versionar os resultados)
 # /results/**/*.csv
