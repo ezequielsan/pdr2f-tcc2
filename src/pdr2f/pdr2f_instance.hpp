@@ -2,8 +2,8 @@
  * pdr2f_instance.hpp: instancia do Problema da Dominacao Romana 2-Forte.
  *
  * O grafo e' lido de um arquivo com a MATRIZ DE ADJACENCIA, uma linha por
- * vertice. O contrato de leitura e' o mesmo de read_simple_graph() do pli.jl
- * (Atilio Gomes Luiz, 09/10/2026), para que o PLI e o BRKGA operem sobre
+ * vertice. O contrato de leitura e' o mesmo de read_simple_graph() do pli.jl,
+ * para que o PLI e o BRKGA operem sobre
  * exatamente o mesmo grafo:
  *
  *   - o numero de vertices e' o numero de linhas NAO VAZIAS;
@@ -18,9 +18,7 @@
  *   random_cubic, harwell-boeing,
  *   geoinstances ..................... diagonal 0,   valores inteiros
  *
- * Separadores aceitos: espaco, tabulacao e virgula. O retorno de carro do
- * Windows ('\r') e' tratado como separador, de modo que arquivos em CRLF sao
- * lidos corretamente.
+ * Separadores aceitos: espaco, tabulacao e virgula.
  ******************************************************************************/
 
 #ifndef PDR2F_INSTANCE_HPP_

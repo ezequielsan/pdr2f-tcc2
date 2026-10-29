@@ -12,17 +12,14 @@ inline bool is_separator(char c) {
     return c == ' ' || c == '\t' || c == ',' || c == '\r';
 }
 
-/// Um valor e' aresta se for diferente de zero. Em notacao decimal, com ou
-/// sem expoente, isso equivale a conter algum digito de '1' a '9':
-/// "0", "0.0" e "0.0E+00" nao contem nenhum; "1", "1.0", "0.5" e "1E-03" contem.
-/// Evita 28 milhoes de chamadas a strtod na maior instancia (n = 5300).
+/// Um valor e' aresta se for diferente de zero. 
 inline bool is_nonzero(const char* ini, const char* fim) {
     for(const char* p = ini; p != fim; ++p)
         if(*p >= '1' && *p <= '9') return true;
     return false;
 }
 
-} // namespace
+}
 
 PDR2F_Instance::PDR2F_Instance(const std::string& filename):
     num_nodes(0),

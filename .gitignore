@@ -12,9 +12,12 @@
 /brkga-mp
 /brkga-mp-ipr
 /instance_info
+/greedy_info
+/test_pdr2f
 
 # Saidas temporarias de validacao
 /leitor.csv
+/guloso.csv
 
 # Saidas de execucao (descomente se NAO quiser versionar os resultados)
 # /results/**/*.csv

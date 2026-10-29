@@ -3,8 +3,10 @@
 #
 # Alvos:
 #   make                 compila tudo o que ja' existe
-#   make instance_info   utilitario de leitura/inspecao de instancias
-#   make test            testes do leitor + auditoria do formato das instancias
+#   make instance_info   leitura e inspecao de instancias
+#   make greedy_info     roda o guloso e imprime os pesos em CSV
+#   make test_pdr2f      testes do verificador de viabilidade e do guloso
+#   make test            roda TODA a bateria de testes e validacoes
 #   make check-api       verifica se a API BRKGA-MP-IPR foi clonada
 #   make clean           remove objetos, dependencias e binarios
 #
@@ -25,10 +27,24 @@ INCLUDES = \
 
 # Fontes compartilhadas por todos os programas.
 OBJS = \
-	src/pdr2f/pdr2f_instance.o
+	src/pdr2f/pdr2f_instance.o \
+	src/pdr2f/pdr2f_feasibility.o \
+	src/heuristics/greedy_pdr2f.o
 
 # Objetos dos programas principais, um por executavel.
-APP_OBJS = apps/instance_info.o
+APP_OBJS = \
+	apps/instance_info.o \
+	apps/greedy_info.o \
+	apps/test_pdr2f.o
+
+# Instancias pequenas usadas nos testes: o teste de equivalencia com a forca
+# bruta e' O(n^2) por rotulacao, entao roda em grafos pequenos.
+TEST_INSTANCES = \
+	instances/random/10_1.txt instances/random/10_2.txt \
+	instances/random/15_1.txt instances/random/15_2.txt \
+	instances/random/20_1.txt instances/random/20_2.txt \
+	instances/geoinstances/surrey.txt instances/geoinstances/alameda.txt \
+	instances/geoinstances/akron.txt instances/geoinstances/esztergom.txt
 
 CXX = g++
 
@@ -62,18 +78,31 @@ CXXFLAGS = $(USER_FLAGS)
 .PHONY: all clean check-api test
 .SUFFIXES: .cpp .o
 
-all: instance_info
+all: instance_info greedy_info test_pdr2f
 
-# O instance_info nao usa a API: le instancias e imprime suas caracteristicas.
+# Nenhum destes usa a API BRKGA-MP-IPR ainda.
 instance_info: $(OBJS) apps/instance_info.o
 	@echo "--> Ligando $@..."
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
 
-# Testes do leitor (casos sinteticos) e auditoria do formato das instancias.
-test: instance_info
+greedy_info: $(OBJS) apps/greedy_info.o
+	@echo "--> Ligando $@..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
+test_pdr2f: $(OBJS) apps/test_pdr2f.o
+	@echo "--> Ligando $@..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
+# Bateria completa: formato das instancias, leitor, verificador, guloso.
+test: instance_info greedy_info test_pdr2f
 	@./scripts/teste_leitor.sh
 	@echo ""
 	@python3 scripts/valida_formato.py
+	@echo ""
+	@./test_pdr2f $(TEST_INSTANCES)
+	@echo ""
+	@./greedy_info --seeds 10 instances/*/*.txt > guloso.csv
+	@python3 scripts/valida_guloso.py guloso.csv
 
 check-api:
 	@test -f $(API_DIR)/brkga_mp_ipr/brkga_mp_ipr.hpp || \
@@ -89,7 +118,8 @@ check-api:
 clean:
 	@echo "--> Limpando..."
 	rm -rf $(OBJS) $(APP_OBJS) $(OBJS:.o=.d) $(APP_OBJS:.o=.d) \
-		apps/*.o apps/*.d *.o *.d bin/ instance_info
+		apps/*.o apps/*.d src/*/*.o src/*/*.d *.o *.d bin/ \
+		instance_info greedy_info test_pdr2f
 
 # Dependencias de cabecalho geradas por -MMD. O '-' silencia a primeira
 # compilacao, quando os .d ainda nao existem.
