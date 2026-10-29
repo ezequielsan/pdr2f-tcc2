@@ -6,8 +6,11 @@
 *.o
 *.d
 /bin/
-brkga-mp
-brkga-mp-ipr
+# ATENCAO: ancorados na raiz com "/". Sem a barra, o padrao casaria com
+# QUALQUER arquivo ou diretorio desse nome em qualquer nivel - inclusive
+# configs/brkga-mp/ e configs/brkga-mp-ipr/.
+/brkga-mp
+/brkga-mp-ipr
 
 # Saidas de execucao (descomente se NAO quiser versionar os resultados)
 # /results/**/*.csv
