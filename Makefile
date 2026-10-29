@@ -5,7 +5,9 @@
 #   make                 compila tudo o que ja' existe
 #   make instance_info   leitura e inspecao de instancias
 #   make greedy_info     roda o guloso e imprime os pesos em CSV
+#   make decoder_info    compara os 4 decodificadores com cromossomos aleatorios
 #   make test_pdr2f      testes do verificador de viabilidade e do guloso
+#   make test_decoders   testes dos decodificadores e da busca local
 #   make test            roda TODA a bateria de testes e validacoes
 #   make check-api       verifica se a API BRKGA-MP-IPR foi clonada
 #   make clean           remove objetos, dependencias e binarios
@@ -29,13 +31,18 @@ INCLUDES = \
 OBJS = \
 	src/pdr2f/pdr2f_instance.o \
 	src/pdr2f/pdr2f_feasibility.o \
+	src/pdr2f/pdr2f_reduction.o \
+	src/decoders/pdr2f_perm_decoder.o \
+	src/decoders/pdr2f_threshold_decoder.o \
 	src/heuristics/greedy_pdr2f.o
 
 # Objetos dos programas principais, um por executavel.
 APP_OBJS = \
 	apps/instance_info.o \
 	apps/greedy_info.o \
-	apps/test_pdr2f.o
+	apps/decoder_info.o \
+	apps/test_pdr2f.o \
+	apps/test_decoders.o
 
 # Instancias pequenas usadas nos testes: o teste de equivalencia com a forca
 # bruta e' O(n^2) por rotulacao, entao roda em grafos pequenos.
@@ -78,7 +85,7 @@ CXXFLAGS = $(USER_FLAGS)
 .PHONY: all clean check-api test
 .SUFFIXES: .cpp .o
 
-all: instance_info greedy_info test_pdr2f
+all: instance_info greedy_info decoder_info test_pdr2f test_decoders
 
 # Nenhum destes usa a API BRKGA-MP-IPR ainda.
 instance_info: $(OBJS) apps/instance_info.o
@@ -89,20 +96,33 @@ greedy_info: $(OBJS) apps/greedy_info.o
 	@echo "--> Ligando $@..."
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
 
+decoder_info: $(OBJS) apps/decoder_info.o
+	@echo "--> Ligando $@..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
 test_pdr2f: $(OBJS) apps/test_pdr2f.o
 	@echo "--> Ligando $@..."
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
 
+test_decoders: $(OBJS) apps/test_decoders.o
+	@echo "--> Ligando $@..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
 # Bateria completa: formato das instancias, leitor, verificador, guloso.
-test: instance_info greedy_info test_pdr2f
+test: all
 	@./scripts/teste_leitor.sh
 	@echo ""
 	@python3 scripts/valida_formato.py
 	@echo ""
 	@./test_pdr2f $(TEST_INSTANCES)
 	@echo ""
+	@./test_decoders $(TEST_INSTANCES)
+	@echo ""
 	@./greedy_info --seeds 10 instances/*/*.txt > guloso.csv
 	@python3 scripts/valida_guloso.py guloso.csv
+	@echo ""
+	@./decoder_info --seeds 10 instances/*/*.txt > decoders.csv
+	@python3 scripts/valida_decoders.py decoders.csv
 
 check-api:
 	@test -f $(API_DIR)/brkga_mp_ipr/brkga_mp_ipr.hpp || \
@@ -119,7 +139,7 @@ clean:
 	@echo "--> Limpando..."
 	rm -rf $(OBJS) $(APP_OBJS) $(OBJS:.o=.d) $(APP_OBJS:.o=.d) \
 		apps/*.o apps/*.d src/*/*.o src/*/*.d *.o *.d bin/ \
-		instance_info greedy_info test_pdr2f
+		instance_info greedy_info decoder_info test_pdr2f test_decoders
 
 # Dependencias de cabecalho geradas por -MMD. O '-' silencia a primeira
 # compilacao, quando os .d ainda nao existem.
