@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+bcsstk09,1083,8677,0.014809618657013192,22,5,266.0,601127,TIME_LIMIT

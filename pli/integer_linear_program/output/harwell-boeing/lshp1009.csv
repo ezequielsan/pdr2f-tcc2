@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+lshp1009,1009,2928,0.005757704469300109,6,3,545.0,601035,TIME_LIMIT

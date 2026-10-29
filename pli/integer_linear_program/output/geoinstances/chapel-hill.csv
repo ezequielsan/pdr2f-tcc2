@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+chapel-hill,240,451,0.015725244072524406,19,0,129.0,4405,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+akron,21,49,0.23333333333333334,9,2,11.0,1088,OPTIMAL

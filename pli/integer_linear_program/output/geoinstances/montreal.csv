@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+montreal,20,38,0.2,6,0,12.0,1106,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+kansas-city,145,351,0.03362068965517241,8,1,73.0,601346,TIME_LIMIT

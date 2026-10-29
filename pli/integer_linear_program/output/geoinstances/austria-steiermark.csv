@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+austria-steiermark,13,24,0.3076923076923077,9,1,6.0,1034,OPTIMAL

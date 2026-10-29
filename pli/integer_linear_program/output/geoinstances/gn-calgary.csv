@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-calgary,242,723,0.024793388429752067,16,1,102.0,600990,TIME_LIMIT

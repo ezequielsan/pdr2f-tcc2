@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+philadelphia,158,428,0.03450778037571555,11,1,73.0,601066,TIME_LIMIT

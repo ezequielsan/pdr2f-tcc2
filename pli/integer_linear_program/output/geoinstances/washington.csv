@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+washington,34,78,0.13903743315508021,8,1,17.0,1502,OPTIMAL

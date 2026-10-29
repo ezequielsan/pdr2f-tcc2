@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+anchorage,29,70,0.1724137931034483,8,2,14.0,1599,OPTIMAL

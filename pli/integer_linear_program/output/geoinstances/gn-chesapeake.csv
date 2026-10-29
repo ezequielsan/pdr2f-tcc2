@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-chesapeake,9,16,0.4444444444444444,6,2,5.0,977,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-bari,21,33,0.15714285714285714,6,1,13.0,1066,OPTIMAL

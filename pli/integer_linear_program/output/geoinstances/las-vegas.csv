@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+las-vegas,26,42,0.12923076923076923,6,0,17.0,1129,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+bern-quarters,32,80,0.16129032258064516,9,2,15.0,1257,OPTIMAL

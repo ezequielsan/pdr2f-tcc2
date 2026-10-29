@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+portland,63,129,0.06605222734254992,8,0,34.0,2531,OPTIMAL

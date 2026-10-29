@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+vienna,23,58,0.22924901185770752,7,3,11.0,1169,OPTIMAL

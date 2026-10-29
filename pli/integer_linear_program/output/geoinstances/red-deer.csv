@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+red-deer,86,226,0.06183310533515732,9,0,42.0,12168,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+le-mans-cantons,40,100,0.1282051282051282,11,2,19.0,2792,OPTIMAL

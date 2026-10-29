@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+apulia,258,682,0.02057129068259283,17,0,115.0,601462,TIME_LIMIT

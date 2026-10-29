@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-new-orleans,73,205,0.07800608828006088,12,2,31.0,9336,OPTIMAL

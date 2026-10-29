@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-fairbanks,15,24,0.22857142857142856,6,1,10.0,1048,OPTIMAL

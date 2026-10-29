@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-rochester,39,98,0.13225371120107962,8,0,19.0,2782,OPTIMAL

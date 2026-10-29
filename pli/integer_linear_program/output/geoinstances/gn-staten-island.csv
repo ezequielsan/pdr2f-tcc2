@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-staten-island,54,128,0.08944793850454227,10,0,26.0,2438,OPTIMAL

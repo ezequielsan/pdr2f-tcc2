@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+france-departments,96,238,0.052192982456140354,10,1,49.0,134497,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+cleveland,36,72,0.11428571428571428,7,1,21.0,1917,OPTIMAL

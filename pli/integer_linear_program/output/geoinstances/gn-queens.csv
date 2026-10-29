@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-queens,62,140,0.074034902168165,10,1,32.0,2608,OPTIMAL

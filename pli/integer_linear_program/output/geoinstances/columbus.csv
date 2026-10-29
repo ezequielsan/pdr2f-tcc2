@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+columbus,39,81,0.10931174089068826,10,1,22.0,1913,OPTIMAL

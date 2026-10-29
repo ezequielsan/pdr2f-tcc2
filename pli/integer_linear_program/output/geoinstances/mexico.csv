@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+mexico,32,66,0.13306451612903225,8,1,18.0,1349,OPTIMAL

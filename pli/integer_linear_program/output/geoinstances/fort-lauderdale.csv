@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+fort-lauderdale,69,127,0.05413469735720375,9,0,41.0,2068,OPTIMAL

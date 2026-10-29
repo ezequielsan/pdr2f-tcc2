@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+st-petersburg,107,251,0.044260271557044616,11,1,55.0,49120,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+moscow,125,323,0.04167741935483871,12,0,60.999999999999986,600982,TIME_LIMIT

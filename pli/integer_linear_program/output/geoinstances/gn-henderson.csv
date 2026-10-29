@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-henderson,24,50,0.18115942028985507,8,1,14.0,1523,OPTIMAL

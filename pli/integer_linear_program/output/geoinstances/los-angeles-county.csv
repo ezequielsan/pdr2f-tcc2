@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+los-angeles-county,272,565,0.015329932711091817,14,0,141.0,374686,OPTIMAL

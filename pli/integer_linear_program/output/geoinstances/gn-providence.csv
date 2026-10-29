@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-providence,25,57,0.19,7,3,13.0,1263,OPTIMAL

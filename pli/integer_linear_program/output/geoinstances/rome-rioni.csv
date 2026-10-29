@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+rome-rioni,22,43,0.18614718614718614,7,1,13.0,1062,OPTIMAL

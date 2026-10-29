@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+hartford,17,37,0.27205882352941174,7,3,8.0,1041,OPTIMAL

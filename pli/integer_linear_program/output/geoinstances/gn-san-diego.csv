@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-san-diego,124,316,0.04143718856543404,13,1,57.0,13237,OPTIMAL

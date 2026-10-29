@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+liberia-west,16,33,0.275,7,2,9.0,1066,OPTIMAL

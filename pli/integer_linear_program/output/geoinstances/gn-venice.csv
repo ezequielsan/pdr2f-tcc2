@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-venice,12,22,0.3333333333333333,6,1,6.999999999999983,1032,OPTIMAL

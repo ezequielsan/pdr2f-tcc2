@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+quebec,17,38,0.27941176470588236,8,2,9.0,1088,OPTIMAL

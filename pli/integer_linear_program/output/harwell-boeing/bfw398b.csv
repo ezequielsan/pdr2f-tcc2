@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+bfw398b,398,1256,0.015898130450742377,12,1,202.0,601030,TIME_LIMIT

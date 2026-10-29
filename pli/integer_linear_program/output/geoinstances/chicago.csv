@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+chicago,98,252,0.053019145802650956,10,1,45.999999999999986,17760,OPTIMAL

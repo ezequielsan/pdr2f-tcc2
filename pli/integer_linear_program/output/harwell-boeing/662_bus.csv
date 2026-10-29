@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+662_bus,662,906,0.004140938155591409,9,1,431.0,362904,OPTIMAL

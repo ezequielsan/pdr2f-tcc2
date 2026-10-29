@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+new-york-city-boroughs,5,5,0.5,3,0,4.0,1027,OPTIMAL

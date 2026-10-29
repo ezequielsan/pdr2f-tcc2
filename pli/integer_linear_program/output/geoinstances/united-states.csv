@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+united-states,49,109,0.09268707482993198,8,1,27.0,3198,OPTIMAL

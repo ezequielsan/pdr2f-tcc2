@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-szczecin,37,89,0.13363363363363365,11,1,17.0,1442,OPTIMAL

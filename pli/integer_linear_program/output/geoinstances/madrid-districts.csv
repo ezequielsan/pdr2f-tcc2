@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+madrid-districts,21,53,0.2523809523809524,8,2,10.0,1144,OPTIMAL

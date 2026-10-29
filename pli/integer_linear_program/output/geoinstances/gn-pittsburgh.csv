@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-pittsburgh,90,204,0.05093632958801498,9,1,45.0,4160,OPTIMAL

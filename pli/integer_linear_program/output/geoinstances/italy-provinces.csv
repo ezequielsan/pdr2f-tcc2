@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+italy-provinces,110,245,0.0408673894912427,9,1,60.0,57780,OPTIMAL

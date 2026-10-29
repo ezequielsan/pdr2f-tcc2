@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-birmingham,87,10,0.002673082063619353,2,0,87.0,1037,OPTIMAL

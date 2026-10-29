@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-windsor,20,41,0.21578947368421053,6,2,11.0,1149,OPTIMAL

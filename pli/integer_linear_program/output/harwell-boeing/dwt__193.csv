@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+dwt__193,193,1650,0.08905440414507772,29,7,36.0,601006,TIME_LIMIT

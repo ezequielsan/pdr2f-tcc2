@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gisborne,10,17,0.37777777777777777,5,2,6.0,1045,OPTIMAL

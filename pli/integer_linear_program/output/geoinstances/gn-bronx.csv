@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-bronx,59,134,0.07831677381648158,8,0,32.0,5048,OPTIMAL

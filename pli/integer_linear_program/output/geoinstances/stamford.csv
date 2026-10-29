@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+stamford,16,33,0.275,9,1,8.0,1009,OPTIMAL

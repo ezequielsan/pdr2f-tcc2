@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-paris,20,4,0.021052631578947368,1,0,20.0,1035,OPTIMAL

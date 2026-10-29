@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+poland,16,34,0.2833333333333333,7,3,8.0,1015,OPTIMAL

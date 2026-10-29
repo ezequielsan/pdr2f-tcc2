@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-berlin,95,245,0.054871220604703244,12,2,42.0,10687,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+bern-districts,6,10,0.6666666666666666,4,2,4.0,978,OPTIMAL

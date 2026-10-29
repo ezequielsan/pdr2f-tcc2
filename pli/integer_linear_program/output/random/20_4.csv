@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+20_4,20,40,0.21052631578947367,8,1,11.0,1297,OPTIMAL

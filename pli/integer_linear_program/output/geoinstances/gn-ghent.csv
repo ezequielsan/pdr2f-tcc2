@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-ghent,25,62,0.20666666666666667,8,2,13.0,1443,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+milwaukee,190,518,0.02884990253411306,14,1,81.0,211016,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+madrid,128,407,0.0500738188976378,12,3,55.0,601001,TIME_LIMIT

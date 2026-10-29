@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+cubic_376,376,564,0.008,3,3,279.0,601056,TIME_LIMIT

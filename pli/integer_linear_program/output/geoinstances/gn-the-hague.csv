@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-the-hague,44,108,0.11416490486257928,7,2,23.0,3652,OPTIMAL

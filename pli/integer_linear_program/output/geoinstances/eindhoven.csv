@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+eindhoven,116,351,0.05262368815592204,10,2,48.0,266015,OPTIMAL

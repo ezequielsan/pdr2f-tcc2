@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-norfolk,87,248,0.06629243517775996,13,2,36.0,85498,OPTIMAL

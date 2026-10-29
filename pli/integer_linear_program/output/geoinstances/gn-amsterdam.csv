@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-amsterdam,97,263,0.05648625429553265,9,1,45.0,49343,OPTIMAL

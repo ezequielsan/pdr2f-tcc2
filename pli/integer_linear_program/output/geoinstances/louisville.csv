@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+louisville,67,159,0.07191316146540028,9,1,35.0,9709,OPTIMAL

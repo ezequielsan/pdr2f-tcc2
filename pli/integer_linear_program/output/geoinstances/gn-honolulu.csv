@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-honolulu,62,153,0.08090957165520889,10,2,30.0,3922,OPTIMAL

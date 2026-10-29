@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+silicon-valley,36,62,0.09841269841269841,8,1,20.0,1155,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+san-francisco,37,88,0.13213213213213212,9,0,18.0,2360,OPTIMAL

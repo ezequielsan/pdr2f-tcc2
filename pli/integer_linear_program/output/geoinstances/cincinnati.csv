@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+cincinnati,45,95,0.09595959595959595,8,1,25.0,2440,OPTIMAL

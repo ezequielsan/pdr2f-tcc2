@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-boston,26,45,0.13846153846153847,10,0,14.0,1016,OPTIMAL

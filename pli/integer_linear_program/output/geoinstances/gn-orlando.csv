@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-orlando,121,255,0.03512396694214876,11,0,66.0,7112,OPTIMAL

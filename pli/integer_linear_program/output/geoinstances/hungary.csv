@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+hungary,20,41,0.21578947368421053,7,1,11.0,1076,OPTIMAL

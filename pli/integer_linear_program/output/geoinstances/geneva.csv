@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+geneva,45,106,0.10707070707070707,9,0,22.0,3010,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-alameda,17,1,0.007352941176470588,1,0,17.0,987,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+albany,24,36,0.13043478260869565,8,1,15.0,1105,OPTIMAL

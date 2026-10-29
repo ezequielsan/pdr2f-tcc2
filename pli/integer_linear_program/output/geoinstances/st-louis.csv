@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+st-louis,83,232,0.06817513958272113,10,2,37.0,48011,OPTIMAL

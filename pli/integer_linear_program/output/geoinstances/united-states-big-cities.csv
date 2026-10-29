@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+united-states-big-cities,32,72,0.14516129032258066,8,2,15.0,1237,OPTIMAL

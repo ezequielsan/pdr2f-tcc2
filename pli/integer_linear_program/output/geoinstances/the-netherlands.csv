@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+the-netherlands,12,20,0.30303030303030304,5,2,7.0,1040,OPTIMAL

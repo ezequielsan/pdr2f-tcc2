@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-canberra,103,276,0.052541404911479156,16,0,45.0,15470,OPTIMAL

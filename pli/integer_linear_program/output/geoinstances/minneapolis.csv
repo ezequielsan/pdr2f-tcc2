@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+minneapolis,85,241,0.06750700280112044,9,2,39.0,199873,OPTIMAL

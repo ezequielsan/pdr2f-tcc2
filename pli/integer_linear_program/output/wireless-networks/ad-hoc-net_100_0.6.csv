@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+ad-hoc-net_100_0.6,100,3129,0.6321212121212121,94,26,6.0,2866,OPTIMAL

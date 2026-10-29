@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+lexington,38,80,0.11379800853485064,9,0,22.0,2054,OPTIMAL

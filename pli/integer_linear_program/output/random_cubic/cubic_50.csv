@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+cubic_50,50,75,0.061224489795918366,3,3,34.0,14105,OPTIMAL

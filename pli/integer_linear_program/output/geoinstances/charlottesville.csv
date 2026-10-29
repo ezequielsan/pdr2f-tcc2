@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+charlottesville,19,38,0.2222222222222222,8,1,11.0,1095,OPTIMAL

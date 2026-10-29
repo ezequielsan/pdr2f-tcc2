@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+nordrhein-westfalen,396,1076,0.013757831479350467,12,1,192.0,601074,TIME_LIMIT

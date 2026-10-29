@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+ireland-counties,34,74,0.1319073083778966,7,1,18.0,1509,OPTIMAL

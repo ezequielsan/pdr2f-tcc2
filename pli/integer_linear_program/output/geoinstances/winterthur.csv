@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+winterthur,7,10,0.47619047619047616,5,2,4.0,1044,OPTIMAL

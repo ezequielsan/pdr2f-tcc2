@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+dresden,85,222,0.06218487394957983,9,2,40.0,11696,OPTIMAL

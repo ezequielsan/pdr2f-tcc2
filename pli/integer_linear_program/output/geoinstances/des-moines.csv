@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+des-moines,58,109,0.06594071385359952,11,0,35.00000000000001,2659,OPTIMAL

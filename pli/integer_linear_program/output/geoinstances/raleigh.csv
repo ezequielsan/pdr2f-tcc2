@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+raleigh,18,46,0.3006535947712418,7,3,9.0,1134,OPTIMAL

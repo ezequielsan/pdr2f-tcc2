@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-hamburg,103,274,0.05216067009328003,12,2,47.0,78342,OPTIMAL

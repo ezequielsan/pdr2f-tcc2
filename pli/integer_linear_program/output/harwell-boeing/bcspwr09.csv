@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+bcspwr09,1723,2394,0.0016137480005096046,14,1,1116.0,601051,TIME_LIMIT

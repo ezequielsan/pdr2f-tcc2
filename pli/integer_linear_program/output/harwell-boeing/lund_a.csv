@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+lund_a,147,1151,0.10725934209300159,20,4,34.0,600968,TIME_LIMIT

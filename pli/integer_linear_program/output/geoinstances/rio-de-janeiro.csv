@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+rio-de-janeiro,92,225,0.053750597228858096,10,1,45.0,6768,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+james-city-county,168,103,0.007342457941260336,11,0,142.0,1051,OPTIMAL

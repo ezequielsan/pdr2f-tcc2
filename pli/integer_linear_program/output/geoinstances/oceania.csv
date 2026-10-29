@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+oceania,24,0,0.0,0,0,24.0,943,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+rotterdam,22,40,0.17316017316017315,6,1,13.0,1134,OPTIMAL

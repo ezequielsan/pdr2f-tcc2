@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-austin,70,183,0.07577639751552795,9,1,35.0,3022,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-toronto,140,417,0.04285714285714286,11,2,63.0,601017,TIME_LIMIT

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+lombardy,12,24,0.36363636363636365,6,2,7.0,1058,OPTIMAL

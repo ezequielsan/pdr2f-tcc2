@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+vancouver,23,49,0.19367588932806323,7,1,13.0,1100,OPTIMAL

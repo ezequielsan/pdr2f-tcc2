@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+richmond,148,422,0.03879389593675308,11,1,66.0,601008,TIME_LIMIT

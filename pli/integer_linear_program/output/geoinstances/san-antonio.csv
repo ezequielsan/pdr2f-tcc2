@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+san-antonio,401,158,0.001970074812967581,14,0,372.0,1142,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+united-states-mlb-stadiums,30,70,0.16091954022988506,7,2,16.0,1722,OPTIMAL

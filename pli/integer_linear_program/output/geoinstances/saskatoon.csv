@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+saskatoon,59,143,0.08357685563997662,9,1,28.0,1551,OPTIMAL

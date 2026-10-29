@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-surrey,7,11,0.5238095238095238,4,1,4.0,1020,OPTIMAL

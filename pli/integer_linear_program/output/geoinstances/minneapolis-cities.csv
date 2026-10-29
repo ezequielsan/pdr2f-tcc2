@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+minneapolis-cities,192,492,0.026832460732984294,14,1,95.0,123266,OPTIMAL

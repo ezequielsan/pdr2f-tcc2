@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+manhattan,37,67,0.1006006006006006,9,0,22.0,1276,OPTIMAL

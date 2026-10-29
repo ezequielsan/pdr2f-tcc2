@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+austria-oberoesterreich,18,36,0.23529411764705882,7,1,11.0,1107,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+denver,78,211,0.07026307026307026,9,1,37.0,33446,OPTIMAL

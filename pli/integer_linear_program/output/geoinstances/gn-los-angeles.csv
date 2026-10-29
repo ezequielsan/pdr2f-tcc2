@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-los-angeles,114,289,0.044868809191119394,9,1,56.0,601007,TIME_LIMIT

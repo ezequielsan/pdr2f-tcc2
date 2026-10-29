@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+antwerp,62,155,0.08196721311475409,9,0,31.0,4860,OPTIMAL

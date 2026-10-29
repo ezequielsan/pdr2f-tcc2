@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+zurich,171,449,0.03089095287237702,15,2,80.0000000000006,601072,TIME_LIMIT

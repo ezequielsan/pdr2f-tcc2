@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-brooklyn,54,128,0.08944793850454227,8,0,27.999999999999975,3066,OPTIMAL

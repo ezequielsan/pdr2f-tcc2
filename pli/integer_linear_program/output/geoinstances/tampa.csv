@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+tampa,72,160,0.06259780907668232,10,0,39.0,6793,OPTIMAL

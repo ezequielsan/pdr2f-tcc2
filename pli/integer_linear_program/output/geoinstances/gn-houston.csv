@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-houston,88,215,0.05616509926854754,9,0,44.0,50202,OPTIMAL

@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+turkey,81,198,0.06111111111111111,9,1,40.0,38134,OPTIMAL

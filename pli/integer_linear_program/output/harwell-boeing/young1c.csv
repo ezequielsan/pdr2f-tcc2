@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+young1c,841,1624,0.004597701149425287,4,2,588.0,601157,TIME_LIMIT

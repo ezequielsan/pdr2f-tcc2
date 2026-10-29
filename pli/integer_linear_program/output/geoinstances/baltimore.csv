@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+baltimore,278,808,0.02098537776277173,16,0,113.0,601030,TIME_LIMIT

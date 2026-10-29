@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+europe-1938,27,46,0.13105413105413105,9,1,16.0,1008,OPTIMAL

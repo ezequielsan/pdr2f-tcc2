@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+jagmesh1,936,2664,0.006088029617441382,6,3,509.0,601144,TIME_LIMIT

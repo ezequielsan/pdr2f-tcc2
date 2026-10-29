@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+italy-regions,20,31,0.1631578947368421,6,0,14.0,1015,OPTIMAL

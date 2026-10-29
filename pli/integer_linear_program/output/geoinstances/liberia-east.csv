@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+liberia-east,68,168,0.07374890254609306,9,2,33.0,8002,OPTIMAL

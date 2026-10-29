@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+springfield,17,38,0.27941176470588236,7,2,8.0,1000,OPTIMAL

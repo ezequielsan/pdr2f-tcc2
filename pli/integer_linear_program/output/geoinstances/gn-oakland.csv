@@ -1,0 +1,2 @@
+G,|V|,|E|,density,maxDegree,minDegree,weight,time(milliseconds),status
+gn-oakland,131,364,0.042748091603053436,12,0,61.0,601048,TIME_LIMIT
