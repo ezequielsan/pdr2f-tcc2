@@ -1,0 +1,1 @@
+Instance,Class,NumNodes,NumEdges,Algorithm,Decoder,Reduction,Seed,Weight,Feasible,TimeLimit,WarmStart,InitialWeight,Generations,LastUpdateGeneration,TotalTime,LastUpdateTime,LargestIterationOffset,StalledIterations,IPRTime,IPRCalls,IPRHomogenities,IPRBestImprovements,IPREliteImprovements,Exchanges,Shakes,Resets

@@ -8,6 +8,8 @@
 #   make decoder_info    compara os 4 decodificadores com cromossomos aleatorios
 #   make test_pdr2f      testes do verificador de viabilidade e do guloso
 #   make test_decoders   testes dos decodificadores e da busca local
+#   make main_minimal    o BRKGA-MP(-IPR) minimo (precisa da API)
+#   make main_complete   o BRKGA-MP(-IPR) com CSV para as baterias
 #   make test            roda TODA a bateria de testes e validacoes
 #   make check-api       verifica se a API BRKGA-MP-IPR foi clonada
 #   make clean           remove objetos, dependencias e binarios
@@ -42,7 +44,9 @@ APP_OBJS = \
 	apps/greedy_info.o \
 	apps/decoder_info.o \
 	apps/test_pdr2f.o \
-	apps/test_decoders.o
+	apps/test_decoders.o \
+	apps/main_minimal.o \
+	apps/main_complete.o
 
 # Instancias pequenas usadas nos testes: o teste de equivalencia com a forca
 # bruta e' O(n^2) por rotulacao, entao roda em grafos pequenos.
@@ -85,7 +89,8 @@ CXXFLAGS = $(USER_FLAGS)
 .PHONY: all clean check-api test
 .SUFFIXES: .cpp .o
 
-all: instance_info greedy_info decoder_info test_pdr2f test_decoders
+all: instance_info greedy_info decoder_info test_pdr2f test_decoders \
+     main_minimal main_complete
 
 # Nenhum destes usa a API BRKGA-MP-IPR ainda.
 instance_info: $(OBJS) apps/instance_info.o
@@ -107,6 +112,17 @@ test_pdr2f: $(OBJS) apps/test_pdr2f.o
 test_decoders: $(OBJS) apps/test_decoders.o
 	@echo "--> Ligando $@..."
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
+# Os dois unicos alvos que dependem da API BRKGA-MP-IPR. O check-api entra
+# como pre-requisito ORDER-ONLY (depois do |): sendo .PHONY, se fosse
+# pre-requisito normal forcaria o religamento em todo make.
+main_minimal: $(OBJS) apps/main_minimal.o | check-api
+	@echo "--> Ligando $@..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) apps/main_minimal.o -o $@
+
+main_complete: $(OBJS) apps/main_complete.o | check-api
+	@echo "--> Ligando $@..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) apps/main_complete.o -o $@
 
 # Bateria completa: formato das instancias, leitor, verificador, guloso.
 test: all
@@ -139,7 +155,8 @@ clean:
 	@echo "--> Limpando..."
 	rm -rf $(OBJS) $(APP_OBJS) $(OBJS:.o=.d) $(APP_OBJS:.o=.d) \
 		apps/*.o apps/*.d src/*/*.o src/*/*.d *.o *.d bin/ \
-		instance_info greedy_info decoder_info test_pdr2f test_decoders
+		instance_info greedy_info decoder_info test_pdr2f test_decoders \
+		main_minimal main_complete
 
 # Dependencias de cabecalho geradas por -MMD. O '-' silencia a primeira
 # compilacao, quando os .d ainda nao existem.

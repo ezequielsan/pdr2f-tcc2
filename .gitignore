@@ -16,11 +16,14 @@
 /decoder_info
 /test_pdr2f
 /test_decoders
+/main_minimal
+/main_complete
 
 # Saidas temporarias de validacao
 /leitor.csv
 /guloso.csv
 /decoders.csv
+/results/**/*.lock
 
 # Saidas de execucao (descomente se NAO quiser versionar os resultados)
 # /results/**/*.csv
