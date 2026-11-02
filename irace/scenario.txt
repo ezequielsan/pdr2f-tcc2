@@ -1,0 +1,30 @@
+## scenario.txt: cenario do irace para o BRKGA-MP-IPR no PDR2F.
+##
+## Execute a partir deste diretorio, pelo roda_irace.sh.
+## Decisoes em claude/protocolo_experimental_fechado.md.
+
+targetRunner       = "./target-runner"
+parameterFile      = "./parameters.txt"
+forbiddenFile      = "./forbidden.txt"
+
+## As 29 instancias de treino (10%, sorteio estratificado entre n >= 30).
+## Saem da bateria final. Geradas por scripts/sorteia_treino.py.
+trainInstancesDir  = ""
+trainInstancesFile = "./treino.txt"
+
+execDir            = "./exec"
+
+## Orcamento: 2000 execucoes. Com 60 s (faixa de 600 s) e 120 s (faixa de
+## 1200 s) e 14 + 15 instancias de cada, a media e' ~91 s por execucao:
+## ~50 h de CPU, ~7 h de relogio com 7 processos.
+maxExperiments     = 2000
+
+## Um processo por nucleo fisico, menos um (Ryzen 7 5700G: 8 nucleos).
+parallel           = 7
+
+## O BRKGA e' estocastico: cada configuracao precisa ser avaliada em varias
+## instancias e sementes.
+deterministic      = 0
+
+digits             = 4
+seed               = 20261102

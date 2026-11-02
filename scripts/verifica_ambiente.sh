@@ -193,8 +193,8 @@ if [ "$faltando" -eq 0 ]; then
     echo ""
     echo " Teste final, que exercita tudo de uma vez:"
     echo "   make clean && make && make test"
-    echo "   ./main_minimal 0 configs/brkga-mp/dev_threshold.conf 15 \\"
-    echo "                  instances/random/100_1.txt threshold 200"
+    echo "   ./main_minimal 0 configs/brkga-mp/dev_perm.conf 15 \\"
+    echo "                  instances/random/100_1.txt permutation 200"
     echo "=============================================================="
     exit 0
 else

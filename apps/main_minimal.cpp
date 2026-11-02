@@ -66,10 +66,10 @@ int main(int argc, char* argv[]) {
                   << " | n = " << instance.num_nodes
                   << " | m = " << instance.num_edges << '\n';
 
-        // A busca local de reducao fica SEMPRE ativa: a decisao de projeto e'
-        // que os dois decodificadores a recebem, para que a comparacao entre
-        // eles isole a representacao.
-        PDR2F_BrkgaDecoder decoder(instance, decoder_kind, true);
+        // A busca local de reducao fica sempre ligada: o desenho experimental
+        // (02/11/2026) usa o decodificador por permutacao com busca local.
+        const bool reduction = true;
+        PDR2F_BrkgaDecoder decoder(instance, decoder_kind, reduction);
 
         ////////////////////////////////////////////////////////////////////////
         // Parametros
@@ -157,7 +157,8 @@ int main(int argc, char* argv[]) {
 
         std::cout << "Decodificador: "
                   << PDR2F_BrkgaDecoder::name_of(decoder_kind)
-                  << " com busca local de reducao\n"
+                  << (reduction ? " com busca local de reducao\n"
+                                : " sem busca local\n")
                      "Parada: " << max_time << " s";
         if(generations > 0) std::cout << " OU " << generations << " geracoes";
         std::cout << "\n\nRodando...\n";

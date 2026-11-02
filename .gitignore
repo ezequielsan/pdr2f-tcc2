@@ -37,3 +37,7 @@ __pycache__/
 .vscode/
 .idea/
 .DS_Store
+
+# Saidas do irace (o resultado definitivo e' copiado para irace/resultado/)
+/irace/exec/
+/irace/exec-teste/

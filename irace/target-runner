@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+###############################################################################
+# target-runner: executa UMA configuracao candidata do irace em UMA instancia.
+#
+# O irace chama este script assim:
+#
+#   target-runner <id-config> <id-instancia> <semente> <instancia> \
+#                 population_size 300 elite_percentage 0.15 ...
+#
+# e espera, na saida padrao, um unico numero: o CUSTO, que ele minimiza. Aqui
+# o custo e' o peso da melhor solucao encontrada.
+#
+# O que este script faz:
+#   1. monta um arquivo de configuracao a partir de base.conf, SUBSTITUINDO os
+#      oito parametros calibrados (a API recusa chave duplicada);
+#   2. calcula o limite de tempo: 10% da faixa do protocolo (30/60/120 s);
+#   3. roda o main_complete com uma thread, decodificador por permutacao e
+#      busca local;
+#   4. verifica a saida (27 campos, solucao viavel) e devolve o peso.
+#
+# Qualquer falha encerra com codigo 1, o que faz o irace PARAR com mensagem,
+# em vez de calibrar em cima de execucoes quebradas.
+#
+# Variavel de ambiente para teste de fumaca:
+#   IRACE_MAXTIME=<s>   forca um limite de tempo fixo (ex.: 2 s)
+###############################################################################
+
+set -u
+
+erro() { echo "target-runner: ERRO: $*" >&2; exit 1; }
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+RAIZ="$(cd "$DIR/.." && pwd)"
+BINARIO="$RAIZ/main_complete"
+BASE="$DIR/base.conf"
+
+[ $# -ge 4 ] || erro "argumentos insuficientes: $*"
+ID_CONFIG="$1"
+ID_INSTANCIA="$2"
+SEMENTE="$3"
+INSTANCIA="$4"
+shift 4
+
+[ -x "$BINARIO" ] || erro "$BINARIO nao encontrado; rode 'make' na raiz"
+[ -f "$BASE" ]    || erro "$BASE nao encontrado"
+
+###############################################################################
+# Caminho da instancia
+#
+# O irace pode executar este script a partir de execDir e ainda prefixar o
+# caminho com trainInstancesDir. Para nao depender disso, extraimos o trecho a
+# partir de "/instances/" e resolvemos em relacao a' raiz do repositorio.
+# A barra inicial no padrao impede casar com "geoinstances/".
+###############################################################################
+
+CAMINHO="/$INSTANCIA"
+RELATIVO="${CAMINHO##*/instances/}"
+[ "$RELATIVO" != "$CAMINHO" ] || erro "caminho de instancia inesperado: $INSTANCIA"
+ARQ_INSTANCIA="$RAIZ/instances/$RELATIVO"
+[ -f "$ARQ_INSTANCIA" ] || erro "instancia nao encontrada: $ARQ_INSTANCIA"
+
+###############################################################################
+# Configuracao candidata: os parametros chegam em pares "chave valor"
+###############################################################################
+
+declare -A PARAMS=()
+while [ $# -gt 0 ]; do
+    [ $# -ge 2 ] || erro "parametro sem valor: $1"
+    PARAMS["$1"]="$2"
+    shift 2
+done
+
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+CONF="$TMP/config.conf"
+
+# Repassa os pares ao awk como "chave=valor" e substitui as linhas cujas chaves
+# coincidem; as demais linhas de base.conf passam intactas.
+PARES=""
+for chave in "${!PARAMS[@]}"; do PARES+="$chave=${PARAMS[$chave]};"; done
+
+awk -v pares="$PARES" '
+    BEGIN {
+        n = split(pares, lista, ";")
+        for(i = 1; i <= n; ++i)
+            if(split(lista[i], kv, "=") == 2) novo[kv[1]] = kv[2]
+    }
+    {
+        chave = tolower($1)
+        if(chave in novo) { print chave " " novo[chave]; usado[chave] = 1 }
+        else print
+    }
+    END {
+        for(k in novo) if(!(k in usado)) {
+            print "parametro sem linha correspondente em base.conf: " k > "/dev/stderr"
+            exit 3
+        }
+    }
+' "$BASE" > "$CONF" || erro "falha ao montar a configuracao"
+
+###############################################################################
+# Limite de tempo: 10% da faixa do protocolo
+###############################################################################
+
+if [ -n "${IRACE_MAXTIME:-}" ]; then
+    TEMPO="$IRACE_MAXTIME"
+else
+    # n = linhas nao vazias, o mesmo criterio do leitor de instancias.
+    N=$(awk 'NF > 0' "$ARQ_INSTANCIA" | wc -l)
+    if   [ "$N" -lt 30 ];  then TEMPO=30
+    elif [ "$N" -lt 100 ]; then TEMPO=60
+    else                        TEMPO=120
+    fi
+fi
+
+###############################################################################
+# Execucao
+###############################################################################
+
+LINHA=$("$BINARIO" --config "$CONF" --instance "$ARQ_INSTANCIA" \
+                   --decoder permutation --seed "$SEMENTE" \
+                   --maxtime "$TEMPO" --threads 1 --quiet 2> "$TMP/stderr" | tail -1)
+
+CAMPOS=$(echo "$LINHA" | awk -F, '{print NF}')
+[ "$CAMPOS" = "27" ] || erro "saida inesperada do main_complete ($CAMPOS campos): $(head -3 "$TMP/stderr")"
+
+VIAVEL=$(echo "$LINHA" | cut -d, -f10)
+PESO=$(echo "$LINHA" | cut -d, -f9)
+[ "$VIAVEL" = "yes" ] || erro "solucao INVIAVEL em $RELATIVO (config $ID_CONFIG)"
+
+# Registro de todas as execucoes, para diagnostico posterior.
+REGISTRO="${IRACE_REGISTRO:-$DIR/exec/execucoes.csv}"
+mkdir -p "$(dirname "$REGISTRO")"
+(
+    flock 9
+    [ -s "$REGISTRO" ] || echo "ConfigId,InstanceId,TimeLimitIrace,$("$BINARIO" --header)" > "$REGISTRO"
+    echo "$ID_CONFIG,$ID_INSTANCIA,$TEMPO,$LINHA" >> "$REGISTRO"
+) 9> "$REGISTRO.lock"
+
+# O irace le' apenas isto.
+echo "$PESO"

@@ -14,6 +14,12 @@
  *   --generations  limite adicional de geracoes (0 = so' tempo)
  *   --warmstart    quantas solucoes gulosas injetar na populacao inicial
  *   --no-reduction desliga a busca local (para estudos de ablacao)
+ *
+ * DESENHO EXPERIMENTAL (decisao de 02/11/2026): os experimentos usam apenas o
+ * decodificador por PERMUTACAO, sempre COM a busca local de reducao, em dois
+ * bracos -- BRKGA-MP e BRKGA-MP-IPR. O decodificador por limiares continua
+ * disponivel no codigo (e nos testes), mas foi excluido dos experimentos.
+ * --no-reduction existe apenas para estudos de ablacao.
  *   --header       imprime apenas o cabecalho do CSV e termina
  *
  * O ALGORITMO E' DEDUZIDO DO CONFIG, nao informado na linha de comando:
@@ -153,6 +159,7 @@ int main(int argc, char* argv[]) try {
         static_cast<unsigned>(std::stoul(get_optional(args, "warmstart", "0")));
     const unsigned num_threads =
         static_cast<unsigned>(std::stoul(get_optional(args, "threads", "1")));
+    // A busca local de reducao fica ligada por padrao (ver o cabecalho).
     const bool reduction = !args.count("no-reduction");
     const bool quiet     = args.count("quiet") > 0;
 

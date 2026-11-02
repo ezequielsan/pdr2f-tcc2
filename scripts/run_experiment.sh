@@ -22,10 +22,11 @@
 # Opcoes:
 #   -c <arq>   config do decodificador 'threshold'
 #   -p <arq>   config do decodificador 'permutation'
-#   -d "<...>" decodificadores               ["threshold permutation"]
+#   -d "<...>" decodificadores               ["permutation"]
 #   -C "<...>" classes                       [todas as cinco]
 #   -i <glob>  filtra instancias pelo nome    [todas]  ex.: -i '100_*'
-#   -j <n>     processos em paralelo          [nucleos - 2]
+#   -X <arq>   instancias de treino a excluir [irace/treino.txt]; -X none desliga
+#   -j <n>     processos em paralelo          [nucleos fisicos - 1]
 #   -w <n>     solucoes gulosas no warm start [0]
 #   -o <arq>   CSV de saida                   [results/bateria.csv]
 #   -t <s>     forca um limite de tempo       [faixa do protocolo]
@@ -49,10 +50,18 @@ cd "$RAIZ"
 
 CONFIG_THRESHOLD="configs/brkga-mp-ipr/dev_threshold.conf"
 CONFIG_PERM="configs/brkga-mp-ipr/dev_perm.conf"
-DECODERS="threshold permutation"
+# Desenho experimental (02/11/2026): apenas o decodificador por permutacao.
+DECODERS="permutation"
 CLASSES="random wireless-networks geoinstances harwell-boeing random_cubic"
 FILTRO="*"
-JOBS=$(( $(nproc 2>/dev/null || echo 4) - 2 ))
+EXCLUIR="irace/treino.txt"
+# Paralelismo padrao: NUCLEOS FISICOS menos 1, e nao threads logicas. Com
+# SMT, dois processos no mesmo nucleo fisico dividem o nucleo, e cada um faz
+# menos trabalho dentro do limite de tempo -- o que penalizaria o BRKGA na
+# comparacao com o VNS, que rodou um processo por nucleo.
+FISICOS=$(lscpu -p=Core,Socket 2>/dev/null | grep -v "^#" | sort -u | wc -l)
+[ "${FISICOS:-0}" -gt 0 ] || FISICOS=$(nproc 2>/dev/null || echo 2)
+JOBS=$(( FISICOS - 1 ))
 [ "$JOBS" -lt 1 ] && JOBS=1
 WARMSTART=0
 OUTPUT="results/bateria.csv"
@@ -60,13 +69,14 @@ FORCE_TIME=""
 GENERATIONS=0
 DRY_RUN=0
 
-while getopts "c:p:d:C:i:j:w:o:t:g:nh" opt; do
+while getopts "c:p:d:C:i:X:j:w:o:t:g:nh" opt; do
     case $opt in
         c) CONFIG_THRESHOLD="$OPTARG" ;;
         p) CONFIG_PERM="$OPTARG" ;;
         d) DECODERS="$OPTARG" ;;
         C) CLASSES="$OPTARG" ;;
         i) FILTRO="$OPTARG" ;;
+        X) EXCLUIR="$OPTARG" ;;
         j) JOBS="$OPTARG" ;;
         w) WARMSTART="$OPTARG" ;;
         o) OUTPUT="$OPTARG" ;;
@@ -85,20 +95,36 @@ done
 # usa 168 e nao 258.
 nao_e_duplicata() { case "$(basename "$1")" in gn-*) return 1 ;; *) return 0 ;; esac; }
 
-# Numero de execucoes por instancia, conforme o protocolo do artigo.
+# Instancias usadas na calibracao do irace NAO entram na bateria: reportar
+# resultado numa instancia usada para calibrar daria um numero otimista
+# (over-tuning). A comparacao e' pelo nome do arquivo, independente do caminho.
+TREINO=""
+if [ "$EXCLUIR" != "none" ]; then
+    [ -f "$EXCLUIR" ] || { echo "ERRO: lista de treino '$EXCLUIR' nao encontrada (use -X none para nao excluir)." >&2; exit 1; }
+    TREINO=$(xargs -n1 basename < "$EXCLUIR" | sort -u)
+fi
+e_de_treino() { [ -n "$TREINO" ] && grep -qxF "$(basename "$1")" <<< "$TREINO"; }
+
+# Numero de execucoes por instancia (cenario B, decidido em 02/11/2026).
+# O artigo do VNS roda 10 vezes as classes sinteticas e 1 vez as reais.
+# Classes acrescentadas seguem a mesma regra: random_cubic e' sintetica (10)
+# e harwell-boeing e' real (1).
 sementes_da_classe() {
     case "$1" in
-        random|wireless-networks) echo 10 ;;
-        *)                        echo 1  ;;
+        random|wireless-networks|random_cubic) echo 10 ;;
+        geoinstances|harwell-boeing)           echo 1  ;;
+        *) echo "ERRO: classe sem numero de execucoes definido: $1" >&2; exit 1 ;;
     esac
 }
 
 mkdir -p "$(dirname "$OUTPUT")"
-[ -s "$OUTPUT" ] || ./main_complete --header > "$OUTPUT"
+# Na simulacao (-n) nada e' escrito em disco: o CSV so' e' criado quando
+# ha execucao de verdade.
+[ "$DRY_RUN" -eq 1 ] || [ -s "$OUTPUT" ] || ./main_complete --header > "$OUTPUT"
 
 # Chaves ja' presentes no CSV, para a retomada.
 JA_FEITAS=$(mktemp); trap 'rm -f "$JA_FEITAS"' EXIT
-awk -F, 'NR>1 {print $1"|"$5"|"$6"|"$8}' "$OUTPUT" | sort -u > "$JA_FEITAS"
+[ -f "$OUTPUT" ] && awk -F, 'NR>1 {print $1"|"$5"|"$6"|"$8}' "$OUTPUT" | sort -u > "$JA_FEITAS"
 
 # O rotulo do algoritmo vem do config, como no main_complete.
 algoritmo_do_config() {
@@ -112,7 +138,7 @@ algoritmo_do_config() {
 ###############################################################################
 
 TAREFAS=$(mktemp); trap 'rm -f "$JA_FEITAS" "$TAREFAS"' EXIT
-total=0; puladas=0
+total=0; puladas=0; excluidas=0
 
 for classe in $CLASSES; do
     [ -d "instances/$classe" ] || { echo "ERRO: classe '$classe' inexistente." >&2; exit 1; }
@@ -121,6 +147,7 @@ for classe in $CLASSES; do
     for instancia in instances/"$classe"/$FILTRO.txt; do
         [ -f "$instancia" ] || continue
         nao_e_duplicata "$instancia" || continue
+        if e_de_treino "$instancia"; then excluidas=$((excluidas + 1)); continue; fi
         nome=$(basename "$instancia" .txt)
 
         for decoder in $DECODERS; do
@@ -146,6 +173,7 @@ done
 echo "=============================================================="
 echo " execucoes a fazer : $total"
 echo " ja' no CSV        : $puladas  (serao puladas)"
+echo " treino do irace   : $excluidas instancias excluidas ($EXCLUIR)"
 echo " filtro            : $FILTRO"
 echo " paralelismo       : $JOBS processos de 1 thread"
 echo " warm start        : $WARMSTART"
