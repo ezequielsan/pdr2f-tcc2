@@ -159,7 +159,7 @@ int main(int argc, char* argv[]) {
                   << PDR2F_BrkgaDecoder::name_of(decoder_kind)
                   << (reduction ? " com busca local de reducao\n"
                                 : " sem busca local\n")
-                     "Parada: " << max_time << " s";
+                  << "Parada: " << max_time << " s";
         if(generations > 0) std::cout << " OU " << generations << " geracoes";
         std::cout << "\n\nRodando...\n";
 
