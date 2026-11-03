@@ -49,7 +49,7 @@ RAIZ="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$RAIZ"
 
 CONFIG_THRESHOLD="configs/brkga-mp-ipr/dev_threshold.conf"
-CONFIG_PERM="configs/brkga-mp-ipr/dev_perm.conf"
+CONFIG_PERM="configs/brkga-mp-ipr/final_perm.conf"
 # Desenho experimental (02/11/2026): apenas o decodificador por permutacao.
 DECODERS="permutation"
 CLASSES="random wireless-networks geoinstances harwell-boeing random_cubic"
