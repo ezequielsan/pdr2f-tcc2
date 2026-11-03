@@ -46,7 +46,7 @@ total_parents`, exigida pela API. Os demais parâmetros ficam fixos em `base.con
 - **2000 execuções**, cada uma com **10% da faixa do protocolo**: 60 s nas
   instâncias de 600 s e 120 s nas de 1200 s.
 - Média de ~91 s por execução: **~50 h de CPU, ~7 h de relógio** com 7
-  processos em paralelo.
+  processos em paralelo (a calibração definitiva levou 8h08 e 51,9 h de CPU).
 
 ## Como rodar
 
@@ -55,13 +55,13 @@ A partir da raiz do repositório, depois de `make`:
 ```bash
 ./irace/roda_irace.sh --check   # valida os arquivos, sem executar nada
 ./irace/roda_irace.sh --teste   # fumaça: 300 execuções de 2 s, alguns minutos
-./irace/roda_irace.sh           # calibração completa, ~7 h
+./irace/roda_irace.sh           # calibração completa, ~8 h
 ```
 
 Rode a calibração completa num clone em `~/`, não em `/mnt/c`, e dentro do
 `tmux`.
 
-## Saídas (em `exec/`, não versionadas)
+## Saídas (em `exec/`, não versionadas; as da calibração definitiva estão em `resultado/`)
 
 | Arquivo | Conteúdo |
 |---|---|

@@ -6,7 +6,8 @@
 # semente, acumulando um CSV unico. Respeita o protocolo do artigo do VNS:
 #
 #   - limite de tempo por FAIXA DE TAMANHO (o main_complete cuida disso);
-#   - 10 execucoes em random e wireless-networks, 1 nas demais classes;
+#   - 10 execucoes nas classes sinteticas (random, wireless-networks,
+#     random_cubic) e 1 nas reais (geoinstances, harwell-boeing);
 #   - uma unica thread por execucao.
 #
 # E' RETOMAVEL: cada execucao ja' presente no CSV de saida e' pulada, de modo
