@@ -38,8 +38,8 @@ sorteadas: isso equivaleria a escolher o treino à mão.
 | `num_independent_populations` | 1 – 3 |
 | `ipr_interval` | 10 – 200 |
 
-Restrição (`forbidden.txt`): `num_elite_parents < total_parents`, exigida pela
-API. Os demais parâmetros ficam fixos em `base.conf`.
+Restrição (seção `[forbidden]` do `parameters.txt`): `num_elite_parents <
+total_parents`, exigida pela API. Os demais parâmetros ficam fixos em `base.conf`.
 
 ## Orçamento
 

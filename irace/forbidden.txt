@@ -1,8 +1,0 @@
-## forbidden.txt: combinacoes que a API BRKGA-MP-IPR recusa.
-##
-## A API exige num_elite_parents < total_parents (estrito) e que o conjunto
-## elite tenha pelo menos num_elite_parents individuos. Com as faixas de
-## parameters.txt a segunda condicao nunca e' violada (elite >= 0,10 * 50 = 5),
-## mas fica registrada por seguranca.
-num_elite_parents >= total_parents
-floor(elite_percentage * population_size) < num_elite_parents

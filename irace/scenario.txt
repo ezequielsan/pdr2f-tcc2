@@ -5,7 +5,6 @@
 
 targetRunner       = "./target-runner"
 parameterFile      = "./parameters.txt"
-forbiddenFile      = "./forbidden.txt"
 
 ## As 29 instancias de treino (10%, sorteio estratificado entre n >= 30).
 ## Saem da bateria final. Geradas por scripts/sorteia_treino.py.
@@ -26,5 +25,4 @@ parallel           = 7
 ## instancias e sementes.
 deterministic      = 0
 
-digits             = 4
 seed               = 20261102
