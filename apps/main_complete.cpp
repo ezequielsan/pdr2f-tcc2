@@ -249,9 +249,12 @@ int main(int argc, char* argv[]) try {
     // execucao iniciada dentro desse intervalo pararia ~30 s antes da hora.
     // Por isso o limite real e' imposto pelo criterio de parada abaixo, com
     // std::chrono::steady_clock (monotono, nunca salta), e o limite da API
-    // fica 1 h acima, apenas como rede de seguranca.
+    // fica API_MARGIN segundos acima, maior que o salto observado (30,2 s).
+    // O orcamento de tempo do IPR, que a API calcula a partir desse limite,
+    // e' corrigido no criterio de parada (ver abaixo).
+    constexpr unsigned API_MARGIN = 60;
     control_params.maximum_running_time =
-        std::chrono::seconds{max_time + 3600};
+        std::chrono::seconds{max_time + API_MARGIN};
 
     // O rotulo do algoritmo vem do config, nao da linha de comando.
     const std::string algorithm_name =
@@ -319,11 +322,34 @@ int main(int argc, char* argv[]) try {
     };
 
     // Criterios de parada: tempo (monotono) e, se pedido, geracoes. A API
-    // consulta esta funcao varias vezes por geracao.
+    // consulta esta funcao varias vezes por geracao, inclusive LOGO ANTES de
+    // decidir se chama o IPR.
+    //
+    // ORCAMENTO DO IPR: a API passa ao IPR o tempo
+    //     maximum_running_time - status.current_time
+    // mas (1) maximum_running_time inclui a margem acima, e (2) current_time
+    // so' e' atualizado em melhoras e trocas de elite, ficando defasado. Sem
+    // correcao, um IPR numa instancia grande passava do limite em minutos
+    // (bcspwr08: 495 s com limite de 120 s). Aqui ajustamos current_time para
+    // que esse orcamento seja exatamente o tempo real restante. O minimo e'
+    // 1 s porque, para a API, orcamento 0 significa "sem limite".
+    //
+    // O const_cast e' seguro: a API passa uma variavel local NAO constante de
+    // run() (brkga_mp_ipr.hpp, "AlgorithmStatus status;"), que ela mesma
+    // sobrescreve a cada melhora.
     algorithm.setStoppingCriteria(
         [&elapsed, generations, max_time](const BRKGA::AlgorithmStatus& status) {
-            return elapsed() >= static_cast<double>(max_time) ||
-                   (generations > 0 && status.current_iteration >= generations);
+            const double t = elapsed();
+            if(t >= static_cast<double>(max_time) ||
+               (generations > 0 && status.current_iteration >= generations))
+                return true;
+
+            const double remaining =
+                std::max(1.0, static_cast<double>(max_time) - t);
+            const_cast<BRKGA::AlgorithmStatus&>(status).current_time =
+                std::chrono::duration<double>(
+                    static_cast<double>(max_time + API_MARGIN) - remaining);
+            return false;
         }
     );
 
