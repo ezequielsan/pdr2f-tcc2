@@ -5,13 +5,18 @@
  * Uso:
  *   ./main_complete --config <arq> --seed <n> --instance <arq>
  *                   --decoder <threshold|permutation>
- *                   [--maxtime <s>] [--generations <n>] [--warmstart <n>]
+ *                   [--maxtime <s>] [--generations <n>] [--target <peso>]
+ *                   [--convlog <arq>] [--warmstart <n>]
  *                   [--no-reduction] [--threads <n>] [--quiet] [--header]
  *
- *   --maxtime      se omitido, usa a FAIXA DO PROTOCOLO conforme n:
- *                  n < 30 -> 300 s; 30 <= n < 100 -> 600 s; n >= 100 -> 1200 s
- *                  (Djukanovic et al., 2025)
+ *   --maxtime      se omitido, 600 s para qualquer instancia (protocolo de
+ *                  04/11/2026: tempo maximo de 10 min por execucao)
  *   --generations  limite adicional de geracoes (0 = so' tempo)
+ *   --target       PARA ao atingir este peso (0 = sem alvo). Usado com o
+ *                  otimo provado pelo PLI ou com o limite inferior das cubicas:
+ *                  ninguem melhora um otimo, entao parar nele so' poupa tempo.
+ *   --convlog      grava a curva de convergencia neste arquivo: uma linha a
+ *                  cada melhora da melhor solucao e uma linha final
  *   --warmstart    quantas solucoes gulosas injetar na populacao inicial
  *   --no-reduction desliga a busca local (para estudos de ablacao)
  *
@@ -41,6 +46,7 @@
 #include <algorithm>
 #include <chrono>
 #include <exception>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <map>
@@ -61,14 +67,12 @@ const char* const CSV_HEADER =
     "Generations,LastUpdateGeneration,TotalTime,LastUpdateTime,"
     "LargestIterationOffset,StalledIterations,"
     "IPRTime,IPRCalls,IPRHomogenities,IPRBestImprovements,"
-    "IPREliteImprovements,Exchanges,Shakes,Resets";
+    "IPREliteImprovements,Exchanges,Shakes,Resets,Target,StopReason";
 
-/// Faixa de tempo do protocolo, em segundos, conforme o tamanho da instancia.
-unsigned protocol_time_limit(unsigned n) {
-    if(n < 30)  return 300;
-    if(n < 100) return 600;
-    return 1200;
-}
+/// Tempo maximo do protocolo, em segundos: 600 s para qualquer instancia.
+/// (Ate' 04/11/2026 eram faixas de 300/600/1200 s conforme n, como no artigo
+/// do VNS; o orientador fixou 10 min para todas.)
+constexpr unsigned PROTOCOL_TIME_LIMIT = 600;
 
 /// Nome da instancia sem diretorio nem extensao.
 std::string instance_name(const std::string& path) {
@@ -140,8 +144,9 @@ int main(int argc, char* argv[]) try {
         std::cerr << "Uso: " << argv[0]
                   << " --config <arq> --seed <n> --instance <arq>"
                      " --decoder <threshold|permutation>\n"
-                     "     [--maxtime <s>] [--generations <n>]"
-                     " [--warmstart <n>] [--no-reduction]\n"
+                     "     [--maxtime <s>] [--generations <n>] [--target <peso>]"
+                     " [--convlog <arq>]\n"
+                     "     [--warmstart <n>] [--no-reduction]\n"
                      "     [--threads <n>] [--quiet] [--header]\n";
         return 1;
     }
@@ -155,6 +160,9 @@ int main(int argc, char* argv[]) try {
 
     const unsigned generations =
         static_cast<unsigned>(std::stoul(get_optional(args, "generations", "0")));
+    const unsigned target =
+        static_cast<unsigned>(std::stoul(get_optional(args, "target", "0")));
+    const std::string convlog = get_optional(args, "convlog", "");
     const unsigned warm_start =
         static_cast<unsigned>(std::stoul(get_optional(args, "warmstart", "0")));
     const unsigned num_threads =
@@ -178,7 +186,7 @@ int main(int argc, char* argv[]) try {
 
     const unsigned max_time = args.count("maxtime")
         ? static_cast<unsigned>(std::stoul(args.at("maxtime")))
-        : protocol_time_limit(instance.num_nodes);
+        : PROTOCOL_TIME_LIMIT;
 
     PDR2F_BrkgaDecoder decoder(instance, decoder_kind, reduction);
 
@@ -188,7 +196,9 @@ int main(int argc, char* argv[]) try {
         << " | m = " << instance.num_edges << '\n'
         << "Limite de tempo: " << max_time << " s"
         << (args.count("maxtime") ? " (da linha de comando)"
-                                  : " (faixa do protocolo)") << '\n';
+                                  : " (padrao do protocolo)") << '\n';
+    if(target > 0)
+        log << "Alvo: para ao atingir peso " << target << '\n';
 
     ////////////////////////////////////////////////////////////////////////////
     // Parametros
@@ -233,7 +243,15 @@ int main(int argc, char* argv[]) try {
                       << brkga_params.pr_distance_function_type << ".\n";
     }
 
-    control_params.maximum_running_time = std::chrono::seconds{max_time};
+    // RELOGIO: a API mede o tempo com std::chrono::system_clock, o relogio de
+    // parede, que pode SALTAR. Na WSL do notebook ele recua ~30 s e volta
+    // 0,2 s depois, a cada ~24 s (scripts/diagnostico_relogio.py). Uma
+    // execucao iniciada dentro desse intervalo pararia ~30 s antes da hora.
+    // Por isso o limite real e' imposto pelo criterio de parada abaixo, com
+    // std::chrono::steady_clock (monotono, nunca salta), e o limite da API
+    // fica 1 h acima, apenas como rede de seguranca.
+    control_params.maximum_running_time =
+        std::chrono::seconds{max_time + 3600};
 
     // O rotulo do algoritmo vem do config, nao da linha de comando.
     const std::string algorithm_name =
@@ -292,32 +310,67 @@ int main(int argc, char* argv[]) try {
     // Criterios de parada e observador
     ////////////////////////////////////////////////////////////////////////////
 
-    if(generations > 0)
-        algorithm.setStoppingCriteria(
-            [generations](const BRKGA::AlgorithmStatus& status) {
-                return status.current_iteration >= generations;
-            }
-        );
+    // Instante inicial no relogio monotono; atribuido logo antes do run().
+    using SteadyClock = std::chrono::steady_clock;
+    SteadyClock::time_point steady_start = SteadyClock::now();
+    const auto elapsed = [&steady_start]() {
+        return std::chrono::duration<double>(SteadyClock::now() - steady_start)
+                   .count();
+    };
 
-    if(!quiet)
-        // ARMADILHA DA API: a documentacao diz que retornar true PARA a
-        // otimizacao. O codigo faz "run &= callback(status)", logo e' false
-        // que para. Retornamos true para continuar.
-        algorithm.addNewSolutionObserver(
-            [](const BRKGA::AlgorithmStatus& status) {
+    // Criterios de parada: tempo (monotono) e, se pedido, geracoes. A API
+    // consulta esta funcao varias vezes por geracao.
+    algorithm.setStoppingCriteria(
+        [&elapsed, generations, max_time](const BRKGA::AlgorithmStatus& status) {
+            return elapsed() >= static_cast<double>(max_time) ||
+                   (generations > 0 && status.current_iteration >= generations);
+        }
+    );
+
+    // Curva de convergencia: uma entrada a cada melhora da melhor solucao.
+    // A API chama o observador em toda melhora, inclusive as encontradas pelo
+    // IPR; entre duas melhoras a melhor solucao nao muda, entao estas entradas
+    // reconstroem a curva exatamente.
+    struct Improvement {
+        unsigned generation;
+        double time;
+        double weight;
+    };
+    std::vector<Improvement> convergence;
+
+    // ARMADILHA DA API: a documentacao diz que retornar true PARA a
+    // otimizacao. O codigo faz "run &= callback(status)", logo e' false
+    // que para. Retornamos false somente ao atingir o alvo.
+    algorithm.addNewSolutionObserver(
+        [&](const BRKGA::AlgorithmStatus& status) {
+            convergence.push_back({
+                static_cast<unsigned>(status.last_update_iteration),
+                elapsed(),
+                status.best_fitness
+            });
+
+            if(!quiet)
                 std::cout << "* melhora: geracao " << status.current_iteration
                           << " | peso " << status.best_fitness
-                          << " | " << status.current_time.count() << " s\n";
-                return true;
-            }
-        );
+                          << " | " << elapsed() << " s\n";
+
+            const bool reached = target > 0 && status.best_fitness <= target + 0.5;
+            return !reached;
+        }
+    );
 
     ////////////////////////////////////////////////////////////////////////////
     // Execucao
     ////////////////////////////////////////////////////////////////////////////
 
+    steady_start = SteadyClock::now();
     const BRKGA::AlgorithmStatus status =
         algorithm.run(control_params, quiet ? nullptr : &std::cout);
+    const double total_time = elapsed();
+
+    // Tempos medidos no relogio monotono (os da API usam o relogio de parede).
+    const double last_update_time =
+        convergence.empty() ? 0.0 : convergence.back().time;
 
     ////////////////////////////////////////////////////////////////////////////
     // Verificacao e saida
@@ -338,6 +391,40 @@ int main(int argc, char* argv[]) try {
                   << ") difere do fitness da API (" << status.best_fitness
                   << ")\n";
 
+    // Motivo da parada, na ordem em que os criterios sao testados.
+    std::string stop_reason = "time";
+    if(target > 0 && best.weight <= target)
+        stop_reason = "target";
+    else if(generations > 0 && status.current_iteration >= generations)
+        stop_reason = "generations";
+    else if(control_params.stall_offset > 0 &&
+            status.stalled_iterations >= control_params.stall_offset)
+        stop_reason = "stall";
+
+    // Peso abaixo do alvo e' impossivel se o alvo for um otimo provado ou um
+    // limite inferior valido: indica alvo errado ou solucao errada.
+    const bool below_target = target > 0 && best.weight < target;
+    if(below_target)
+        std::cerr << "ERRO: peso " << best.weight << " ABAIXO do alvo "
+                  << target << " -- alvo ou solucao incorretos\n";
+
+    if(!convlog.empty()) {
+        std::ofstream out(convlog);
+        if(!out)
+            throw std::runtime_error("nao foi possivel gravar " + convlog);
+        out << std::fixed << std::setprecision(4)
+            << "Instance,Algorithm,Seed,Event,Generation,Time,Weight\n";
+        for(const auto& imp : convergence)
+            out << instance_name(instance_file) << ',' << algorithm_name << ','
+                << seed << ",improvement," << imp.generation << ','
+                << imp.time << ',' << static_cast<unsigned>(imp.weight + 0.5)
+                << '\n';
+        // Linha final: estende a curva ate' o instante da parada.
+        out << instance_name(instance_file) << ',' << algorithm_name << ','
+            << seed << ",end," << status.current_iteration << ','
+            << total_time << ',' << best.weight << '\n';
+    }
+
     if(!quiet) std::cout << '\n';
 
     std::cout << std::fixed << std::setprecision(4)
@@ -356,8 +443,8 @@ int main(int argc, char* argv[]) try {
               << initial_weight << ','
               << status.current_iteration << ','
               << status.last_update_iteration << ','
-              << status.current_time.count() << ','
-              << status.last_update_time.count() << ','
+              << total_time << ','
+              << last_update_time << ','
               << status.largest_iteration_offset << ','
               << status.stalled_iterations << ','
               << status.path_relink_time.count() << ','
@@ -367,9 +454,11 @@ int main(int argc, char* argv[]) try {
               << status.num_elite_improvements << ','
               << status.num_exchanges << ','
               << status.num_shakes << ','
-              << status.num_resets << '\n';
+              << status.num_resets << ','
+              << target << ','
+              << stop_reason << '\n';
 
-    return (feasible && best.weight == api_weight) ? 0 : 2;
+    return (feasible && best.weight == api_weight && !below_target) ? 0 : 2;
 }
 catch(const std::exception& e) {
     std::cerr << "ERRO: " << e.what() << '\n';

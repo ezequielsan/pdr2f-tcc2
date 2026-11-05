@@ -7,22 +7,34 @@
 #   target-runner <id-config> <id-instancia> <semente> <instancia> \
 #                 population_size 300 elite_percentage 0.15 ...
 #
-# e espera, na saida padrao, um unico numero: o CUSTO, que ele minimiza. Aqui
-# o custo e' o peso da melhor solucao encontrada.
+# e espera, na saida padrao, um unico numero: o CUSTO, que ele minimiza:
+#
+#   custo = peso + 0,999 * t_melhor / T
+#
+# em que t_melhor e' o instante em que a melhor solucao apareceu e T o limite
+# de tempo. Os pesos sao inteiros e o termo de tempo e' menor que 1, entao uma
+# solucao melhor sempre ganha; entre configuracoes que chegam ao mesmo peso,
+# ganha a que chega mais rapido. Sem esse desempate, todas as configuracoes
+# que param no otimo empatariam.
 #
 # O que este script faz:
-#   1. monta um arquivo de configuracao a partir de base.conf, SUBSTITUINDO os
-#      oito parametros calibrados (a API recusa chave duplicada);
-#   2. calcula o limite de tempo: 10% da faixa do protocolo (30/60/120 s);
+#   1. monta um arquivo de configuracao a partir da base do braco ($IRACE_BASE),
+#      SUBSTITUINDO os parametros calibrados (a API recusa chave duplicada);
+#   2. busca o alvo da instancia em results/baseline/alvos.csv (otimo provado
+#      pelo PLI ou limite inferior das cubicas; vazio = sem alvo);
 #   3. roda o main_complete com uma thread, decodificador por permutacao e
-#      busca local;
-#   4. verifica a saida (27 campos, solucao viavel) e devolve o peso.
+#      busca local, ate' 120 s ou ate' atingir o alvo;
+#   4. verifica a saida (29 campos, solucao viavel, braco certo) e devolve o
+#      custo.
 #
 # Qualquer falha encerra com codigo 1, o que faz o irace PARAR com mensagem,
 # em vez de calibrar em cima de execucoes quebradas.
 #
-# Variavel de ambiente para teste de fumaca:
-#   IRACE_MAXTIME=<s>   forca um limite de tempo fixo (ex.: 2 s)
+# Variaveis de ambiente (o roda_irace.sh define as tres primeiras):
+#   IRACE_BASE=<arq>      configuracao-base do braco (base-mp.conf ou base-ipr.conf)
+#   IRACE_BRACO=mp|ipr    braco esperado; confere o rotulo que o main_complete deduz
+#   IRACE_REGISTRO=<arq>  CSV com uma linha por execucao
+#   IRACE_MAXTIME=<s>     forca outro limite de tempo (teste de fumaca: 2 s)
 ###############################################################################
 
 set -u
@@ -32,7 +44,8 @@ erro() { echo "target-runner: ERRO: $*" >&2; exit 1; }
 DIR="$(cd "$(dirname "$0")" && pwd)"
 RAIZ="$(cd "$DIR/.." && pwd)"
 BINARIO="$RAIZ/main_complete"
-BASE="$DIR/base.conf"
+BASE="${IRACE_BASE:-}"
+ALVOS="$RAIZ/results/baseline/alvos.csv"
 
 [ $# -ge 4 ] || erro "argumentos insuficientes: $*"
 ID_CONFIG="$1"
@@ -42,7 +55,9 @@ INSTANCIA="$4"
 shift 4
 
 [ -x "$BINARIO" ] || erro "$BINARIO nao encontrado; rode 'make' na raiz"
+[ -n "$BASE" ]    || erro "IRACE_BASE nao definida; rode pelo roda_irace.sh"
 [ -f "$BASE" ]    || erro "$BASE nao encontrado"
+[ -f "$ALVOS" ]   || erro "$ALVOS nao encontrado; rode scripts/gera_alvos.py"
 
 ###############################################################################
 # Caminho da instancia
@@ -99,19 +114,17 @@ awk -v pares="$PARES" '
 ' "$BASE" > "$CONF" || erro "falha ao montar a configuracao"
 
 ###############################################################################
-# Limite de tempo: 10% da faixa do protocolo
+# Limite de tempo e alvo
+#
+# 120 s para todas as instancias: 20% dos 600 s da bateria final, escolhidos
+# para as duas calibracoes caberem em ~2 dias (protocolo de 05/11/2026).
 ###############################################################################
 
-if [ -n "${IRACE_MAXTIME:-}" ]; then
-    TEMPO="$IRACE_MAXTIME"
-else
-    # n = linhas nao vazias, o mesmo criterio do leitor de instancias.
-    N=$(awk 'NF > 0' "$ARQ_INSTANCIA" | wc -l)
-    if   [ "$N" -lt 30 ];  then TEMPO=30
-    elif [ "$N" -lt 100 ]; then TEMPO=60
-    else                        TEMPO=120
-    fi
-fi
+TEMPO="${IRACE_MAXTIME:-120}"
+
+NOME="$(basename "$RELATIVO" .txt)"
+ALVO=$(awk -F, -v i="$NOME" 'NR > 1 && $1 == i { print $4 }' "$ALVOS")
+[ -n "$ALVO" ] || ALVO=0
 
 ###############################################################################
 # Execucao
@@ -119,23 +132,38 @@ fi
 
 LINHA=$("$BINARIO" --config "$CONF" --instance "$ARQ_INSTANCIA" \
                    --decoder permutation --seed "$SEMENTE" \
-                   --maxtime "$TEMPO" --threads 1 --quiet 2> "$TMP/stderr" | tail -1)
+                   --maxtime "$TEMPO" --target "$ALVO" \
+                   --threads 1 --quiet 2> "$TMP/stderr" | tail -1)
 
 CAMPOS=$(echo "$LINHA" | awk -F, '{print NF}')
-[ "$CAMPOS" = "27" ] || erro "saida inesperada do main_complete ($CAMPOS campos): $(head -3 "$TMP/stderr")"
+[ "$CAMPOS" = "29" ] || erro "saida inesperada do main_complete ($CAMPOS campos): $(head -3 "$TMP/stderr")"
 
-VIAVEL=$(echo "$LINHA" | cut -d, -f10)
+ALGORITMO=$(echo "$LINHA" | cut -d, -f5)
 PESO=$(echo "$LINHA" | cut -d, -f9)
+VIAVEL=$(echo "$LINHA" | cut -d, -f10)
+T_MELHOR=$(echo "$LINHA" | cut -d, -f17)
 [ "$VIAVEL" = "yes" ] || erro "solucao INVIAVEL em $RELATIVO (config $ID_CONFIG)"
+[ -s "$TMP/stderr" ] && grep -q "ERRO" "$TMP/stderr" && \
+    erro "main_complete reportou erro em $RELATIVO: $(head -3 "$TMP/stderr")"
+
+case "${IRACE_BRACO:-}" in
+    mp)  [ "$ALGORITMO" = "brkga-mp" ]     || erro "esperado brkga-mp, executou $ALGORITMO" ;;
+    ipr) [ "$ALGORITMO" = "brkga-mp-ipr" ] || erro "esperado brkga-mp-ipr, executou $ALGORITMO" ;;
+    *)   erro "IRACE_BRACO deve ser mp ou ipr" ;;
+esac
+
+# Custo: peso, com o tempo ate' a melhor solucao como desempate (ver o topo).
+CUSTO=$(awk -v p="$PESO" -v t="$T_MELHOR" -v T="$TEMPO" \
+            'BEGIN { if(t > T) t = T; printf "%.6f", p + 0.999 * t / T }')
 
 # Registro de todas as execucoes, para diagnostico posterior.
 REGISTRO="${IRACE_REGISTRO:-$DIR/exec/execucoes.csv}"
 mkdir -p "$(dirname "$REGISTRO")"
 (
     flock 9
-    [ -s "$REGISTRO" ] || echo "ConfigId,InstanceId,TimeLimitIrace,$("$BINARIO" --header)" > "$REGISTRO"
-    echo "$ID_CONFIG,$ID_INSTANCIA,$TEMPO,$LINHA" >> "$REGISTRO"
+    [ -s "$REGISTRO" ] || echo "ConfigId,InstanceId,TimeLimitIrace,Cost,$("$BINARIO" --header)" > "$REGISTRO"
+    echo "$ID_CONFIG,$ID_INSTANCIA,$TEMPO,$CUSTO,$LINHA" >> "$REGISTRO"
 ) 9> "$REGISTRO.lock"
 
 # O irace le' apenas isto.
-echo "$PESO"
+echo "$CUSTO"

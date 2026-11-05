@@ -40,4 +40,4 @@ __pycache__/
 
 # Saidas do irace (o resultado definitivo e' copiado para irace/resultado/)
 /irace/exec/
-/irace/exec-teste/
+/irace/exec-*/

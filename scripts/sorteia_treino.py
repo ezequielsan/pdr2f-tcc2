@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """sorteia_treino.py: sorteia as instancias de TREINO do irace.
 
-Separacao entre treino e teste, decidida em 02/11/2026:
+Separacao entre treino e teste (02/11/2026; fracao alterada para 30% pelo
+orientador em 04/11/2026):
 
-  - 10% das 287 instancias unicas vao para o treino (29 instancias);
+  - 30% das 287 instancias unicas vao para o treino (86 instancias) e os
+    70% restantes (201) para a bateria final;
   - o sorteio e' feito SOMENTE entre instancias com n >= 30: nas menores,
     todas as configuracoes atingem o otimo em segundos e empatam, e o irace
     gastaria orcamento sem aprender nada;
@@ -36,7 +38,7 @@ RAIZ = Path(__file__).resolve().parent.parent
 REFERENCIA = RAIZ / "results" / "baseline" / "pli_todas.csv"
 SAIDA = RAIZ / "irace" / "treino.txt"
 
-FRACAO = 0.10
+FRACAO = 0.30
 N_MINIMO = 30
 SEMENTE = 20261102
 

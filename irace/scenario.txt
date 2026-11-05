@@ -1,28 +1,35 @@
-## scenario.txt: cenario do irace para o BRKGA-MP-IPR no PDR2F.
+## scenario.txt: cenario do irace para o PDR2F, COMUM aos dois bracos.
 ##
-## Execute a partir deste diretorio, pelo roda_irace.sh.
-## Decisoes em claude/protocolo_experimental_fechado.md.
+## Protocolo de 05/11/2026: duas calibracoes independentes (BRKGA-MP e
+## BRKGA-MP-IPR) no MESMO cenario; so' muda o arquivo de parametros e a
+## configuracao-base, que o roda_irace.sh escolhe por braco. Execute sempre
+## pelo roda_irace.sh, a partir deste diretorio.
 
 targetRunner       = "./target-runner"
-parameterFile      = "./parameters.txt"
 
-## As 29 instancias de treino (10%, sorteio estratificado entre n >= 30).
-## Saem da bateria final. Geradas por scripts/sorteia_treino.py.
+## Padrao para o --check; o roda_irace.sh passa o arquivo de cada braco.
+parameterFile      = "./parametros-ipr.txt"
+
+## As 86 instancias de treino (30% da base, sorteio estratificado entre
+## n >= 30, semente 20261102). Saem da bateria final. Geradas por
+## scripts/sorteia_treino.py.
 trainInstancesDir  = ""
 trainInstancesFile = "./treino.txt"
 
+## Padrao; o roda_irace.sh usa exec-mp/ e exec-ipr/.
 execDir            = "./exec"
 
-## Orcamento: 2000 execucoes. Com 60 s (faixa de 600 s) e 120 s (faixa de
-## 1200 s) e 14 + 15 instancias de cada, a media e' ~91 s por execucao:
-## ~50 h de CPU, ~7 h de relogio com 7 processos.
-maxExperiments     = 2000
+## Orcamento por calibracao: 4000 execucoes de ate' 120 s (parada no alvo).
+## Pior caso: 4000 x 120 s = 133 h de CPU, ~24 h de relogio com 6 processos.
+maxExperiments     = 4000
 
-## Um processo por nucleo fisico, menos um (Ryzen 7 5700G: 8 nucleos).
-parallel           = 7
+## 6 processos: o notebook (i5-1345U, 10 nucleos fisicos) fica com folga para
+## o uso normal durante a calibracao.
+parallel           = 6
 
 ## O BRKGA e' estocastico: cada configuracao precisa ser avaliada em varias
 ## instancias e sementes.
 deterministic      = 0
 
+## A mesma semente nas duas calibracoes.
 seed               = 20261102

@@ -209,8 +209,8 @@ executa_uma() {
         return
     fi
 
-    # A linha tem 27 campos; qualquer coisa diferente nao entra no CSV.
-    if [ "$(echo "$linha" | awk -F, '{print NF}')" -ne 27 ]; then
+    # A linha tem 29 campos; qualquer coisa diferente nao entra no CSV.
+    if [ "$(echo "$linha" | awk -F, '{print NF}')" -ne 29 ]; then
         echo "SAIDA INESPERADA: $(basename "$instancia" .txt) $decoder semente $semente" >&2
         return
     fi

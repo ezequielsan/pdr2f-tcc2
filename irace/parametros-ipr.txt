@@ -1,28 +1,30 @@
-## parameters.txt: espaco de busca do irace para o BRKGA-MP-IPR (PDR2F)
+## parametros-ipr.txt: espaco de busca do irace para o BRKGA-MP-IPR (PDR2F)
 ##
-## Oito parametros, conforme claude/protocolo_experimental_fechado.md. Os demais
-## ficam fixos em base.conf. A calibracao e' feita no BRKGA-MP-IPR; o BRKGA-MP
-## herda os mesmos valores, com ipr_interval = 0, para que a diferenca entre os
-## dois bracos meca apenas o efeito do IPR.
+## Protocolo de 04/11/2026: DUAS calibracoes independentes, uma por braco,
+## no mesmo cenario (scenario.txt). Este arquivo e' o do BRKGA-MP-IPR; o outro braco
+## tem o seu em parametros-mp.txt. Oito parametros.
 ##
 ## O "switch" (segunda coluna) e' o nome da chave no arquivo de configuracao da
-## API: o target-runner substitui essas chaves em base.conf.
+## API: o target-runner substitui essas chaves em base-ipr.conf.
+##
+## Faixas ampliadas em relacao a calibracao de 02/11 (population_size ate' 2000,
+## total_parents ate' 10, num_independent_populations ate' 5): nela, os valores
+## escolhidos ficaram perto do limite das faixas antigas.
 ##
 ## nome                         switch                          tipo   faixa
 
-population_size                "population_size "              i,log  (50, 1000)
+population_size                "population_size "              i,log  (50, 2000)
 elite_percentage               "elite_percentage "             r      (0.10, 0.50)
 mutants_percentage             "mutants_percentage "           r      (0.01, 0.30)
 num_elite_parents              "num_elite_parents "            i      (1, 5)
-total_parents                  "total_parents "                i      (2, 8)
+total_parents                  "total_parents "                i      (2, 10)
 bias_type                      "bias_type "                    c      (CONSTANT, LINEAR, QUADRATIC, CUBIC, EXPONENTIAL, LOGINVERSE)
-num_independent_populations    "num_independent_populations "  i      (1, 3)
+num_independent_populations    "num_independent_populations "  i      (1, 5)
 ipr_interval                   "ipr_interval "                 i      (10, 200)
 
 ## --- Restricoes ------------------------------------------------------------
-## No irace 4 as restricoes ficam nesta secao (o antigo forbiddenFile do
-## cenario foi removido). Uma expressao logica do R por linha; configuracoes
-## que a satisfazem nunca sao amostradas.
+## No irace 4 as restricoes ficam nesta secao. Uma expressao logica do R por
+## linha; configuracoes que a satisfazem nunca sao amostradas.
 ##
 ## A API exige num_elite_parents < total_parents (estrito) e que o conjunto
 ## elite tenha pelo menos num_elite_parents individuos. Com as faixas acima a
@@ -33,6 +35,5 @@ num_elite_parents >= total_parents
 floor(elite_percentage * population_size) < num_elite_parents
 
 ## --- Opcoes globais --------------------------------------------------------
-## Casas decimais dos parametros reais (antes era a opcao digits do cenario).
 [global]
 digits = 4

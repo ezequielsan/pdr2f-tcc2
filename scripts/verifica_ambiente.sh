@@ -38,7 +38,7 @@ if command -v g++ > /dev/null; then
     ok "g++ $versao"
 
     if [ "$maior" -ge 13 ]; then
-        ok "  GCC >= 13: a API BRKGA-MP-IPR compila sem contorno"
+        ok "  GCC >= 13 (se faltar o operator<< do chrono, o compat cobre)"
     elif [ "$maior" -ge 11 ]; then
         aviso "  GCC $maior: a API SO' compila por causa de src/compat/brkga_compat.hpp"
         aviso "  (a API conta com o operator<< de std::chrono::duration, que a"
@@ -174,11 +174,9 @@ fi
 case "$RAIZ" in
     /mnt/[a-z]/*)
         aviso "o repositorio esta' em $RAIZ, isto e', no disco do Windows."
-        aviso "  Ler arquivos grandes por /mnt/c passa pelo drvfs e e' lento."
-        aviso "  Para DESENVOLVER, tudo bem. Para as BATERIAS com limite de"
-        aviso "  tempo, prefira um clone no sistema de arquivos do Linux"
-        aviso "  (por exemplo ~/pdr2f-tcc2), senao parte do orcamento de tempo"
-        aviso "  e' gasto em leitura de arquivo."
+        aviso "  Ler arquivos grandes por /mnt/c passa pelo drvfs e e' mais lento."
+        aviso "  Nao afeta os resultados: a instancia e' lida ANTES do relogio do"
+        aviso "  BRKGA comecar. So' a duracao total da bateria aumenta um pouco."
         ;;
     *)
         ok "o repositorio esta' no sistema de arquivos do Linux"
