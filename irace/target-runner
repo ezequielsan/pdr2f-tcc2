@@ -7,15 +7,18 @@
 #   target-runner <id-config> <id-instancia> <semente> <instancia> \
 #                 population_size 300 elite_percentage 0.15 ...
 #
-# e espera, na saida padrao, um unico numero: o CUSTO, que ele minimiza:
+# e espera, na saida padrao, um unico numero: o CUSTO, que ele minimiza.
+# Aqui o custo e' o PESO da melhor solucao encontrada.
 #
-#   custo = peso + 0,999 * t_melhor / T
-#
-# em que t_melhor e' o instante em que a melhor solucao apareceu e T o limite
-# de tempo. Os pesos sao inteiros e o termo de tempo e' menor que 1, entao uma
-# solucao melhor sempre ganha; entre configuracoes que chegam ao mesmo peso,
-# ganha a que chega mais rapido. Sem esse desempate, todas as configuracoes
-# que param no otimo empatariam.
+# Por que sem desempate por tempo (decisao de 06/11/2026): a 2a calibracao
+# usou custo = peso + 0,999 * t_melhor / T. Como o irace compara por RANKS,
+# qualquer diferenca de tempo vira uma posicao inteira de rank, tanto quanto
+# uma solucao melhor. Na validacao nas 86 instancias, todas as finalistas
+# tinham o MESMO peso em 67% dos blocos; nesses, so' a velocidade decidia, e a
+# finalista de melhor qualidade (rank so' pelo peso, Friedman p = 0,001) ficou
+# em ULTIMO pelo custo. Com custo = peso, as configuracoes que chegam ao mesmo
+# peso empatam de verdade (o teste de Friedman trata empates) e a escolha e'
+# feita pela qualidade da solucao. O tempo continua registrado no CSV.
 #
 # O que este script faz:
 #   1. monta um arquivo de configuracao a partir da base do braco ($IRACE_BASE),
@@ -152,9 +155,8 @@ case "${IRACE_BRACO:-}" in
     *)   erro "IRACE_BRACO deve ser mp ou ipr" ;;
 esac
 
-# Custo: peso, com o tempo ate' a melhor solucao como desempate (ver o topo).
-CUSTO=$(awk -v p="$PESO" -v t="$T_MELHOR" -v T="$TEMPO" \
-            'BEGIN { if(t > T) t = T; printf "%.6f", p + 0.999 * t / T }')
+# Custo: o peso (ver o topo). T_MELHOR fica so' no registro.
+CUSTO="$PESO"
 
 # Registro de todas as execucoes, para diagnostico posterior.
 REGISTRO="${IRACE_REGISTRO:-$DIR/exec/execucoes.csv}"

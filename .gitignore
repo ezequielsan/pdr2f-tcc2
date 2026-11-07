@@ -41,3 +41,6 @@ __pycache__/
 # Saidas do irace (o resultado definitivo e' copiado para irace/resultado/)
 /irace/exec/
 /irace/exec-*/
+/irace/validacao/tarefas.txt
+/irace/validacao/.feitas
+/irace/validacao/*.lock

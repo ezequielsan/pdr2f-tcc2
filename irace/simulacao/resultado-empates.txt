@@ -1,0 +1,6 @@
+configurado            ipr  | instancias  86 de 86 | vencedora em  86 | configuracoes  422
+configurado            mp   | instancias  86 de 86 | vencedora em  86 | configuracoes  604
+novas5                 ipr  | instancias  86 de 86 | vencedora em  86 | configuracoes  402
+novas5                 mp   | instancias  86 de 86 | vencedora em  86 | configuracoes  507
+novas10                ipr  | instancias  86 de 86 | vencedora em  86 | configuracoes  367
+novas10                mp   | instancias  86 de 86 | vencedora em  86 | configuracoes  506

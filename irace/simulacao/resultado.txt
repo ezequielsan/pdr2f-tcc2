@@ -1,0 +1,16 @@
+atual                      ipr  orcamento   4000 | instancias  23 de 86 | configuracoes  485
+atual                      mp   orcamento   4000 | instancias  16 de 86 | configuracoes  550
+orc8000                    ipr  orcamento   8000 | instancias  18 de 86 | configuracoes 1089
+orc8000                    mp   orcamento   8000 | instancias  16 de 86 | configuracoes 1109
+limite0_4000               ipr  orcamento   4000 | instancias  86 de 86 | configuracoes  367
+limite0_4000               mp   orcamento   4000 | instancias  86 de 86 | configuracoes  285
+limite0_8000               ipr  orcamento   8000 | instancias  86 de 86 | configuracoes  510
+limite0_8000               mp   orcamento   8000 | instancias  86 de 86 | configuracoes  703
+lim0_novas5_8000           ipr  orcamento   8000 | instancias  86 de 86 | configuracoes  536
+lim0_novas5_8000           mp   orcamento   8000 | instancias  86 de 86 | configuracoes  507
+lim0_novas5_ft10           ipr  orcamento   8000 | instancias  86 de 86 | configuracoes  345
+lim0_novas5_ft10           mp   orcamento   8000 | instancias  86 de 86 | configuracoes  439
+lim0_novas10_8000          ipr  orcamento   8000 | instancias  86 de 86 | configuracoes  462
+lim0_novas10_8000          mp   orcamento   8000 | instancias  86 de 86 | configuracoes  515
+lim0_novas5_6000           ipr  orcamento   6000 | instancias  86 de 86 | configuracoes  435
+lim0_novas5_6000           mp   orcamento   6000 | instancias  86 de 86 | configuracoes  477

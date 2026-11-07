@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# target-runner-falso: avaliador SINTETICO para simular a cobertura de
+# instancias do irace. NAO executa o BRKGA; devolve um custo em milissegundos.
+#
+# Modelo (aproximado, so' para contar instancias):
+#   - qualidade da configuracao: distancia ao perfil que venceu as calibracoes
+#     (populacao ~60, elite ~0,3, mutantes ~0,06, 1 pai elite, ~9 pais, LINEAR,
+#     1 populacao);
+#   - ~60% das instancias sao "faceis": todas atingem o alvo e so' o tempo
+#     difere; as demais sao "dificeis": o peso difere com a qualidade;
+#   - ruido por semente, como entre execucoes reais.
+# Registra cada chamada em $SIMULA_LOG (configuracao e instancia).
+ID="$1"; INST="$2"; SEMENTE="$3"; ARQ="$4"; shift 4
+echo "$ID $ARQ" >> "$SIMULA_LOG"
+echo "$*" | awk -v sem="$SEMENTE" -v arq="$ARQ" -v id="$ID" '
+function h(s,   i, x) { x = 7; for(i = 1; i <= length(s); ++i) x = (x * 31 + index("abcdefghijklmnopqrstuvwxyz0123456789_-./", substr(s, i, 1))) % 1000003; return x }
+{
+    for(i = 1; i < NF; i += 2) p[$i] = $(i + 1)
+    q  = 0.30 * (log(p["population_size"]) - log(60))^2
+    q += 0.20 * ((p["elite_percentage"] - 0.30) / 0.20)^2
+    q += 0.20 * ((p["mutants_percentage"] - 0.06) / 0.10)^2
+    q += 0.05 * (p["num_elite_parents"] - 1)
+    q += 0.10 * ((p["total_parents"] - 9) / 4)^2
+    q += 0.15 * (p["bias_type"] != "LINEAR")
+    q += 0.05 * (p["num_independent_populations"] - 1)
+    if("ipr_interval" in p) q += 0.05 * ((p["ipr_interval"] - 50) / 80)^2
+    srand(sem * 7919 + h(id))
+    ruido = (rand() + rand() + rand() - 1.5)
+    facil = (h(arq) % 10) < 6
+    if(facil) custo = 50 + 0.999 * (0.05 + 0.4 * q + 0.1 * ruido < 0 ? 0 : 0.05 + 0.4 * q + 0.1 * ruido)
+    else      custo = 100 * (1 + 0.02 * q + 0.01 * ruido)
+    printf "%.6f\n", custo
+}'

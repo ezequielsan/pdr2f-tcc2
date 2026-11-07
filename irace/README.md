@@ -33,8 +33,9 @@ instâncias.
 |---|---|
 | Tempo por execução | **120 s** (20% dos 600 s da bateria) |
 | Parada | 120 s ou alvo atingido (`results/baseline/alvos.csv`: ótimo provado pelo PLI ou ⌈2n/3⌉ nas cúbicas) |
-| Custo | `peso + 0,999 × t_melhor / 120`: o peso decide, o tempo até a melhor solução desempata |
-| Orçamento | 4000 execuções por calibração |
+| Custo | **o peso** da melhor solução (sem desempate por tempo; ver abaixo) |
+| Orçamento | 8000 execuções por calibração |
+| `elitistLimit` | **0** (sem limite de testes seguidos sem eliminação; ver abaixo) |
 | Paralelismo | 6 processos, 1 thread cada |
 | Semente do irace | `20261102` nas duas |
 
@@ -42,24 +43,50 @@ instâncias.
 
 | Parâmetro | Faixa |
 |---|---|
-| `population_size` | 50 – 2000 (escala logarítmica) |
+| `population_size` | 10 – 2000 (escala logarítmica) |
 | `elite_percentage` | 0,10 – 0,50 |
 | `mutants_percentage` | 0,01 – 0,30 |
 | `num_elite_parents` | 1 – 5 |
-| `total_parents` | 2 – 10 |
+| `total_parents` | 2 – 15 |
 | `bias_type` | CONSTANT, LINEAR, QUADRATIC, CUBIC, EXPONENTIAL, LOGINVERSE |
 | `num_independent_populations` | 1 – 5 |
 | `ipr_interval` | 10 – 200 (só no BRKGA-MP-IPR) |
 
-Restrições (seção `[forbidden]`): `num_elite_parents < total_parents`, e a
-elite precisa ter ao menos `num_elite_parents` indivíduos. Os demais
-parâmetros ficam fixos nas bases.
+Restrições (seção `[forbidden]`): `num_elite_parents < total_parents`; a
+elite precisa ter ao menos `num_elite_parents` indivíduos; e
+`elite + total_parents − num_elite_parents ≤ population_size`. A última não é
+verificada pela API, que toma os pais não-elite por posição e leria fora do
+vetor. Os demais parâmetros ficam fixos nas bases.
+
+## Histórico das calibrações
+
+| Rodada | Treino | Orçamento | `elitistLimit` | Instâncias usadas | Pasta |
+|---|---|---|---|---|---|
+| 1ª (02–03/11) | 10% (29) | 2000, só IPR | 2 | 13 | `historico/2026-11-02_treino10pct/` |
+| 2ª (05–06/11) | 30% (86) | 4000 por braço | 2 | 16 (IPR), 20 (MP) | `historico/2026-11-05_treino30pct_limite2/` |
+| 3ª | 30% (86) | 8000 por braço | **0** | — | `exec-ipr/`, `exec-mp/` |
+
+Na 2ª rodada, a população vencedora do BRKGA-MP (51) ficou no limite da
+faixa antiga (50–2000) e a cobertura de instâncias foi baixa. A simulação em
+`simulacao/simula_cobertura.sh`, com o irace verdadeiro e um avaliador
+sintético, mostrou que o limite vinha de `elitistLimit = 2` e não do
+orçamento: com `elitistLimit = 0`, a configuração vencedora passa pelas 86
+instâncias.
+
+**Custo só pelo peso (desde a 3ª rodada).** A 2ª rodada usou
+`peso + 0,999 × t_melhor / 120`, para o tempo desempatar. Como o irace compara
+por ranks, qualquer diferença de tempo vale uma posição inteira, tanto quanto
+uma solução melhor. Na validação das finalistas nas 86 instâncias
+(`valida_finalistas.sh`), todas tinham o mesmo peso em 67% dos blocos; ali só a
+velocidade decidia, e a finalista de melhor qualidade (rank só pelo peso,
+Friedman p = 0,001) ficou em último pelo custo. Com custo = peso, quem chega ao
+mesmo peso empata, e a escolha é feita pela qualidade da solução.
 
 ## Tempo
 
-Pior caso, se nenhuma execução parar antes dos 120 s: 4000 × 120 s = 133 h de
-CPU por calibração, **~24 h de relógio** com 6 processos, **~49 h as duas**.
-Na prática deve ser menos, porque muitas execuções param no alvo.
+Na 2ª rodada, cada execução levou em média ~9,5 s de relógio com 6 processos
+(muitas param no alvo). Com 8000 execuções: **~21 h por braço, ~42 h as
+duas**. Pior caso, se nenhuma parasse antes dos 120 s: ~49 h por braço.
 
 ## Preparação (uma vez por máquina)
 

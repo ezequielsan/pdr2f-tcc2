@@ -1,0 +1,408 @@
+#------------------------------------------------------------------------------
+# irace: An implementation in R of (Elitist) Iterated Racing
+# Version: 4.5.1.d5507ea
+# Copyright (C) 2010-2025
+# Manuel Lopez-Ibanez     <manuel.lopez-ibanez@manchester.ac.uk>
+# Jeremie Dubois-Lacoste
+# Leslie Perez Caceres    <leslie.perez.caceres@ulb.ac.be>
+#
+# This is free software, and you are welcome to redistribute it under certain
+# conditions.  See the GNU General Public License for details. There is NO
+# WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# irace builds upon previous code from the race package:
+#     race: Racing methods for the selection of the best
+#     Copyright (C) 2003 Mauro Birattari
+#------------------------------------------------------------------------------
+# installed at: /home/ezequielsan/R/library/irace
+# called with: --scenario scenario.txt --parameter-file parametros-ipr.txt --target-runner ./simulacao/target-runner-falso --exec-dir ./simulacao/exec-limite0_4000-ipr --max-experiments 4000 --parallel 1 --elitist-limit 0
+# 2026-11-06 14:57:36 -03: Reading parameter file '/mnt/c/pdr2f-tcc2/irace/parametros-ipr.txt'.
+# 2026-11-06 14:57:36 -03: 2 expression(s) specifying forbidden configurations read.
+# 2026-11-06 14:57:36 -03: Initialization
+# Elitist race
+# Elitist new instances: 1
+# Elitist limit: 0
+# nbIterations: 5
+# minNbSurvival: 5
+# nbParameters: 8
+# seed: 20261102
+# confidence level: 0.95
+# budget: 4000
+# mu: 5
+# deterministic: FALSE
+
+# 2026-11-06 14:57:36 -03: Iteration 1 of 5
+# experimentsUsed: 0
+# remainingBudget: 4000
+# currentBudget: 800
+# nbConfigurations: 133
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          1|        133|         75|     99.84083300|        133|00:00:03|   NA|  NA|    NA|
+|x|          2|        133|         75|     100.1261340|        266|00:00:03|+0.95|0.97|0.0372|
+|x|          3|        133|        120|     83.56564400|        399|00:00:02|+0.96|0.97|0.0302|
+|x|          4|        133|         75|     87.68351850|        532|00:00:02|+0.96|0.97|0.0310|
+|-|          5|          7|         75|     90.12713580|        665|00:00:02|+0.34|0.47|0.4788|
+|-|          6|          3|         75|     83.47268183|        672|00:00:00|-0.10|0.08|0.6918|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best configuration for the instances in this race: 75
+Best-so-far configuration:          71    mean value:      83.66664800
+Description of the best-so-far configuration:
+   .ID. population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval .PARENT.
+71   71              50           0.3178             0.0816                 3             9    LINEAR                           3          146       NA
+
+# 2026-11-06 14:57:51 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval
+71               50           0.3178             0.0816                 3             9    LINEAR                           3          146
+75               80           0.1678             0.1179                 2            10    LINEAR                           1           27
+120              96           0.3256             0.0624                 2             4    LINEAR                           1          121
+# 2026-11-06 14:57:51 -03: Iteration 2 of 5
+# experimentsUsed: 672
+# remainingBudget: 3328
+# currentBudget: 832
+# nbConfigurations: 121
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          7|        121|        229|     99.21492000|        121|00:00:02|   NA|  NA|    NA|
+|x|          2|        121|         71|     99.84133600|        239|00:00:02|+0.63|0.81|0.2255|
+|x|          1|        121|         71|     100.0988727|        357|00:00:02|+0.59|0.73|0.2281|
+|x|          5|        121|         75|     100.1165768|        475|00:00:05|+0.64|0.73|0.2012|
+|-|          6|         31|         75|     90.13334380|        593|00:00:02|+0.01|0.21|0.9419|
+|=|          3|         31|        192|     83.62365100|        621|00:00:00|+0.08|0.24|0.8641|
+|-|          4|         20|        177|     85.91936800|        649|00:00:00|+0.01|0.15|0.9166|
+|=|          8|         20|        156|     81.45729475|        669|00:00:00|+0.07|0.19|0.8678|
+|-|          9|          9|        156|     77.96432367|        689|00:00:00|+0.05|0.15|0.8274|
+|=|         10|          9|        156|     80.16481540|        698|00:00:00|+0.07|0.16|0.8077|
+|-|         11|          5|        156|     81.96710509|        707|00:00:00|-0.02|0.07|0.8008|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         156    mean value:      81.96710509
+Description of the best-so-far configuration:
+    .ID. population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval .PARENT.
+156  156              70           0.2338              0.029                 1            10    LINEAR                           1           21       75
+
+# 2026-11-06 14:58:12 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval
+156              70           0.2338             0.0290                 1            10    LINEAR                           1           21
+184              84           0.2099             0.0216                 1             9    LINEAR                           2           53
+177              77           0.4042             0.1043                 1             8    LINEAR                           1           36
+75               80           0.1678             0.1179                 2            10    LINEAR                           1           27
+192              89           0.3887             0.0194                 1             5    LINEAR                           1           70
+# 2026-11-06 14:58:12 -03: Iteration 3 of 5
+# experimentsUsed: 1379
+# remainingBudget: 2621
+# currentBudget: 873
+# nbConfigurations: 77
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         12|         77|        279|     50.02293100|         77|00:00:01|   NA|  NA|    NA|
+|x|          7|         77|        312|     74.85509350|        149|00:00:01|+0.57|0.78|0.3019|
+|x|         11|         77|        312|     83.16477867|        221|00:00:01|+0.53|0.69|0.3820|
+|x|          5|         77|        312|     87.36432400|        293|00:00:01|+0.51|0.63|0.4312|
+|-|          6|         26|        312|     79.90767040|        365|00:00:01|-0.08|0.13|1.0012|
+|=|          1|         26|        312|     83.24133200|        386|00:00:00|-0.03|0.14|0.9565|
+|=|          4|         26|        279|     85.53250543|        407|00:00:00|+0.01|0.15|0.9198|
+|=|          9|         26|        279|     81.10927638|        428|00:00:00|+0.00|0.13|0.9297|
+|=|         10|         26|        279|     83.13044000|        449|00:00:00|+0.03|0.14|0.9082|
+|=|          3|         26|        279|     79.82045970|        470|00:00:00|+0.05|0.14|0.8853|
+|=|          8|         26|        279|     77.12424345|        491|00:00:00|+0.03|0.12|0.9050|
+|=|          2|         26|        278|     79.14356983|        512|00:00:00|+0.03|0.11|0.9107|
+|-|         13|         15|        278|     76.90175677|        538|00:00:00|-0.02|0.05|0.9466|
+|=|         14|         15|        278|     74.98271843|        553|00:00:00|-0.01|0.06|0.9322|
+|=|         15|         15|        278|     73.31819653|        568|00:00:00|+0.01|0.08|0.9086|
+|=|         16|         15|        278|     74.95930644|        583|00:00:00|+0.02|0.08|0.9018|
+|=|         17|         15|        279|     76.39918106|        598|00:00:00|+0.02|0.07|0.9054|
+|=|         18|         15|        278|     77.73136633|        613|00:00:00|+0.02|0.08|0.9001|
+|=|         19|         15|        278|     78.87025337|        628|00:00:00|+0.03|0.08|0.8969|
+|=|         20|         15|        278|     79.93754905|        643|00:00:00|+0.03|0.08|0.8939|
+|=|         21|         15|        278|     78.51195148|        658|00:00:00|+0.03|0.07|0.8935|
+|=|         22|         15|        278|     77.21925900|        673|00:00:00|+0.02|0.06|0.9039|
+|=|         23|         15|        278|     78.18099596|        688|00:00:00|+0.03|0.07|0.8999|
+|-|         24|          6|        278|     79.10087875|        703|00:00:00|-0.01|0.03|0.8384|
+|=|         25|          6|        278|     77.94023468|        709|00:00:00|-0.01|0.03|0.8352|
+|=|         26|          6|        278|     76.86826535|        715|00:00:00|-0.01|0.03|0.8364|
+|=|         27|          6|        278|     75.87451752|        721|00:00:00|-0.00|0.03|0.8299|
+|=|         28|          6|        278|     76.74207689|        727|00:00:00|+0.01|0.04|0.8231|
+|=|         29|          6|        278|     75.82097510|        733|00:00:00|+0.01|0.04|0.8211|
+|=|         30|          6|        278|     74.96132563|        739|00:00:00|+0.01|0.04|0.8183|
+|=|         31|          6|        278|     74.15787894|        745|00:00:00|+0.01|0.04|0.8158|
+|=|         32|          6|        278|     74.95822619|        751|00:00:00|+0.02|0.05|0.8145|
+|=|         33|          6|        278|     75.69637652|        757|00:00:00|+0.02|0.05|0.8142|
+|=|         34|          6|        278|     76.42560559|        763|00:00:00|+0.02|0.05|0.8133|
+|=|         35|          6|        278|     75.67370414|        769|00:00:00|+0.02|0.05|0.8119|
+|=|         36|          6|        278|     76.33838667|        775|00:00:00|+0.03|0.06|0.8062|
+|=|         37|          6|        278|     76.97599459|        781|00:00:00|+0.03|0.05|0.8080|
+|-|         38|          3|        278|     76.26895876|        787|00:00:00|-0.01|0.02|0.6758|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         278    mean value:      76.26895876
+Description of the best-so-far configuration:
+    .ID. population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval .PARENT.
+278  278              55           0.2798             0.0584                 1            10    LINEAR                           1           13      156
+
+# 2026-11-06 14:58:30 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval
+278              55           0.2798             0.0584                 1            10    LINEAR                           1           13
+279              69           0.3054             0.0161                 1            10    LINEAR                           1           68
+253              57           0.1918             0.0754                 1            10    LINEAR                           1           27
+# 2026-11-06 14:58:30 -03: Iteration 4 of 5
+# experimentsUsed: 2166
+# remainingBudget: 1834
+# currentBudget: 917
+# nbConfigurations: 26
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         39|         26|        344|     99.16274200|         26|00:00:00|   NA|  NA|    NA|
+|x|         22|         26|        344|     74.58137100|         49|00:00:00|+0.43|0.71|0.5078|
+|x|          6|         26|        344|     66.40746300|         72|00:00:00|+0.32|0.55|0.6625|
+|x|         28|         26|        338|     74.83377925|         95|00:00:00|+0.28|0.46|0.6848|
+|-|         38|         14|        342|     69.98344220|        118|00:00:00|-0.06|0.15|1.0155|
+|=|          5|         14|        342|     74.90017183|        129|00:00:00|-0.01|0.16|0.9669|
+|=|         21|         14|        342|     71.35025743|        140|00:00:00|+0.01|0.15|0.9315|
+|=|         12|         14|        344|     68.72187175|        151|00:00:00|+0.00|0.13|0.9034|
+|=|         33|         14|        279|     72.09294556|        162|00:00:00|+0.01|0.12|0.9152|
+|=|         26|         14|        279|     69.89279380|        173|00:00:00|+0.01|0.11|0.9080|
+|=|          9|         14|        278|     68.17402927|        184|00:00:00|+0.02|0.10|0.9055|
+|=|          8|         14|        342|     66.65999375|        195|00:00:00|+0.03|0.11|0.9030|
+|=|         35|         14|        342|     65.38288154|        206|00:00:00|+0.03|0.11|0.8896|
+|=|         16|         14|        253|     67.83759986|        217|00:00:00|+0.05|0.11|0.8793|
+|=|         23|         14|        342|     69.93228767|        228|00:00:00|+0.04|0.10|0.8844|
+|-|          7|         12|        342|     71.79240181|        239|00:00:03|-0.02|0.04|0.9357|
+|=|         29|         12|        342|     70.51110912|        248|00:00:00|-0.01|0.05|0.9230|
+|=|         36|         12|        342|     72.18473667|        257|00:00:00|-0.01|0.05|0.9158|
+|=|         24|         12|        342|     73.61462058|        266|00:00:00|-0.00|0.05|0.9130|
+|=|         34|         12|        253|     74.92263245|        275|00:00:00|-0.00|0.05|0.9091|
+|=|         20|         12|        253|     76.08637314|        284|00:00:00|-0.00|0.05|0.9104|
+|=|         25|         12|        253|     74.90110482|        293|00:00:00|+0.00|0.05|0.9072|
+|=|         15|         12|        253|     73.81844809|        302|00:00:00|+0.00|0.05|0.9013|
+|=|         27|         12|        253|     72.82757088|        311|00:00:00|+0.01|0.05|0.8971|
+|=|         18|         12|        253|     73.92426732|        320|00:00:00|+0.01|0.05|0.8994|
+|=|         31|         12|        253|     73.00660235|        329|00:00:00|+0.01|0.05|0.8952|
+|=|         37|         12|        253|     74.00902252|        338|00:00:00|+0.02|0.05|0.8913|
+|=|          1|         12|        253|     74.94249589|        347|00:00:00|+0.02|0.05|0.8898|
+|=|         10|         12|        253|     75.79385110|        356|00:00:00|+0.02|0.06|0.8830|
+|-|         30|          8|        253|     74.93724847|        365|00:00:00|-0.01|0.02|0.8746|
+|=|         14|          8|        253|     74.13402216|        370|00:00:00|-0.00|0.03|0.8695|
+|=|         32|          8|        253|     74.94928434|        375|00:00:00|-0.00|0.03|0.8666|
+|=|         19|          8|        253|     75.67721845|        380|00:00:00|+0.00|0.03|0.8639|
+|=|          3|          8|        278|     74.95116874|        385|00:00:00|+0.01|0.04|0.8632|
+|=|         17|          8|        253|     75.63051357|        390|00:00:00|+0.00|0.03|0.8638|
+|=|         13|          8|        278|     74.97057831|        395|00:00:00|+0.00|0.03|0.8624|
+|=|         11|          8|        278|     75.64971508|        400|00:00:00|+0.00|0.03|0.8634|
+|=|          4|          8|        278|     76.28968726|        405|00:00:00|+0.01|0.03|0.8607|
+|=|          2|          8|        278|     76.88792015|        410|00:00:00|+0.01|0.03|0.8636|
+|=|         40|          8|        278|     76.21572215|        418|00:00:00|+0.01|0.03|0.8643|
+|=|         41|          8|        278|     75.57631429|        426|00:00:00|+0.01|0.03|0.8612|
+|=|         42|          8|        278|     74.96752936|        434|00:00:00|+0.01|0.03|0.8592|
+|=|         43|          8|        278|     74.38747372|        442|00:00:00|+0.01|0.03|0.8598|
+|=|         44|          8|        278|     74.98344414|        450|00:00:00|+0.00|0.03|0.8638|
+|=|         45|          8|        278|     75.52919387|        458|00:00:00|+0.00|0.02|0.8642|
+|=|         46|          8|        278|     74.97717052|        466|00:00:00|+0.00|0.02|0.8650|
+|=|         47|          8|        278|     75.50436660|        474|00:00:00|+0.00|0.02|0.8650|
+|=|         48|          8|        278|     74.97375442|        482|00:00:00|+0.01|0.03|0.8638|
+|=|         49|          8|        278|     74.46566053|        490|00:00:00|+0.01|0.03|0.8650|
+|=|         50|          8|        278|     73.97800902|        498|00:00:00|+0.00|0.02|0.8656|
+|=|         51|          8|        278|     74.47869580|        506|00:00:00|+0.01|0.03|0.8630|
+|=|         52|          8|        278|     74.95054929|        514|00:00:00|+0.01|0.03|0.8623|
+|=|         53|          8|        278|     74.48119128|        522|00:00:00|+0.01|0.02|0.8643|
+|=|         54|          8|        278|     74.02823656|        530|00:00:00|+0.01|0.03|0.8647|
+|=|         55|          8|        278|     73.59241298|        538|00:00:00|+0.01|0.03|0.8620|
+|=|         56|          8|        278|     74.04600370|        546|00:00:00|+0.01|0.03|0.8577|
+|=|         57|          8|        278|     74.49375853|        554|00:00:00|+0.01|0.03|0.8576|
+|-|         58|          2|        278|     74.07201364|        562|00:00:00|+0.01|0.03|0.4936|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         278    mean value:      74.07201364
+Description of the best-so-far configuration:
+    .ID. population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval .PARENT.
+278  278              55           0.2798             0.0584                 1            10    LINEAR                           1           13      156
+
+# 2026-11-06 14:58:48 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval
+278              55           0.2798             0.0584                 1            10    LINEAR                           1           13
+329              63           0.2783             0.0568                 1             9    LINEAR                           1           43
+# 2026-11-06 14:58:48 -03: Iteration 5 of 5
+# experimentsUsed: 2728
+# remainingBudget: 1272
+# currentBudget: 1272
+# nbConfigurations: 23
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|         59|         23|        278|     50.00000000|         23|00:00:00|   NA|  NA|    NA|
+|x|         33|         23|        278|     74.65859350|         44|00:00:00|+0.14|0.57|0.8208|
+|x|         14|         23|        278|     66.45080233|         65|00:00:00|+0.08|0.39|0.8521|
+|x|         45|         23|        278|     74.72364725|         86|00:00:00|+0.05|0.28|0.9198|
+|=|         10|         23|        278|     79.68832060|        107|00:00:00|-0.01|0.19|0.9484|
+|=|         12|         23|        278|     74.74823400|        128|00:00:00|-0.01|0.16|0.9594|
+|=|         47|         23|        278|     78.32068429|        149|00:00:00|+0.04|0.18|0.9126|
+|=|         11|         23|        278|     81.04292863|        170|00:00:00|+0.00|0.13|0.9526|
+|=|         53|         23|        278|     77.60200044|        191|00:00:00|+0.01|0.12|0.9458|
+|=|         52|         23|        278|     79.74330810|        212|00:00:00|+0.03|0.12|0.9300|
+|=|         39|         23|        278|     81.62195764|        233|00:00:00|+0.04|0.13|0.9180|
+|=|         38|         23|        352|     79.06138633|        254|00:00:00|+0.03|0.11|0.9342|
+|=|         36|         23|        278|     80.58095708|        275|00:00:00|+0.04|0.11|0.9220|
+|-|         31|         16|        278|     78.40049429|        296|00:00:00|-0.01|0.06|0.9526|
+|=|          9|         16|        278|     76.50999640|        310|00:00:00|-0.03|0.04|0.9623|
+|=|         17|         16|        278|     78.01568925|        324|00:00:00|-0.03|0.04|0.9622|
+|=|         51|         16|        278|     79.28023900|        338|00:00:00|-0.02|0.04|0.9539|
+|=|          7|         16|        278|     80.42097611|        352|00:00:00|-0.01|0.05|0.9461|
+|=|         50|         16|        278|     78.82424500|        366|00:00:00|-0.00|0.05|0.9383|
+|=|         57|         16|        278|     79.86143420|        380|00:00:00|-0.01|0.04|0.9442|
+|=|         56|         16|        278|     80.77248462|        394|00:00:00|-0.00|0.04|0.9385|
+|=|         37|         16|        278|     81.64327532|        408|00:00:00|-0.00|0.04|0.9367|
+|=|         24|         16|        278|     82.45261913|        422|00:00:00|-0.00|0.04|0.9383|
+|=|         55|         16|        278|     81.10284083|        436|00:00:00|-0.00|0.04|0.9366|
+|=|         22|         16|        278|     79.86163588|        450|00:00:00|+0.00|0.04|0.9350|
+|=|         35|         16|        278|     78.71730585|        464|00:00:00|-0.00|0.03|0.9395|
+|=|         13|         16|        278|     77.65370193|        478|00:00:00|-0.00|0.04|0.9366|
+|=|         58|         16|        278|     76.66723239|        492|00:00:00|-0.00|0.03|0.9387|
+|=|          1|         16|        278|     77.49673186|        506|00:00:00|-0.01|0.03|0.9421|
+|=|         49|         16|        278|     76.58274593|        520|00:00:00|-0.01|0.03|0.9415|
+|=|         20|         16|        278|     77.34511435|        534|00:00:00|-0.01|0.03|0.9420|
+|=|         46|         16|        364|     76.50135769|        548|00:00:00|-0.00|0.03|0.9398|
+|=|         40|         16|        278|     75.69195955|        562|00:00:00|+0.00|0.03|0.9352|
+|=|         26|         16|        278|     74.93834403|        576|00:00:00|+0.00|0.03|0.9341|
+|=|         16|         16|        278|     75.64227577|        590|00:00:00|+0.00|0.03|0.9338|
+|=|         28|         16|        278|     76.32349533|        604|00:00:00|+0.00|0.03|0.9313|
+|=|         43|         16|        329|     75.59784097|        618|00:00:00|+0.00|0.03|0.9319|
+|=|         21|         16|        329|     74.92484850|        632|00:00:00|+0.00|0.03|0.9294|
+|=|         41|         16|        278|     74.29925562|        646|00:00:00|+0.00|0.03|0.9292|
+|=|         44|         16|        278|     74.95702852|        660|00:00:00|+0.00|0.03|0.9316|
+|=|         29|         16|        278|     74.34905527|        674|00:00:00|+0.01|0.03|0.9281|
+|=|         30|         16|        278|     73.77006564|        688|00:00:00|+0.01|0.03|0.9255|
+|=|         25|         16|        349|     73.26164509|        702|00:00:00|+0.00|0.03|0.9302|
+|=|         48|         16|        349|     72.73297134|        716|00:00:00|+0.00|0.03|0.9299|
+|=|          5|         16|        349|     73.33481958|        730|00:00:00|+0.01|0.03|0.9274|
+|=|         54|         16|        349|     72.82777098|        744|00:00:00|+0.01|0.03|0.9269|
+|=|         18|         16|        278|     73.34614428|        758|00:00:00|+0.01|0.03|0.9262|
+|=|         42|         16|        278|     72.85991933|        772|00:00:00|+0.01|0.03|0.9245|
+|=|          6|         16|        278|     72.39566124|        786|00:00:00|+0.01|0.03|0.9281|
+|=|         23|         16|        278|     72.93453220|        800|00:00:00|+0.01|0.03|0.9295|
+|=|         34|         16|        278|     73.47483873|        814|00:00:00|+0.01|0.03|0.9289|
+|=|         19|         16|        278|     73.97282683|        828|00:00:00|+0.01|0.03|0.9297|
+|=|          2|         16|        278|     74.45675028|        842|00:00:00|+0.01|0.03|0.9295|
+|=|          3|         16|        278|     74.00384750|        856|00:00:00|+0.01|0.03|0.9265|
+|=|          8|         16|        278|     73.57067596|        870|00:00:00|+0.01|0.03|0.9269|
+|=|         15|         16|        278|     73.15003693|        884|00:00:00|+0.01|0.03|0.9267|
+|=|         27|         16|        278|     72.74454635|        898|00:00:00|+0.01|0.03|0.9253|
+|=|          4|         16|        278|     73.21392759|        912|00:00:00|+0.01|0.03|0.9259|
+|=|         32|         16|        278|     73.66401341|        926|00:00:00|+0.01|0.03|0.9248|
+|-|         60|         11|        278|     74.09611482|        942|00:00:00|-0.01|0.01|0.9131|
+|=|         61|         11|        278|     74.51460913|        953|00:00:00|-0.01|0.01|0.9133|
+|=|         62|         11|        278|     74.93743605|        964|00:00:00|-0.01|0.01|0.9139|
+|=|         63|         11|        278|     74.54161084|        975|00:00:03|-0.01|0.01|0.9131|
+|=|         64|         11|        278|     74.15841778|        986|00:00:00|-0.01|0.01|0.9130|
+|=|         65|         11|        278|     73.78750705|        997|00:00:00|-0.01|0.01|0.9121|
+|=|         66|         11|        278|     74.18027268|       1008|00:00:00|-0.00|0.01|0.9111|
+|=|         67|         11|        278|     73.81980457|       1019|00:00:00|-0.00|0.01|0.9099|
+|=|         68|         11|        278|     73.47106538|       1030|00:00:00|-0.00|0.01|0.9104|
+|=|         69|         11|        278|     73.13194088|       1041|00:00:00|-0.00|0.01|0.9107|
+|=|         70|         11|        278|     73.52188404|       1052|00:00:00|-0.00|0.01|0.9100|
+|=|         71|         11|        278|     73.19204596|       1063|00:00:00|-0.00|0.01|0.9107|
+|=|         72|         11|        278|     72.86993421|       1074|00:00:00|-0.00|0.01|0.9101|
+|=|         73|         11|        278|     72.55807377|       1085|00:00:00|-0.00|0.01|0.9101|
+|=|         74|         11|        278|     72.25460047|       1096|00:00:00|-0.00|0.01|0.9105|
+|=|         75|         11|        349|     72.01906204|       1107|00:00:00|-0.00|0.01|0.9102|
+|=|         76|         11|        278|     71.67089718|       1118|00:00:00|-0.00|0.01|0.9109|
+|=|         77|         11|        278|     72.03819806|       1129|00:00:00|-0.00|0.01|0.9104|
+|=|         78|         11|        278|     71.75613697|       1140|00:00:00|-0.00|0.01|0.9106|
+|=|         79|         11|        278|     71.48078078|       1151|00:00:00|-0.00|0.01|0.9111|
+|=|         80|         11|        278|     71.21350721|       1162|00:00:00|-0.00|0.01|0.9119|
+|=|         81|         11|        278|     70.95184206|       1173|00:00:00|-0.01|0.01|0.9120|
+|=|         82|         11|        278|     70.69643132|       1184|00:00:00|-0.00|0.01|0.9106|
+|=|         83|         11|        278|     71.06487655|       1195|00:00:00|-0.00|0.01|0.9112|
+|=|         84|         11|        278|     71.41287296|       1206|00:00:00|-0.01|0.01|0.9125|
+|=|         85|         11|        278|     71.75771591|       1217|00:00:00|-0.01|0.01|0.9130|
+|=|         86|         11|        278|     71.50518321|       1228|00:00:00|-0.01|0.00|0.9137|
+|=|         87|         11|        278|     71.83251105|       1239|00:00:00|-0.01|0.00|0.9134|
+|=|         88|         11|        278|     72.14748097|       1250|00:00:00|-0.01|0.01|0.9131|
+|=|         89|         11|        278|     71.89977506|       1261|00:00:00|-0.01|0.01|0.9124|
+|=|         90|         11|        278|     71.65644422|       1272|00:00:00|-0.00|0.01|0.9116|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+Best-so-far configuration:         278    mean value:      71.65644422
+Description of the best-so-far configuration:
+    .ID. population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval .PARENT.
+278  278              55           0.2798             0.0584                 1            10    LINEAR                           1           13      156
+
+# 2026-11-06 14:59:23 -03: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval
+278              55           0.2798             0.0584                 1            10    LINEAR                           1           13
+329              63           0.2783             0.0568                 1             9    LINEAR                           1           43
+352              70           0.3223             0.0717                 1            10    LINEAR                           1           32
+349              58           0.2887             0.0529                 1             9    LINEAR                           1           29
+367              59           0.3358             0.0695                 1            10    LINEAR                           1           19
+# 2026-11-06 14:59:23 -03: Stopped because budget is exhausted
+# Iteration: 6
+# nbIterations: 5
+# experimentsUsed: 4000
+# timeUsed: 0
+# remainingBudget: 0
+# currentBudget: 1272
+# number of elites: 5
+# nbConfigurations: 23
+# Total CPU user time: 28.284, CPU sys time: 18.055, Wall-clock time: 106.909
+# Best configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+    population_size elite_percentage mutants_percentage num_elite_parents total_parents bias_type num_independent_populations ipr_interval
+278              55           0.2798             0.0584                 1            10    LINEAR                           1           13
+329              63           0.2783             0.0568                 1             9    LINEAR                           1           43
+352              70           0.3223             0.0717                 1            10    LINEAR                           1           32
+349              58           0.2887             0.0529                 1             9    LINEAR                           1           29
+367              59           0.3358             0.0695                 1            10    LINEAR                           1           19
+# Best configurations as commandlines (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+278 population_size 55 elite_percentage 0.2798 mutants_percentage 0.0584 num_elite_parents 1 total_parents 10 bias_type LINEAR num_independent_populations 1 ipr_interval 13
+329 population_size 63 elite_percentage 0.2783 mutants_percentage 0.0568 num_elite_parents 1 total_parents 9 bias_type LINEAR num_independent_populations 1 ipr_interval 43
+352 population_size 70 elite_percentage 0.3223 mutants_percentage 0.0717 num_elite_parents 1 total_parents 10 bias_type LINEAR num_independent_populations 1 ipr_interval 32
+349 population_size 58 elite_percentage 0.2887 mutants_percentage 0.0529 num_elite_parents 1 total_parents 9 bias_type LINEAR num_independent_populations 1 ipr_interval 29
+367 population_size 59 elite_percentage 0.3358 mutants_percentage 0.0695 num_elite_parents 1 total_parents 10 bias_type LINEAR num_independent_populations 1 ipr_interval 19
+
+
+# Testing of elite configurations: 1 
+# Testing iteration configurations: FALSE 
+# 2026-11-06 14:59:23 -03: No test instances, skip testing

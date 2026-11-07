@@ -7,17 +7,18 @@
 ## O "switch" (segunda coluna) e' o nome da chave no arquivo de configuracao da
 ## API: o target-runner substitui essas chaves em base-ipr.conf.
 ##
-## Faixas ampliadas em relacao a calibracao de 02/11 (population_size ate' 2000,
-## total_parents ate' 10, num_independent_populations ate' 5): nela, os valores
-## escolhidos ficaram perto do limite das faixas antigas.
+## Faixas da 3a calibracao (06/11/2026). Na 2a (05-06/11), a populacao do
+## BRKGA-MP ficou em 51, no limite inferior da faixa 50-2000, e total_parents
+## ficou em 8-10, perto do limite 10: por isso population_size passa a 10-2000
+## e total_parents a 2-15.
 ##
 ## nome                         switch                          tipo   faixa
 
-population_size                "population_size "              i,log  (50, 2000)
+population_size                "population_size "              i,log  (10, 2000)
 elite_percentage               "elite_percentage "             r      (0.10, 0.50)
 mutants_percentage             "mutants_percentage "           r      (0.01, 0.30)
 num_elite_parents              "num_elite_parents "            i      (1, 5)
-total_parents                  "total_parents "                i      (2, 10)
+total_parents                  "total_parents "                i      (2, 15)
 bias_type                      "bias_type "                    c      (CONSTANT, LINEAR, QUADRATIC, CUBIC, EXPONENTIAL, LOGINVERSE)
 num_independent_populations    "num_independent_populations "  i      (1, 5)
 ipr_interval                   "ipr_interval "                 i      (10, 200)
@@ -30,9 +31,16 @@ ipr_interval                   "ipr_interval "                 i      (10, 200)
 ## elite tenha pelo menos num_elite_parents individuos. Com as faixas acima a
 ## segunda condicao nunca e' violada (elite >= 0,10 * 50 = 5), mas fica
 ## registrada por seguranca.
+##
+## Terceira condicao, NAO verificada pela API: os pais nao-elite sao tomados
+## por posicao (shuffled_individuals[j + elite_size], brkga_mp_ipr.hpp), entao
+## elite + (total_parents - num_elite_parents) precisa caber na populacao;
+## caso contrario a API le fora do vetor. Com populacao a partir de 10 e ate'
+## 15 pais isso pode acontecer, por isso a restricao.
 [forbidden]
 num_elite_parents >= total_parents
 floor(elite_percentage * population_size) < num_elite_parents
+floor(elite_percentage * population_size) + total_parents - num_elite_parents > population_size
 
 ## --- Opcoes globais --------------------------------------------------------
 [global]

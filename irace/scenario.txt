@@ -19,9 +19,18 @@ trainInstancesFile = "./treino.txt"
 ## Padrao; o roda_irace.sh usa exec-mp/ e exec-ipr/.
 execDir            = "./exec"
 
-## Orcamento por calibracao: 4000 execucoes de ate' 120 s (parada no alvo).
-## Pior caso: 4000 x 120 s = 133 h de CPU, ~24 h de relogio com 6 processos.
-maxExperiments     = 4000
+## Orcamento por calibracao: 8000 execucoes de ate' 120 s (parada no alvo).
+## Na 2a calibracao a media foi ~9,5 s de relogio por execucao com 6
+## processos: ~21 h por braco, ~42 h os dois. Pior caso (todas ate' 120 s):
+## ~49 h por braco.
+maxExperiments     = 8000
+
+## elitistLimit = 0: SEM limite de testes seguidos que nao eliminam nenhuma
+## configuracao. Com o padrao (2), a corrida terminava cedo quando as
+## configuracoes eram parecidas, e a 2a calibracao usou so' 16 e 20 das 86
+## instancias. Simulacao com avaliador sintetico
+## (simulacao/simula_cobertura.sh): com 0, a vencedora e' avaliada nas 86.
+elitistLimit       = 0
 
 ## 6 processos: o notebook (i5-1345U, 10 nucleos fisicos) fica com folga para
 ## o uso normal durante a calibracao.
