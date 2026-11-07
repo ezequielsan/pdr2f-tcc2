@@ -41,6 +41,13 @@ num_independent_populations    "num_independent_populations "  i      (1, 5)
 num_elite_parents >= total_parents
 floor(elite_percentage * population_size) < num_elite_parents
 floor(elite_percentage * population_size) + total_parents - num_elite_parents > population_size
+## Quarta condicao (07/11/2026), tambem da API: com mais de uma populacao, a
+## troca de elite (exchangeElite, num_exchange_individuals = 2 em base-*.conf)
+## exige 2 < floor(population_size / (num_independent_populations - 1)). A 3a
+## calibracao parou na 1a iteracao com populacao 11 e 5 populacoes (11/4 = 2).
+## Conferida por um teste de forca bruta em 840 combinacoes nos extremos das
+## faixas: nenhuma permitida falha.
+(num_independent_populations > 1) & (floor(population_size / (num_independent_populations - 1)) <= 2)
 
 ## --- Opcoes globais --------------------------------------------------------
 [global]

@@ -1,0 +1,63 @@
+=== calibracao: ipr | inicio 06/11 22:39 ===
+#------------------------------------------------------------------------------
+# irace: An implementation in R of (Elitist) Iterated Racing
+# Version: 4.5.1.d5507ea
+# Copyright (C) 2010-2025
+# Manuel Lopez-Ibanez     <manuel.lopez-ibanez@manchester.ac.uk>
+# Jeremie Dubois-Lacoste
+# Leslie Perez Caceres    <leslie.perez.caceres@ulb.ac.be>
+#
+# This is free software, and you are welcome to redistribute it under certain
+# conditions.  See the GNU General Public License for details. There is NO
+# WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# irace builds upon previous code from the race package:
+#     race: Racing methods for the selection of the best
+#     Copyright (C) 2003 Mauro Birattari
+#------------------------------------------------------------------------------
+# installed at: /home/ezequielsan/R/library/irace
+# called with: --scenario scenario.txt --parameter-file parametros-ipr.txt --exec-dir ./exec-ipr
+# 2026-11-06 22:39:55 -03: Reading parameter file '/mnt/c/pdr2f-tcc2/irace/parametros-ipr.txt'.
+# 2026-11-06 22:39:55 -03: 3 expression(s) specifying forbidden configurations read.
+# 2026-11-06 22:39:55 -03: Initialization
+# Elitist race
+# Elitist new instances: 1
+# Elitist limit: 0
+# nbIterations: 5
+# minNbSurvival: 5
+# nbParameters: 8
+# seed: 20261102
+# confidence level: 0.95
+# budget: 8000
+# mu: 5
+# deterministic: FALSE
+
+# 2026-11-06 22:39:55 -03: Iteration 1 of 5
+# experimentsUsed: 0
+# remainingBudget: 8000
+# currentBudget: 1600
+# nbConfigurations: 266
+# Markers:
+     x No test is performed.
+     c Configurations are discarded only due to capping.
+     - The test is performed and some configurations are discarded.
+     = The test is performed but no configuration is discarded.
+     ! The test is performed and configurations could be discarded but elite configurations are preserved.
+     . Alive configurations were already evaluated on this instance and nothing is discarded.
+     : All alive configurations are elite, but some need to be evaluated on this instance.
+
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+| |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|
++-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+
+|x|          1|        258|          1|     27.00000000|        258|00:00:04|   NA|  NA|    NA|
+Error : == irace == running command ''/mnt/c/pdr2f-tcc2/irace/target-runner' 29 52 1303813126 ../instances/harwell-boeing/bcspwr08.txt  population_size 11 elite_percentage 0.2508 mutants_percentage 0.1456 num_elite_parents 1 total_parents 8 bias_type LINEAR num_independent_populations 5 ipr_interval 67 2>&1' had status 1
+== irace == The call to targetRunner was:
+/mnt/c/pdr2f-tcc2/irace/target-runner 29 52 1303813126 ../instances/harwell-boeing/bcspwr08.txt  population_size 11 elite_percentage 0.2508 mutants_percentage 0.1456 num_elite_parents 1 total_parents 8 bias_type LINEAR num_independent_populations 5 ipr_interval 67
+== irace == The output was:
+target-runner: ERRO: saida inesperada do main_complete (0 campos): ERRO: void BRKGA::BRKGA_MP_IPR<Decoder>::exchangeElite(unsigned int) [with Decoder = PDR2F_BrkgaDecoder], line 3031: Number of immigrants (2) less than one, or larger than or equal to population size / num_independent_populations (2)
+== irace == This is not a bug in irace, but means that something failed when running the command(s) above or they were terminated before completion. Try to run the command(s) above from the execution directory '/mnt/c/pdr2f-tcc2/irace/exec-ipr' to investigate the issue. See also Appendix B (targetRunner troubleshooting checklist) of the User Guide (https://cran.r-project.org/package=irace/vignettes/irace-package.pdf).
+Error: == irace == A child process triggered a fatal error
+In addition: Warning message:
+In parallel::mclapply(experiments, exec_target_runner, mc.preschedule = !scenario$loadBalancing,  :
+  1 function calls resulted in an error
+Execution halted

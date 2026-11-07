@@ -56,7 +56,11 @@ Restrições (seção `[forbidden]`): `num_elite_parents < total_parents`; a
 elite precisa ter ao menos `num_elite_parents` indivíduos; e
 `elite + total_parents − num_elite_parents ≤ population_size`. A última não é
 verificada pela API, que toma os pais não-elite por posição e leria fora do
-vetor. Os demais parâmetros ficam fixos nas bases.
+vetor; e, com mais de uma população, `2 < população ÷ (populações − 1)`,
+exigida pela troca de elite (a 3ª calibração parou na 1ª tentativa por falta
+desta). Um teste de força bruta em 840 combinações nos extremos das faixas não
+encontrou nenhuma outra combinação permitida que falhe. Os demais parâmetros
+ficam fixos nas bases.
 
 ## Histórico das calibrações
 
