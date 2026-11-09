@@ -68,7 +68,7 @@ ficam fixos nas bases.
 |---|---|---|---|---|---|
 | 1ª (02–03/11) | 10% (29) | 2000, só IPR | 2 | 13 | `historico/2026-11-02_treino10pct/` |
 | 2ª (05–06/11) | 30% (86) | 4000 por braço | 2 | 16 (IPR), 20 (MP) | `historico/2026-11-05_treino30pct_limite2/` |
-| 3ª | 30% (86) | 8000 por braço | **0** | — | `exec-ipr/`, `exec-mp/` |
+| 3ª (07–08/11, definitiva) | 30% (86) | 8000 por braço | **0** | 13 (IPR), 11 (MP) | `historico/2026-11-07_treino30pct_limite0_custo_peso/` |
 
 Na 2ª rodada, a população vencedora do BRKGA-MP (51) ficou no limite da
 faixa antiga (50–2000) e a cobertura de instâncias foi baixa. A simulação em
@@ -132,6 +132,13 @@ Ao final, a melhor configuração de cada braço vira o
 `configs/<braço>/final_perm.conf`, e o log, o `irace.Rdata` e o
 `execucoes.csv` de cada calibração são copiados para `historico/`, para
 reprodutibilidade.
+
+**Resultado definitivo (3ª rodada + validação nas 86 instâncias):** as
+finalistas de cada braço foram avaliadas nas 86 instâncias de treino com 2
+sementes (`valida_finalistas.sh`, 1548 execuções) e escolhidas pela regra
+fixada antes, o menor rank médio (`analisa_validacao.py`): **829** no
+BRKGA-MP-IPR (Friedman entre as finalistas p = 0,94) e **1146** no BRKGA-MP
+(p = 0,999). Detalhes no README da raiz.
 
 A calibração anterior (02–03/11/2026, 10% de treino, só o BRKGA-MP-IPR) está
 em `historico/2026-11-02_treino10pct/`. Ela não vale mais, porque o conjunto

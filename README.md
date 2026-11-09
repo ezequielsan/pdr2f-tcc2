@@ -12,17 +12,19 @@ de C. E. Andrade. Os resultados são comparados com:
 > Trabalho de Conclusão de Curso 2 — Engenharia de Software, UFC Quixadá.
 > Autor: Ezequiel dos Santos Melo. Orientador: Prof. Dr. Atílio Gomes Luiz.
 
-## Situação atual (03/11/2026)
+## Situação atual (09/11/2026)
 
 | Etapa | Situação |
 |---|---|
 | Leitor de instâncias, verificador de viabilidade, guloso | concluído e validado |
 | Decodificadores e busca local de redução | concluído e validado |
 | Integração com a API BRKGA-MP-IPR (`main_minimal`, `main_complete`) | concluído |
-| Referências consolidadas (PLI e VNS k = 2) | concluído (`results/baseline/`) |
-| Desenho experimental | fechado (seção [Metodologia experimental](#metodologia-experimental)) |
-| Calibração com irace | **concluída** em 02–03/11/2026 (seção [Resultado da calibração](#resultado-da-calibração)) |
-| Bateria final (BRKGA-MP e BRKGA-MP-IPR) | **a executar** (~56 h de relógio) |
+| Referências consolidadas (PLI e VNS k = 2) e alvos de parada | concluído (`results/baseline/`) |
+| Protocolo experimental | fechado com o orientador em 04–06/11 (seção [Metodologia experimental](#metodologia-experimental)) |
+| **Calibração com irace** (uma por braço) | **concluída**: 3ª rodada em 07–08/11, validada nas 86 instâncias de treino em 09/11 (seção [Calibração](#calibração)) |
+| Configurações finais | **definidas**: `configs/brkga-mp/final_perm.conf` e `configs/brkga-mp-ipr/final_perm.conf` |
+| Piloto (categorias e limite de gerações) | a executar |
+| Bateria final | a executar (~28–42 h de relógio) |
 | Análise estatística e texto | a fazer |
 
 ## Estrutura
@@ -35,12 +37,14 @@ src/          código compartilhado
   distances/    função de distância para o IPR
   compat/       compatibilidade da API com GCC < 13
 apps/         programas: main_minimal, main_complete, ferramentas *_info e testes
-configs/      parâmetros: uma pasta por algoritmo (dev_*.conf e final_perm.conf)
-irace/        calibração: cenário, parâmetros, target-runner, treino e resultado
+configs/      parâmetros: uma pasta por braço (dev_*.conf e final_perm.conf)
+irace/        calibração: cenário, parâmetros e base por braço, target-runner,
+              treino, validação das finalistas, simulação de cobertura e
+              historico/ com as três rodadas
 pli/          modelo de programação linear inteira (cópia de terceiros, ver pli/README.md)
 instances/    instâncias, por classe
-results/      referências consolidadas (baseline/) e saídas dos experimentos
-scripts/      validações, sorteio do treino, bateria de execução e análise
+results/      referências consolidadas e alvos (baseline/) e saídas dos experimentos
+scripts/      validações, sorteio do treino, alvos, diagnóstico do relógio, bateria e análise
 external/     API BRKGA-MP-IPR (não versionada)
 docs/         anotações e material de apoio
 ```
@@ -52,14 +56,14 @@ valor não nulo é aresta e a diagonal é ignorada; ver `pli/README.md` para o
 contrato completo de leitura, que o lado C++ reproduz (validado campo a campo
 contra o leitor do PLI).
 
-| Classe | Instâncias únicas | Baseline VNS (k = 2) | Ótimo provado pelo PLI | Execuções por instância |
-|---|---|---|---|---|
-| `random` | 35 | sim | 35 | 10 |
-| `wireless-networks` | 20 | sim | 20 | 10 |
-| `geoinstances` | 168 | sim | 152 | 1 |
-| `harwell-boeing` | 38 | não | 10 | 1 |
-| `random_cubic` | 26 | não | 3 | 10 |
-| **total** | **287** | **223** | **220** | |
+| Classe | Instâncias únicas | Baseline VNS (k = 2) | Ótimo provado pelo PLI | Treino (30%) | Teste (70%) |
+|---|---|---|---|---|---|
+| `random` | 35 | sim | 35 | 11 | 24 |
+| `wireless-networks` | 20 | sim | 20 | 6 | 14 |
+| `geoinstances` | 168 | sim | 152 | 50 | 118 |
+| `harwell-boeing` | 38 | não | 10 | 11 | 27 |
+| `random_cubic` | 26 | não | 3 | 8 | 18 |
+| **total** | **287** | **223** | **220** | **86** | **201** |
 
 A pasta `instances/geoinstances/` tem 258 arquivos: além das 168 instâncias,
 há **90 duplicatas com prefixo `gn-`**, que não fazem parte do benchmark
@@ -129,10 +133,18 @@ busca local.
 
 - `main_minimal`: versão mínima, para conferir a integração.
 - `main_complete`: versão usada nas baterias e no irace. Imprime uma linha CSV
-  de 27 campos por execução (peso, viabilidade auditada, gerações, tempos,
-  chamadas e melhorias do IPR etc.). O limite de tempo padrão é a **faixa do
-  protocolo** (ver Metodologia); o rótulo `brkga-mp`/`brkga-mp-ipr` é deduzido
-  de `ipr_interval`.
+  de 29 campos por execução (peso, viabilidade auditada, gerações, tempos,
+  chamadas e melhorias do IPR, alvo e **motivo da parada**). Para ao atingir o
+  alvo (`--target`), ao chegar a um número de gerações (`--generations`) ou aos
+  600 s (padrão; `--maxtime`), e grava a curva de convergência
+  (`--convlog`). O rótulo `brkga-mp`/`brkga-mp-ipr` é deduzido de
+  `ipr_interval`.
+- **O tempo é medido com relógio monótono** (`std::chrono::steady_clock`). Na
+  WSL, o relógio de parede recua ~30 s e volta 0,2 s depois, a cada ~24 s
+  (`scripts/diagnostico_relogio.py`); como a API usa o relógio de parede, uma
+  execução poderia parar ~30 s antes da hora. O `main_complete` impõe o limite
+  pelo relógio monótono e corrige o orçamento de tempo que a API passa ao IPR,
+  que de outro modo podia passar do limite em minutos.
 - `src/distances/pdr2f_distance.hpp`: distância usada pelo IPR.
 - `src/compat/brkga_compat.hpp`: permite compilar a API com GCC < 13; é inerte
   em compiladores novos.
@@ -169,187 +181,147 @@ Achados documentados (detalhes em `results/baseline/README.md`):
   instâncias. Parte da diferença entre o BRKGA e o VNS pode vir do desempate
   da construção inicial, e isso precisa ser dito na comparação.
 
+### 7. Alvos de parada (`results/baseline/alvos.csv`)
+
+Gerado por `scripts/gera_alvos.py`. O BRKGA para ao atingir o alvo, o que não
+muda nenhum resultado (ninguém melhora um ótimo) e só economiza tempo:
+
+- **220 instâncias**: ótimo provado pelo PLI (status `OPTIMAL`; os valores
+  `TIME_LIMIT` não entram, porque não são ótimos);
+- **23 cúbicas** sem ótimo provado: limite inferior ⌈2n/3⌉ (Nikolić et al.,
+  Teorema 1);
+- **44 instâncias** sem alvo.
+
+O script confere que nenhum resultado do PLI ou do VNS fica abaixo de um alvo.
+
 ## Metodologia experimental
 
-### Princípio
+### Protocolo (definido com o orientador em 04–06/11/2026)
 
-A **bateria final segue a metodologia do artigo do VNS** (Djukanović, Kapunac,
-Kartelj, Matić, *Knowledge-Based Systems*, 2025; arXiv:2403.17108, §3), para
-que os nossos números sejam comparáveis aos publicados. As classes que não
-estão no artigo (`harwell-boeing`, `random_cubic`) seguem a mesma regra.
-
-| Item | Artigo do VNS | Este trabalho |
+| Item | Valor | Observação |
 |---|---|---|
-| Limite de tempo, `n < 30` | 300 s | 300 s |
-| Limite de tempo, `30 ≤ n < 100` | 600 s | 600 s |
-| Limite de tempo, `n ≥ 100` | 1200 s | 1200 s |
-| Execuções, classes sintéticas | 10 (`random`, `wireless`) | 10 (`random`, `wireless`, `random_cubic`) |
-| Execuções, classes reais | 1 (`geoinstances`) | 1 (`geoinstances`, `harwell-boeing`) |
-| Threads por execução | 1 | 1 |
-| Critério de parada | tempo (o VNS tem também limite de 5000 iterações) | **somente tempo** |
-| Máquina | Intel Xeon E5-2640, 2,40 GHz | AMD Ryzen 7 5700G, WSL Ubuntu |
-| Testes estatísticos | Friedman + pós-teste de Nemenyi, diagramas de diferença crítica com α = 0,05 | os mesmos |
+| Divisão da base | **30% treino (86) / 70% teste (201)** | sorteio estratificado por classe, só entre n ≥ 30, semente `20261102` (`scripts/sorteia_treino.py`); o teste não é usado na calibração |
+| Braços | **BRKGA-MP** e **BRKGA-MP-IPR** | decodificador por permutação com busca local de redução; sem warm start |
+| Calibração | **uma por braço**, com irace | cada algoritmo é comparado na sua melhor configuração |
+| Execuções por instância | **10** (sementes 0–9) | as mesmas sementes nos dois braços (comparação pareada) |
+| Parada | **ótimo provado**, **limite de gerações da categoria** ou **600 s**, o que vier primeiro | o limite de gerações sai do piloto (abaixo) |
+| Execução | 1 thread por execução, 6 processos em paralelo | notebook Intel Core i5-1345U, WSL |
+| Registro | CSV por execução + curva de convergência | uma linha a cada melhora da melhor solução |
 
-As faixas de tempo foram conferidas também nos tempos brutos dos três
-conjuntos do repositório do artigo. O tempo de leitura da instância fica fora
-do orçamento (acontece antes de `algorithm.run()`).
+O protocolo anterior seguia o artigo do VNS (300/600/1200 s conforme n; 10
+execuções nas classes sintéticas e 1 nas reais). Com 600 s para todas, as
+instâncias com n < 30 têm o dobro do tempo do VNS e as com n ≥ 100 a metade;
+isso é declarado e os resultados são reportados também por faixa.
 
-**Diferença de máquina:** as CPUs são diferentes, então o mesmo limite de
-tempo não significa o mesmo esforço computacional. É uma limitação inerente à
-comparação com resultados publicados e será declarada no texto.
+### Piloto: categorias e limite de gerações
 
-### Dois braços
+Antes da bateria, as duas configurações finais rodam nas **86 instâncias de
+treino**, com **5 sementes**, até **1800 s** e com a curva de convergência
+ligada (860 execuções, ~26 h). Com as curvas:
 
-| Braço | Algoritmo | Decodificador | Busca local | Configuração |
-|---|---|---|---|---|
-| 1 | BRKGA-MP | permutação | sim | `configs/brkga-mp/final_perm.conf` |
-| 2 | BRKGA-MP-IPR | permutação | sim | `configs/brkga-mp-ipr/final_perm.conf` |
-
-Os dois arquivos são **idênticos exceto por `ipr_interval`** (0 no BRKGA-MP),
-para que a diferença entre os braços meça apenas o efeito do IPR. Sem *warm
-start*. As mesmas sementes são usadas nos dois braços (comparação pareada).
-
-### Calibração (irace)
-
-O artigo do VNS **não usa um configurador automático**: os parâmetros do VNS
-foram fixados com base em experimentos preliminares (§3.2). Aqui a calibração
-é feita com o **irace** (López-Ibáñez et al., 2016), mantendo a lógica de
-**orçamento por faixa de tamanho** do artigo, reduzida a 10%:
-
-| | |
-|---|---|
-| Ferramenta | irace 4.5.1 (R 4.5.2), teste de Friedman nas corridas |
-| Algoritmo calibrado | BRKGA-MP-IPR; o BRKGA-MP herda os parâmetros com `ipr_interval = 0` |
-| Parâmetros | 8 (tabela abaixo); os demais fixos em `irace/base.conf` |
-| Restrições | `num_elite_parents < total_parents`; elite com ao menos `num_elite_parents` indivíduos |
-| Orçamento | 2000 execuções do BRKGA |
-| Tempo por execução | **10% da faixa do protocolo**: 60 s (faixa de 600 s) e 120 s (faixa de 1200 s) |
-| Paralelismo | 7 processos (núcleos físicos − 1), 1 thread cada |
-| Semente do irace | `20261102` |
-
-Parâmetros calibrados e faixas:
-
-| Parâmetro | Faixa |
-|---|---|
-| `population_size` | 50 – 1000 (escala logarítmica) |
-| `elite_percentage` | 0,10 – 0,50 |
-| `mutants_percentage` | 0,01 – 0,30 |
-| `num_elite_parents` | 1 – 5 |
-| `total_parents` | 2 – 8 |
-| `bias_type` | CONSTANT, LINEAR, QUADRATIC, CUBIC, EXPONENTIAL, LOGINVERSE |
-| `num_independent_populations` | 1 – 3 |
-| `ipr_interval` | 10 – 200 |
-
-Fixos: IPR do tipo PERMUTATION com distância KENDALLTAU, `pr_selection
-BESTSOLUTION`, `pr_minimum_distance 10`, `alpha_block_size 1.0`,
-`pr_percentage 1.0`; troca de elite entre populações a cada 50 gerações sem
-melhora (2 indivíduos); sem *shake* e sem *reset*.
-
-**Separação treino/teste.** Por indicação do orientador, as instâncias usadas
-na calibração **não entram na bateria final**, para não reportar resultado em
-instância usada para escolher os parâmetros (*over-tuning*; López-Ibáñez et
-al., 2016; Birattari, 2009):
-
-| | |
-|---|---|
-| Fração | 10% das 287 instâncias únicas → **29 instâncias** (`irace/treino.txt`) |
-| Sorteio | estratificado por classe (método do maior resto), **só entre n ≥ 30** |
-| Semente | `20261102`, fixa; `scripts/sorteia_treino.py` reproduz a lista |
-| Composição | 17 geoinstances, 4 harwell-boeing, 3 random, 3 random_cubic, 2 wireless-networks |
-
-O sorteio é restrito a `n ≥ 30` porque, nas instâncias menores, todas as
-configurações chegam ao ótimo em segundos e empatam, sem informar o irace.
-Detalhes em `irace/README.md`.
+1. cortadas em 600 s: define-se, por braço, o limite de gerações de cada
+   categoria de tamanho (percentil 95 da geração da última melhora), e
+   escolhem-se os cortes de categoria com perda zero e maior economia;
+2. até 1800 s: mede-se quanto se ganharia com mais tempo (por exemplo, 800 s).
 
 ### Bateria final
 
-| Classe | Instâncias de teste | Execuções | Sementes | Com ótimo do PLI | Com baseline VNS |
-|---|---|---|---|---|---|
-| `random` | 32 | 10 | 0–9 | 32 | 32 |
-| `wireless-networks` | 18 | 10 | 0–9 | 18 | 18 |
-| `geoinstances` | 151 | 1 | 0 | 137 | 151 |
-| `harwell-boeing` | 34 | 1 | 0 | 10 | — |
-| `random_cubic` | 23 | 10 | 0–9 | 3 | — |
-| **total** | **258** | | | **200** | **201** |
-
-**Volume:** 915 execuções por braço, **1830 no total**; estimativa de
-**~390 h de CPU e ~56 h de relógio** com 7 processos em paralelo.
+201 instâncias de teste × 10 sementes × 2 braços = **4020 execuções**. Pior
+caso ~112 h; estimativa ~28–42 h, a partir do tempo até o ótimo medido na
+validação das configurações finais.
 
 ### Comparações previstas
 
-1. **Contra o PLI:** gap ao ótimo nas 200 instâncias de teste com ótimo
-   provado; nas demais, comparação com a melhor solução do CPLEX, que é apenas
-   um limite superior.
-2. **Contra o VNS (k = 2):** nas 201 instâncias de teste com baseline, melhor
-   contra melhor e, em `random` e `wireless-networks`, média contra média.
-3. **BRKGA-MP × BRKGA-MP-IPR:** efeito do IPR, pareado por semente.
-4. **Testes estatísticos:** Friedman e pós-teste de Nemenyi com α = 0,05, como
-   no artigo.
+1. **BRKGA-MP × BRKGA-MP-IPR**, pareado por semente.
+2. **Contra o PLI**: gap ao ótimo nas 154 instâncias de teste com ótimo
+   provado; nas demais, comparação com a melhor solução do CPLEX.
+3. **Contra o VNS publicado** (k = 2), nas 156 instâncias de teste com
+   baseline: teste de Friedman + pós-teste de Nemenyi (α = 0,05), como no
+   artigo, com o guloso como linha de referência.
+4. Gráficos: convergência (mediana das 10 sementes ao longo do tempo), boxplots
+   dos valores finais e diagrama de diferença crítica.
 
-O guloso com desempate aleatório entra como linha própria nas tabelas, para
-separar o efeito da construção inicial do efeito da meta-heurística.
+## Calibração
 
-## Resultado da calibração
+Detalhes em `irace/README.md`; dados de todas as rodadas em `irace/historico/`.
 
-Executada de **02/11/2026, 23h38, a 03/11/2026, 7h46** (8h08 de relógio,
-51,9 h de CPU). Dados completos em `irace/resultado/`: `irace.log`,
-`irace.Rdata` e `execucoes.csv` (uma linha por execução do BRKGA).
+### Cenário da rodada definitiva (3ª)
 
-| | |
+| Item | Valor |
 |---|---|
-| Execuções | 2000 |
-| Soluções viáveis | **2000 de 2000** |
-| Configurações avaliadas | 257 |
-| Instâncias de treino efetivamente usadas | 13 de 29 |
+| Ferramenta | irace 4.5.1, uma calibração por braço, mesma semente |
+| Treino | as 86 instâncias de treino |
+| Tempo por execução | 120 s, com parada no alvo |
+| Custo | **o peso** da melhor solução |
+| Orçamento | 8000 execuções por braço |
+| `elitistLimit` | 0 |
+| Parâmetros | população 10–2000 (log), elite 0,10–0,50, mutantes 0,01–0,30, pais elite 1–5, total de pais 2–15, 6 vieses, populações 1–5; `ipr_interval` 10–200 só no IPR |
 
-### Configuração vencedora (ID 226)
+### As três rodadas
 
-| Parâmetro | Valor |
-|---|---|
-| `population_size` | **705** |
-| `elite_percentage` | **0,3547** |
-| `mutants_percentage` | **0,0785** |
-| `num_elite_parents` | **3** |
-| `total_parents` | **7** |
-| `bias_type` | **LINEAR** |
-| `num_independent_populations` | **3** |
-| `ipr_interval` | **50** |
+| Rodada | Custo | `elitistLimit` | Orçamento | Instâncias usadas (IPR / MP) | Populações finais (IPR / MP) |
+|---|---|---|---|---|---|
+| 1ª (02–03/11, Ryzen, 10% de treino, só IPR) | peso | 2 | 2000 | 13 | 556–992 |
+| 2ª (05–06/11) | peso + 0,999·t/120 | 2 | 4000 | 16 / 20 | 64–94 / 51–79 |
+| **3ª (07–08/11)** | **peso** | **0** | **8000** | **13 / 11** | **1413–1725 / 1480–1998** |
 
-Gerou `configs/brkga-mp-ipr/final_perm.conf` e, com `ipr_interval 0`,
-`configs/brkga-mp/final_perm.conf`.
+O que mudou de uma rodada para outra, e por quê:
 
-As quatro configurações de elite finais convergiram para o mesmo perfil:
+- **Desempate por tempo retirado do custo.** Como o irace compara por ranks,
+  qualquer diferença de tempo valia uma posição inteira. Na validação da 2ª
+  rodada, todas as finalistas tinham o mesmo peso em 67% dos blocos; ali só a
+  velocidade decidia, o que favorecia populações pequenas, e a finalista de
+  melhor qualidade ficou em último pelo custo.
+- **`elitistLimit = 0`**: o padrão (2) encerrava as corridas cedo.
+- **Faixas ampliadas** (população a partir de 10, até 15 pais), porque a 2ª
+  rodada parou na borda; e duas restrições que a API não verifica (pais
+  não-elite fora do vetor; troca de elite com populações pequenas), conferidas
+  por força bruta em 840 combinações.
 
-| ID | pop. | elite | mutantes | pais elite / total | viés | pops. | IPR |
-|---|---|---|---|---|---|---|---|
-| 226 | 705 | 0,355 | 0,079 | 3 / 7 | LINEAR | 3 | 50 |
-| 132 | 556 | 0,379 | 0,074 | 3 / 7 | LINEAR | 3 | 64 |
-| 176 | 992 | 0,158 | 0,075 | 3 / 6 | QUADRATIC | 2 | 112 |
-| 184 | 781 | 0,387 | 0,049 | 3 / 7 | LINEAR | 3 | 52 |
+Mesmo assim, a 3ª rodada usou poucas instâncias: com custo = peso, as
+configurações empatam exatamente nas instâncias fáceis, o irace quase não
+elimina e cada instância custa ~150–250 execuções. Por isso as finalistas
+foram **validadas nas 86 instâncias de treino**.
 
-Padrão: população grande (556–992), elite grande (~35–39%, exceto a 176),
-poucos mutantes (5–8%), três pais de elite entre seis ou sete e IPR frequente
-(a cada ~50–112 gerações). O teste de fumaça, com 2 s por execução,
-favorecia populações de 57 a 130, o que mostra que calibrar com orçamento
-curto demais distorceria a escolha.
+### Validação das finalistas (`irace/valida_finalistas.sh`)
 
-**IPR na configuração vencedora:** em 13 execuções, 10 melhorias da melhor
-solução, e só 0,6% das chamadas terminaram por homogeneidade das populações.
+As finalistas de cada braço rodaram nas 86 instâncias × 2 sementes (1548
+execuções, 0 inviáveis). Regra fixada antes de ver os resultados: menor rank
+médio do peso por instância × semente (`irace/analisa_validacao.py`).
 
-### Ressalvas
+| Braço | Escolhida | Friedman entre as finalistas |
+|---|---|---|
+| BRKGA-MP-IPR | **829** | p = 0,94 (equivalentes) |
+| BRKGA-MP | **1146** | p = 0,999 (equivalentes) |
 
-1. **`num_independent_populations` convergiu para o limite superior da faixa
-   (3)**, e `total_parents` (7) ficou perto do seu limite (8). Parâmetro na
-   borda indica que o melhor valor pode estar fora da faixa. Não foi
-   reexplorado; será declarado como limitação (ou testado com 4 e 5
-   populações, se houver tempo).
-2. **A escolha foi decidida, na prática, por 5 instâncias grandes**
-   (`london-underground`, `minneapolis-cities`, `dwt__361`, `cubic_650`,
-   `nos6`). As outras 8 usadas empataram entre todas as configurações; a
-   configuração está, portanto, ajustada às instâncias grandes.
-3. **Os valores obtidos nas instâncias de treino não são resultados do
-   trabalho**: essas instâncias serviram para escolher os parâmetros e por
-   isso estão fora da bateria final.
+### Configurações finais
+
+| Parâmetro | BRKGA-MP (1146) | BRKGA-MP-IPR (829) |
+|---|---|---|
+| `population_size` | 1998 | 1725 |
+| `elite_percentage` | 0,4534 | 0,1665 |
+| `mutants_percentage` | 0,1558 | 0,0871 |
+| `num_elite_parents` / `total_parents` | 1 / 9 | 1 / 8 |
+| `bias_type` | EXPONENTIAL | QUADRATIC |
+| `num_independent_populations` | 1 | 2 |
+| `ipr_interval` | — | 65 |
+
+Fixos nos dois: troca de 2 indivíduos de elite entre populações a cada 50
+gerações sem melhora, sem *shake* e sem *reset*; no IPR, tipo permutação,
+distância de Kendall tau, seleção pela melhor solução.
+
+Na comparação com a 2ª rodada, nas mesmas 86 instâncias e sementes (treino,
+não resultado): o BRKGA-MP-IPR novo é melhor em 37 blocos e pior em 6,
+sobretudo nas harwell-boeing; o BRKGA-MP novo é melhor em 29 e pior em 16,
+mas perde de 30 a 46 nas cúbicas de 776–876 vértices e na `lshp1009`,
+instâncias que a sua calibração não viu.
+
+### Limitações a declarar
+
+1. Cobertura do irace baixa (11 e 13 das 86), compensada pela validação nas 86.
+2. A população do BRKGA-MP (1998) está no limite superior da faixa (2000).
+3. `num_elite_parents` = 1 em todas as finalistas, o mínimo possível.
+4. A calibração usou 120 s; a bateria usa 600 s.
 
 ## Dependências externas e procedência
 
@@ -411,10 +383,11 @@ resultados no meio do trabalho.
 Requisitos de compilação, conforme a documentação da API: **GCC > 9.4** ou
 **Clang > 10.0**, com suporte a C++20 e a OpenMP. Na prática, a API v3.1.1 não
 compila com GCC < 13 sem o cabeçalho `src/compat/brkga_compat.hpp`, já
-incluído no projeto. Ambiente usado nos experimentos: g++ 15.2 na WSL (Ubuntu).
+incluído no projeto. Ambiente usado nos experimentos: g++ 13.3 na WSL (Ubuntu 24.04).
 
-Para a calibração: R com o pacote `irace` (versão 4.5.1 usada aqui).
-`scripts/verifica_ambiente.sh` confere o ambiente.
+Para a calibração: R com o pacote `irace` 4.5.1 e o executável `irace` no
+PATH (ver `irace/README.md`). `scripts/verifica_ambiente.sh` confere o
+ambiente.
 
 ## Execução
 
@@ -432,36 +405,32 @@ make test
                 --decoder permutation --seed 0 --threads 1 --maxtime 10
 ```
 
-Sem `--maxtime`, o limite é a faixa do protocolo (300/600/1200 s). Outras
-opções: `--generations <n>`, `--warmstart <n>`, `--no-reduction` (só para
-ablação), `--quiet`, `--header` (imprime o cabeçalho do CSV e termina).
+Sem `--maxtime`, o limite é de 600 s. Outras opções: `--target <peso>`
+(para ao atingir o peso), `--generations <n>`, `--convlog <arq>` (curva de
+convergência), `--warmstart <n>`, `--no-reduction` (só para ablação),
+`--quiet` e `--header` (imprime o cabeçalho do CSV e termina).
 
-### Calibração
+### Calibração e validação
 
 ```bash
-./irace/roda_irace.sh --check   # valida os arquivos, sem executar nada
-./irace/roda_irace.sh --teste   # fumaça: execuções de 2 s, alguns minutos
-./irace/roda_irace.sh           # calibração completa (~8 h)
+python3 scripts/gera_alvos.py        # alvos de parada
+python3 scripts/sorteia_treino.py    # irace/treino.txt (86 instâncias)
+./irace/roda_irace.sh --check        # valida os arquivos dos dois braços
+./irace/roda_irace.sh --teste        # fumaça: 300 execuções de 2 s por braço
+./irace/roda_irace.sh                # as duas calibrações, em sequência
+./irace/valida_finalistas.sh         # finalistas nas 86 instâncias de treino
+python3 irace/analisa_validacao.py   # escolha pela regra fixada
 ```
 
-A calibração definitiva já foi feita; o resultado está em `irace/resultado/`.
+As calibrações e a validação definitivas já foram feitas; os resultados estão
+em `irace/historico/`.
 
 ### Bateria final
 
-Dentro do `tmux`, a partir da raiz:
-
-```bash
-./scripts/run_experiment.sh -n -p configs/brkga-mp/final_perm.conf      # simulação, não executa
-./scripts/run_experiment.sh -p configs/brkga-mp/final_perm.conf     -o results/bateria_final.csv
-./scripts/run_experiment.sh -p configs/brkga-mp-ipr/final_perm.conf -o results/bateria_final.csv
-python3 scripts/analisa_bateria.py results/bateria_final.csv
-```
-
-O `run_experiment.sh` aplica sozinho as regras do protocolo: exclui as
-instâncias de treino (`irace/treino.txt`) e as duplicatas `gn-`, usa 10 ou 1
-semente conforme a classe e roda 7 processos em paralelo com 1 thread cada.
-É **retomável**: se for interrompido, basta repetir o comando, e as execuções
-já registradas no CSV são puladas.
+Ainda a preparar: o `scripts/run_experiment.sh` vai receber as 10 sementes em
+todas as classes, o alvo por instância, o limite de gerações por categoria e
+braço (do piloto) e a curva de convergência. Ele exclui as instâncias de
+treino e as duplicatas `gn-`, roda 6 processos de 1 thread e é retomável.
 
 ### PLI (Julia + CPLEX)
 
@@ -481,10 +450,22 @@ estão consolidados em `results/baseline/pli_todas.csv`.
   `.gitattributes`). Use um único git sobre este diretório de trabalho —
   alternar entre o git do Windows e o do WSL no mesmo *worktree* produz
   diferenças espúrias de fim de linha e avisos de *dubious ownership*.
-- **Paralelismo:** use no máximo *núcleos físicos − 1* processos (7 no Ryzen 7
-  5700G). Com SMT, dois processos no mesmo núcleo físico dividem o núcleo, e
-  cada um faz menos trabalho dentro do mesmo limite de tempo. Pelo mesmo
-  motivo, evite tarefas pesadas na máquina durante a calibração e a bateria.
+- **Máquina dos experimentos:** notebook Intel Core i5-1345U (2 núcleos de
+  desempenho + 8 de eficiência), WSL com Ubuntu, g++ 13. A calibração e a
+  bateria rodam na mesma máquina, porque a configuração calibrada vale para a
+  velocidade da máquina em que foi calibrada.
+- **Paralelismo:** 6 processos de 1 thread, deixando núcleos livres para o uso
+  normal. A WSL está limitada a 7 núcleos (`%UserProfile%\.wslconfig`:
+  `[wsl2]` / `processors=7`). Com SMT, dois processos no mesmo núcleo físico
+  dividem o núcleo e cada um faz menos trabalho no mesmo limite de tempo; pelo
+  mesmo motivo, evite tarefas pesadas durante a calibração e a bateria.
+- **Relógio da WSL:** salta ~30 s periodicamente; ver
+  `scripts/diagnostico_relogio.py`. O `main_complete` não depende dele.
+- Rode as tarefas longas no `tmux` e deixe uma janela do Ubuntu aberta: se a
+  WSL não tiver nenhuma janela, ela pode ser encerrada com tudo o que estiver
+  rodando.
+- A coluna `IPRTime` do CSV vem da API, que usa o relógio de parede; nesta
+  máquina ela não é confiável. Use o número de chamadas e de melhorias do IPR.
 - Se o Windows marcar arquivos baixados como bloqueados, no PowerShell:
   `Get-ChildItem -Recurse -File | Unblock-File`. O script
   `scripts/limpar-zone-identifier.sh` faz o equivalente no WSL, removendo
