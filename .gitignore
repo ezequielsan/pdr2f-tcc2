@@ -44,3 +44,5 @@ __pycache__/
 /irace/validacao/tarefas.txt
 /irace/validacao/.feitas
 /irace/validacao/*.lock
+/results/piloto/tarefas.txt
+/results/piloto/.feitas
