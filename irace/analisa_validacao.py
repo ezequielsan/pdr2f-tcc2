@@ -5,8 +5,8 @@ Le irace/validacao/execucoes.csv (gerado por valida_finalistas.sh).
 
 REGRA, fixada antes de ver os resultados:
   1. em cada bloco (instancia x semente), as finalistas do braco sao
-     ordenadas pelo custo do irace: peso + 0,999 * t_melhor / 120
-     (empates recebem o rank medio);
+     ordenadas pelo custo do irace (coluna Cost; desde a 3a calibracao, o
+     PESO), e empates recebem o rank medio;
   2. vence a finalista de MENOR RANK MEDIO sobre todos os blocos completos.
 
 Tambem reporta, sem mudar a regra:

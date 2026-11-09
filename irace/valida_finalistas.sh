@@ -11,7 +11,7 @@
 #
 # A regra de escolha e' fixada ANTES de ver os resultados (analisa_validacao.py):
 # para cada par instancia x semente, as finalistas sao ordenadas pelo custo do
-# irace; vence a de menor rank medio.
+# irace (desde a 3a calibracao, o PESO); vence a de menor rank medio.
 #
 # Uso (a partir da raiz do repositorio):
 #   ./irace/valida_finalistas.sh            os dois bracos, 2 sementes
@@ -118,8 +118,8 @@ executa() {
                        --seed "$s" --maxtime "$TEMPO" --target "$alvo" \
                        --threads 1 --quiet 2>/dev/null | tail -1)
     [ "$(echo "$linha" | awk -F, '{print NF}')" = 29 ] || { echo "FALHOU: $b $id $(basename "$arq") $s" >&2; return 0; }
-    peso=$(echo "$linha" | cut -d, -f9); t=$(echo "$linha" | cut -d, -f17)
-    custo=$(awk -v p="$peso" -v t="$t" -v T="$TEMPO" 'BEGIN { if(t > T) t = T; printf "%.6f", p + 0.999 * t / T }')
+    # Custo = peso, o mesmo da 3a calibracao (ver irace/target-runner).
+    custo=$(echo "$linha" | cut -d, -f9)
     ( flock 9; echo "$b,$id,$custo,$linha" >> "$SAIDA" ) 9> "$SAIDA.lock"
 }
 export -f executa
