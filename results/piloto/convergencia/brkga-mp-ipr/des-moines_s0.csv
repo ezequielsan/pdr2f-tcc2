@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+des-moines,brkga-mp-ipr,0,improvement,1,0.0552,36
+des-moines,brkga-mp-ipr,0,improvement,3,0.1194,35
+des-moines,brkga-mp-ipr,0,end,3,0.1194,35

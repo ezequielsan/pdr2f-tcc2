@@ -19,6 +19,14 @@ PARTE 1 - limite de geracoes (curvas cortadas em 600 s, o limite da bateria).
 PARTE 2 - mais tempo: quantas execucoes ainda melhoram depois de 600 s
   (ate' 800, 1200 e 1800 s) e quanto.
 
+TEMPO REAL: no piloto, o main_complete media o tempo com o relogio monotono
+da WSL, que sob carga prolongada atrasou ~10% em relacao ao tempo real
+(conferido pelos horarios dos arquivos, que vem do Windows). As execucoes
+paradas por tempo terminaram pela rede de seguranca da API, aos 1860 s de
+relogio de parede (= tempo real). Por isso todos os tempos sao convertidos
+para tempo real: fator = 1860 / TotalTime em cada execucao parada assim; nas
+demais (paradas no alvo, quase sempre em menos de 1 s), a mediana do braco.
+
 Uso:  python3 scripts/analisa_piloto.py [--limite-bateria 600]
 Saidas: relatorio na tela e em results/piloto/relatorio.txt.
 """
@@ -66,6 +74,15 @@ class Execucao:
                 self.melhoras.append(p)
             elif r["Event"] == "end":
                 self.fim = p
+        self.fator = 1.0
+        self.tempos = [t for _, t, _ in self.melhoras]
+
+    def converte(self, fator):
+        """Passa os tempos do relogio monotono para tempo real."""
+        self.fator = fator
+        self.melhoras = [(g, t * fator, w) for g, t, w in self.melhoras]
+        self.fim = (self.fim[0], self.fim[1] * fator, self.fim[2])
+        self.total *= fator
         self.tempos = [t for _, t, _ in self.melhoras]
 
     def peso_em(self, t):
@@ -131,6 +148,13 @@ def rotulo(cortes, k):
 def main():
     linhas = list(csv.DictReader((PIL / "execucoes.csv").open()))
     ex = [Execucao(l) for l in linhas]
+    for b in BRACOS:
+        api = [x for x in ex if x.braco == b and x.motivo == "time" and x.total < 1799]
+        med = st.median([1860.0 / x.total for x in api]) if api else 1.0
+        for x in ex:
+            if x.braco == b:
+                x.converte(1860.0 / x.total if x in api else med)
+        out(f"  {b}: tempo real = monotono x {med:.3f} (mediana; {len(api)} execucoes paradas pela API)")
     out(f"piloto: {len(ex)} execucoes | limite da bateria simulado: {T:.0f} s")
     for b in BRACOS:
         e = [x for x in ex if x.braco == b]

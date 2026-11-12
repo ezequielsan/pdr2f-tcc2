@@ -1,0 +1,3 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+geneva,brkga-mp,2,improvement,1,0.0223,23
+geneva,brkga-mp,2,end,150274,1674.2979,23

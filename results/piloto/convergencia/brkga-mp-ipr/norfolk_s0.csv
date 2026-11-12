@@ -1,0 +1,7 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+norfolk,brkga-mp-ipr,0,improvement,1,0.0765,40
+norfolk,brkga-mp-ipr,0,improvement,2,0.1153,39
+norfolk,brkga-mp-ipr,0,improvement,4,0.2380,38
+norfolk,brkga-mp-ipr,0,improvement,6,0.3571,37
+norfolk,brkga-mp-ipr,0,improvement,11,0.6219,36
+norfolk,brkga-mp-ipr,0,end,11,0.6219,36

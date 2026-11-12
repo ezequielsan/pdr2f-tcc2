@@ -1,0 +1,3 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+atlanta,brkga-mp-ipr,2,improvement,1,0.0718,114
+atlanta,brkga-mp-ipr,2,end,1,0.0718,114

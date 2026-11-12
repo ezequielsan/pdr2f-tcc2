@@ -1,0 +1,3 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+rochester,brkga-mp-ipr,2,improvement,1,0.0513,19
+rochester,brkga-mp-ipr,2,end,1,0.0513,19

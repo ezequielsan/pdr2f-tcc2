@@ -46,3 +46,6 @@ __pycache__/
 /irace/validacao/*.lock
 /results/piloto/tarefas.txt
 /results/piloto/.feitas
+/results/bateria/tarefas.txt
+/results/bateria/.feitas
+/results/bateria/.treino

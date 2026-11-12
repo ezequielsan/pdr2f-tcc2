@@ -1,0 +1,101 @@
+  brkga-mp: tempo real = monotono x 1.100 (mediana; 147 execucoes paradas pela API)
+  brkga-mp-ipr: tempo real = monotono x 1.102 (mediana; 146 execucoes paradas pela API)
+piloto: 860 execucoes | limite da bateria simulado: 600 s
+  brkga-mp: 430 execucoes | motivos {'time': 147, 'target': 283}
+  brkga-mp-ipr: 430 execucoes | motivos {'time': 146, 'target': 284}
+
+====================================================================================================
+ PARTE 1: LIMITE DE GERACOES (curvas cortadas em 600 s)
+====================================================================================================
+
+### brkga-mp  (tempo de CPU sem limite de geracoes: 24.8 h)
+
+  seus cortes (300/700)  [n<=300: 73 inst., 301-700: 6 inst., n>=701: 7 inst.]
+    regra     limites por categoria                         perdem  soma perda   max  economia
+    p90       65 / 7833 / 2788                                  41          88     7     69.5%
+    p95       128 / 9920 / 3818                                 20          60     7     61.4%
+    p99       14965 / 10961 / 3942                               3           4     2     26.1%
+    max       28281 / 10961 / 3942                               0           0     0     11.2%
+    1,5 x max 42422 / 16442 / 5913                               0           0     0      2.5%
+
+  artigo do VNS (29/99)  [n<=29: 0 inst., 30-99: 52 inst., n>=100: 34 inst.]
+    regra     limites por categoria                         perdem  soma perda   max  economia
+    p90       - / 25 / 3942                                     43          61     5     64.4%
+    p95       - / 32 / 9742                                     20          28     4     39.7%
+    p99       - / 53 / 21016                                     3           3     1     20.4%
+    max       - / 59 / 28281                                     0           0     0     17.1%
+    1,5 x max - / 89 / 42422                                     0           0     0     16.8%
+
+  tercis (59/114)  [n<=59: 29 inst., 60-114: 29 inst., n>=115: 28 inst.]
+    regra     limites por categoria                         perdem  soma perda   max  economia
+    p90       7 / 53 / 4072                                     38          64     5     64.4%
+    p95       8 / 150 / 9296                                    20          36     4     43.4%
+    p99       15 / 14091 / 18214                                 2           3     2     24.3%
+    max       15 / 28281 / 21016                                 0           0     0     19.1%
+    1,5 x max 23 / 42422 / 31524                                 0           0     0     16.8%
+
+  categoria unica  [todas: 86 inst.]
+    regra     limites por categoria                         perdem  soma perda   max  economia
+    p90       856                                               43          93     5     91.3%
+    p95       3142                                              21          42     5     69.4%
+    p99       14182                                              4           7     3     24.0%
+    max       28281                                              0           0     0      7.5%
+    1,5 x max 42422                                              0           0     0      2.5%
+
+### brkga-mp-ipr  (tempo de CPU sem limite de geracoes: 24.5 h)
+
+  seus cortes (300/700)  [n<=300: 73 inst., 301-700: 6 inst., n>=701: 7 inst.]
+    regra     limites por categoria                         perdem  soma perda   max  economia
+    p90       24 / 856 / 887                                    39         124    12     73.6%
+    p95       31 / 1028 / 964                                   20         100    12     71.4%
+    p99       857 / 2706 / 1160                                  3           4     2     53.0%
+    max       4016 / 2706 / 1160                                 0           0     0     30.3%
+    1,5 x max 6024 / 4059 / 1740                                 0           0     0     16.0%
+
+  artigo do VNS (29/99)  [n<=29: 0 inst., 30-99: 52 inst., n>=100: 34 inst.]
+    regra     limites por categoria                         perdem  soma perda   max  economia
+    p90       - / 9 / 767                                       42          48     3     71.6%
+    p95       - / 11 / 887                                      20          22     2     68.1%
+    p99       - / 17 / 2706                                      3           3     1     42.1%
+    max       - / 49 / 4016                                      0           0     0     31.1%
+    1,5 x max - / 74 / 6024                                      0           0     0     22.4%
+
+  tercis (59/114)  [n<=59: 29 inst., 60-114: 29 inst., n>=115: 28 inst.]
+    regra     limites por categoria                         perdem  soma perda   max  economia
+    p90       2 / 20 / 788                                      41          56     3     71.5%
+    p95       3 / 34 / 896                                      18          30     3     68.3%
+    p99       5 / 204 / 2706                                     3           3     1     43.4%
+    max       6 / 546 / 4016                                     0           0     0     32.9%
+    1,5 x max 9 / 819 / 6024                                     0           0     0     25.1%
+
+  categoria unica  [todas: 86 inst.]
+    regra     limites por categoria                         perdem  soma perda   max  economia
+    p90       391                                               43         148    10     82.7%
+    p95       646                                               21          38     7     74.4%
+    p99       1028                                               4           4     1     63.4%
+    max       4016                                               0           0     0     26.8%
+    1,5 x max 6024                                               0           0     0     16.0%
+
+====================================================================================================
+ PARTE 2: MAIS TEMPO (execucoes que chegaram a 600 s sem atingir o alvo)
+====================================================================================================
+
+### brkga-mp: 147 execucoes, 30 instancias
+       ate  melhoraram  instancias  ganho medio (peso)  ganho medio (%)  ganho max
+      800s           6           4                0.07            0.04%          4
+     1200s          15           7                0.24            0.11%         10
+     1800s          21           9                0.34            0.13%         10
+    maiores ganhos de 600 s para 1800 s (media das sementes): cubic_276 (n=276) 2.2; cubic_876 (n=876) 2.0; lshp1009 (n=1009) 1.8; cubic_176 (n=176) 1.6; cubic_850 (n=850) 0.8; cubic_376 (n=376) 0.6; cubic_776 (n=776) 0.4; cubic_400 (n=400) 0.4
+
+### brkga-mp-ipr: 147 execucoes, 30 instancias
+       ate  melhoraram  instancias  ganho medio (peso)  ganho medio (%)  ganho max
+      800s           8           7                0.08            0.03%          3
+     1200s          17          10                0.17            0.08%          3
+     1800s          18          10                0.20            0.09%          3
+    maiores ganhos de 600 s para 1800 s (media das sementes): lshp1009 (n=1009) 1.4; cubic_876 (n=876) 1.0; cubic_776 (n=776) 1.0; plat362 (n=362) 0.8; can__445 (n=445) 0.6; 100_3 (n=100) 0.5; cubic_400 (n=400) 0.4; bcspwr08 (n=1624) 0.2
+
+====================================================================================================
+ REFERENCIA: geracoes por segundo (execucoes paradas por tempo), por faixa de n
+====================================================================================================
+  brkga-mp: n<=100: mediana 83.4 ger/s (32 exec.) | 101-300: mediana 35.6 ger/s (50 exec.) | 301-700: mediana 18.3 ger/s (30 exec.) | n>=701: mediana 7.5 ger/s (35 exec.)
+  brkga-mp-ipr: n<=100: mediana 24.7 ger/s (31 exec.) | 101-300: mediana 11.3 ger/s (50 exec.) | 301-700: mediana 5.4 ger/s (30 exec.) | n>=701: mediana 1.6 ger/s (35 exec.)

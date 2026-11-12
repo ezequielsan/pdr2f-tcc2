@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+louisville,brkga-mp,4,improvement,1,0.0210,36
+louisville,brkga-mp,4,improvement,10,0.1187,35
+louisville,brkga-mp,4,end,10,0.1187,35

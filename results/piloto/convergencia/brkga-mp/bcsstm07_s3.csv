@@ -1,0 +1,12 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+bcsstm07,brkga-mp,3,improvement,1,0.1222,126
+bcsstm07,brkga-mp,3,improvement,6,0.3577,122
+bcsstm07,brkga-mp,3,improvement,10,0.5802,119
+bcsstm07,brkga-mp,3,improvement,29,1.6002,118
+bcsstm07,brkga-mp,3,improvement,32,1.7723,117
+bcsstm07,brkga-mp,3,improvement,33,1.8324,116
+bcsstm07,brkga-mp,3,improvement,37,2.0313,115
+bcsstm07,brkga-mp,3,improvement,51,2.7001,114
+bcsstm07,brkga-mp,3,improvement,56,2.9520,113
+bcsstm07,brkga-mp,3,improvement,82,4.2065,112
+bcsstm07,brkga-mp,3,end,34024,1676.9474,112

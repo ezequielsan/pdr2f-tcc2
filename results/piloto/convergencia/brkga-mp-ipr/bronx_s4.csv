@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+bronx,brkga-mp-ipr,4,improvement,1,0.0492,33
+bronx,brkga-mp-ipr,4,improvement,3,0.1475,32
+bronx,brkga-mp-ipr,4,end,3,0.1475,32

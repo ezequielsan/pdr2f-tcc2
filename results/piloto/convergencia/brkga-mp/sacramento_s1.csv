@@ -1,0 +1,10 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+sacramento,brkga-mp,1,improvement,1,0.0412,67
+sacramento,brkga-mp,1,improvement,5,0.1234,66
+sacramento,brkga-mp,1,improvement,7,0.1696,65
+sacramento,brkga-mp,1,improvement,10,0.2353,64
+sacramento,brkga-mp,1,improvement,13,0.3065,63
+sacramento,brkga-mp,1,improvement,15,0.3479,61
+sacramento,brkga-mp,1,improvement,16,0.3710,60
+sacramento,brkga-mp,1,improvement,23,0.5288,59
+sacramento,brkga-mp,1,end,23,0.5288,59

@@ -1,0 +1,5 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+rio-de-janeiro,brkga-mp-ipr,2,improvement,1,0.0949,48
+rio-de-janeiro,brkga-mp-ipr,2,improvement,5,0.2963,46
+rio-de-janeiro,brkga-mp-ipr,2,improvement,8,0.4718,45
+rio-de-janeiro,brkga-mp-ipr,2,end,8,0.4718,45

@@ -1,0 +1,7 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+san-diego,brkga-mp-ipr,4,improvement,1,0.1327,63
+san-diego,brkga-mp-ipr,4,improvement,3,0.2877,61
+san-diego,brkga-mp-ipr,4,improvement,5,0.4586,59
+san-diego,brkga-mp-ipr,4,improvement,6,0.5443,58
+san-diego,brkga-mp-ipr,4,improvement,12,0.9523,57
+san-diego,brkga-mp-ipr,4,end,12,0.9523,57

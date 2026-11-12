@@ -1,0 +1,6 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+denver,brkga-mp,0,improvement,1,0.0346,40
+denver,brkga-mp,0,improvement,6,0.1105,39
+denver,brkga-mp,0,improvement,10,0.1536,38
+denver,brkga-mp,0,improvement,15,0.2164,37
+denver,brkga-mp,0,end,15,0.2164,37

@@ -1,0 +1,3 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+liberia-central,brkga-mp,0,improvement,1,0.0248,27
+liberia-central,brkga-mp,0,end,1,0.0248,27

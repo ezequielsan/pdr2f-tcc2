@@ -1,0 +1,6 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+detroit,brkga-mp,0,improvement,1,0.0329,65
+detroit,brkga-mp,0,improvement,4,0.0869,64
+detroit,brkga-mp,0,improvement,8,0.1502,63
+detroit,brkga-mp,0,improvement,17,0.3180,62
+detroit,brkga-mp,0,end,17,0.3180,62

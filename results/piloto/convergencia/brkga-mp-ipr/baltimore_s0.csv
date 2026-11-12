@@ -1,0 +1,16 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+baltimore,brkga-mp-ipr,0,improvement,1,0.2157,142
+baltimore,brkga-mp-ipr,0,improvement,3,0.4613,139
+baltimore,brkga-mp-ipr,0,improvement,4,0.5828,136
+baltimore,brkga-mp-ipr,0,improvement,5,0.7050,130
+baltimore,brkga-mp-ipr,0,improvement,6,0.8416,126
+baltimore,brkga-mp-ipr,0,improvement,8,1.0691,123
+baltimore,brkga-mp-ipr,0,improvement,11,1.4929,119
+baltimore,brkga-mp-ipr,0,improvement,13,1.7208,116
+baltimore,brkga-mp-ipr,0,improvement,16,2.0646,115
+baltimore,brkga-mp-ipr,0,improvement,17,2.1868,114
+baltimore,brkga-mp-ipr,0,improvement,20,2.5548,113
+baltimore,brkga-mp-ipr,0,improvement,21,2.6443,112
+baltimore,brkga-mp-ipr,0,improvement,23,2.9222,111
+baltimore,brkga-mp-ipr,0,improvement,25,3.1583,110
+baltimore,brkga-mp-ipr,0,end,14042,1704.7270,110

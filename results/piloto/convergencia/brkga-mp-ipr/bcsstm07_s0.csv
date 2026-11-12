@@ -1,0 +1,13 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+bcsstm07,brkga-mp-ipr,0,improvement,1,0.2817,126
+bcsstm07,brkga-mp-ipr,0,improvement,2,0.4713,124
+bcsstm07,brkga-mp-ipr,0,improvement,3,0.6466,123
+bcsstm07,brkga-mp-ipr,0,improvement,4,0.8391,121
+bcsstm07,brkga-mp-ipr,0,improvement,5,0.9996,119
+bcsstm07,brkga-mp-ipr,0,improvement,9,1.7389,118
+bcsstm07,brkga-mp-ipr,0,improvement,11,2.0871,117
+bcsstm07,brkga-mp-ipr,0,improvement,13,2.4150,115
+bcsstm07,brkga-mp-ipr,0,improvement,15,2.7646,114
+bcsstm07,brkga-mp-ipr,0,improvement,17,3.1183,113
+bcsstm07,brkga-mp-ipr,0,improvement,23,4.1674,112
+bcsstm07,brkga-mp-ipr,0,end,9188,1674.3642,112

@@ -1,0 +1,9 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+cubic_376,brkga-mp,0,improvement,1,0.1341,283
+cubic_376,brkga-mp,0,improvement,3,0.2337,282
+cubic_376,brkga-mp,0,improvement,20,1.1147,281
+cubic_376,brkga-mp,0,improvement,76,3.9750,280
+cubic_376,brkga-mp,0,improvement,112,5.7597,279
+cubic_376,brkga-mp,0,improvement,249,12.5035,278
+cubic_376,brkga-mp,0,improvement,856,42.9605,275
+cubic_376,brkga-mp,0,end,33968,1704.6665,275

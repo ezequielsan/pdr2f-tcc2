@@ -1,0 +1,6 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+russia,brkga-mp-ipr,1,improvement,1,0.0745,47
+russia,brkga-mp-ipr,1,improvement,2,0.1291,45
+russia,brkga-mp-ipr,1,improvement,3,0.1914,44
+russia,brkga-mp-ipr,1,improvement,11,0.6067,43
+russia,brkga-mp-ipr,1,end,11,0.6067,43

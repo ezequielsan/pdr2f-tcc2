@@ -1,0 +1,11 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+zurich,brkga-mp,1,improvement,1,0.0621,90
+zurich,brkga-mp,1,improvement,9,0.2794,88
+zurich,brkga-mp,1,improvement,12,0.3626,87
+zurich,brkga-mp,1,improvement,14,0.4149,86
+zurich,brkga-mp,1,improvement,22,0.6529,85
+zurich,brkga-mp,1,improvement,27,0.7824,84
+zurich,brkga-mp,1,improvement,31,0.8567,83
+zurich,brkga-mp,1,improvement,35,0.9361,81
+zurich,brkga-mp,1,improvement,59,1.5255,80
+zurich,brkga-mp,1,end,63927,1704.6492,80

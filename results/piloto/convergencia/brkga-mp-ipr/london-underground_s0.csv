@@ -1,0 +1,10 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+london-underground,brkga-mp-ipr,0,improvement,1,0.1340,72
+london-underground,brkga-mp-ipr,0,improvement,3,0.2917,70
+london-underground,brkga-mp-ipr,0,improvement,4,0.3654,69
+london-underground,brkga-mp-ipr,0,improvement,7,0.5615,68
+london-underground,brkga-mp-ipr,0,improvement,11,0.8640,67
+london-underground,brkga-mp-ipr,0,improvement,17,1.2355,66
+london-underground,brkga-mp-ipr,0,improvement,21,1.5341,65
+london-underground,brkga-mp-ipr,0,improvement,25,1.7894,64
+london-underground,brkga-mp-ipr,0,end,23275,1707.6079,64

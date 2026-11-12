@@ -1,0 +1,3 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+macon,brkga-mp-ipr,2,improvement,1,0.0385,34
+macon,brkga-mp-ipr,2,end,1,0.0385,34

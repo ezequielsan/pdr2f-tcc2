@@ -1,0 +1,7 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+amsterdam,brkga-mp,1,improvement,1,0.0395,49
+amsterdam,brkga-mp,1,improvement,6,0.1159,48
+amsterdam,brkga-mp,1,improvement,9,0.1585,47
+amsterdam,brkga-mp,1,improvement,11,0.1944,46
+amsterdam,brkga-mp,1,improvement,20,0.3510,45
+amsterdam,brkga-mp,1,end,20,0.3510,45

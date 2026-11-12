@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+japan,brkga-mp,0,improvement,1,0.0239,29
+japan,brkga-mp,0,improvement,7,0.0997,28
+japan,brkga-mp,0,end,7,0.0997,28

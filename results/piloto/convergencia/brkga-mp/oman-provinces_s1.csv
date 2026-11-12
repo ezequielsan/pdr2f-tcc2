@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+oman-provinces,brkga-mp,1,improvement,1,0.0243,29
+oman-provinces,brkga-mp,1,improvement,4,0.0686,28
+oman-provinces,brkga-mp,1,end,4,0.0686,28

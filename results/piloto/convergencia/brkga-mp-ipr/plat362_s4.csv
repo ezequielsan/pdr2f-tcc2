@@ -1,0 +1,17 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+plat362,brkga-mp-ipr,4,improvement,1,0.2526,98
+plat362,brkga-mp-ipr,4,improvement,2,0.3652,96
+plat362,brkga-mp-ipr,4,improvement,4,0.6457,95
+plat362,brkga-mp-ipr,4,improvement,6,0.9629,94
+plat362,brkga-mp-ipr,4,improvement,10,1.5477,92
+plat362,brkga-mp-ipr,4,improvement,12,1.8483,91
+plat362,brkga-mp-ipr,4,improvement,19,2.8181,88
+plat362,brkga-mp-ipr,4,improvement,25,3.6643,87
+plat362,brkga-mp-ipr,4,improvement,29,4.2941,84
+plat362,brkga-mp-ipr,4,improvement,34,5.0260,83
+plat362,brkga-mp-ipr,4,improvement,35,5.1814,82
+plat362,brkga-mp-ipr,4,improvement,39,5.7664,81
+plat362,brkga-mp-ipr,4,improvement,40,5.8816,80
+plat362,brkga-mp-ipr,4,improvement,90,12.7988,79
+plat362,brkga-mp-ipr,4,improvement,901,134.7495,78
+plat362,brkga-mp-ipr,4,end,10999,1704.8256,78

@@ -1,0 +1,9 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+berlin,brkga-mp-ipr,1,improvement,1,0.0798,48
+berlin,brkga-mp-ipr,1,improvement,2,0.1281,47
+berlin,brkga-mp-ipr,1,improvement,3,0.1795,46
+berlin,brkga-mp-ipr,1,improvement,4,0.2347,45
+berlin,brkga-mp-ipr,1,improvement,6,0.3398,44
+berlin,brkga-mp-ipr,1,improvement,9,0.4530,43
+berlin,brkga-mp-ipr,1,improvement,14,0.7209,42
+berlin,brkga-mp-ipr,1,end,14,0.7209,42

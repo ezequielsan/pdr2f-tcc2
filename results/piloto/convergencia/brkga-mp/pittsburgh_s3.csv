@@ -1,0 +1,8 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+pittsburgh,brkga-mp,3,improvement,1,0.0310,50
+pittsburgh,brkga-mp,3,improvement,4,0.0903,49
+pittsburgh,brkga-mp,3,improvement,5,0.1091,48
+pittsburgh,brkga-mp,3,improvement,7,0.1414,47
+pittsburgh,brkga-mp,3,improvement,11,0.2059,46
+pittsburgh,brkga-mp,3,improvement,24,0.4065,45
+pittsburgh,brkga-mp,3,end,24,0.4065,45

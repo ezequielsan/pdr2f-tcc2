@@ -1,0 +1,5 @@
+braco,n_min,n_max,geracoes
+brkga-mp,1,99,89
+brkga-mp,100,999999,42422
+brkga-mp-ipr,1,99,74
+brkga-mp-ipr,100,999999,6024

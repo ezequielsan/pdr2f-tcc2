@@ -54,6 +54,7 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <thread>
 #include <vector>
 
 // Ver armadilha 12 em claude/estudo_api_brkga_cpp.md.
@@ -243,15 +244,24 @@ int main(int argc, char* argv[]) try {
                       << brkga_params.pr_distance_function_type << ".\n";
     }
 
-    // RELOGIO: a API mede o tempo com std::chrono::system_clock, o relogio de
-    // parede, que pode SALTAR. Na WSL do notebook ele recua ~30 s e volta
-    // 0,2 s depois, a cada ~24 s (scripts/diagnostico_relogio.py). Uma
-    // execucao iniciada dentro desse intervalo pararia ~30 s antes da hora.
-    // Por isso o limite real e' imposto pelo criterio de parada abaixo, com
-    // std::chrono::steady_clock (monotono, nunca salta), e o limite da API
-    // fica API_MARGIN segundos acima, maior que o salto observado (30,2 s).
-    // O orcamento de tempo do IPR, que a API calcula a partir desse limite,
-    // e' corrigido no criterio de parada (ver abaixo).
+    // RELOGIO: o tempo de cada execucao e' medido no relogio de PAREDE
+    // (system_clock), que na WSL acompanha o relogio do Windows, isto e', o
+    // tempo real. O monotono (steady_clock) NAO serve: sob carga prolongada
+    // ele atrasa ~10% em relacao ao tempo real (no piloto, 1860 s reais
+    // apareciam como ~1700 s), e o limite de 600 s viraria ~660 s reais.
+    //
+    // O relogio de parede, porem, SALTA: na WSL do notebook ele recua ~30 s e
+    // volta 0,2 s depois, a cada ~24 s (scripts/diagnostico_relogio.py). Duas
+    // protecoes (ver "Criterios de parada" abaixo):
+    //   1. o instante inicial e' estimado por varias amostras ao longo de
+    //      0,5 s, ficando com a MAIOR (os saltos sao sempre para tras);
+    //   2. o tempo decorrido nunca diminui: durante um salto vale o ultimo
+    //      valor medido.
+    // A API tambem mede com o relogio de parede, a partir do seu proprio
+    // inicio; por isso o limite dela fica API_MARGIN segundos acima do
+    // nosso, maior que o salto observado (30,2 s), e quem para de fato e' o
+    // criterio de parada. O orcamento de tempo do IPR, que a API calcula a
+    // partir desse limite, e' corrigido no criterio de parada.
     constexpr unsigned API_MARGIN = 60;
     control_params.maximum_running_time =
         std::chrono::seconds{max_time + API_MARGIN};
@@ -313,15 +323,43 @@ int main(int argc, char* argv[]) try {
     // Criterios de parada e observador
     ////////////////////////////////////////////////////////////////////////////
 
-    // Instante inicial no relogio monotono; atribuido logo antes do run().
+    // Instante inicial no relogio de parede; estimado logo antes do run()
+    // por start_clock(), robusto aos saltos para tras da WSL.
+    using WallClock = std::chrono::system_clock;
     using SteadyClock = std::chrono::steady_clock;
-    SteadyClock::time_point steady_start = SteadyClock::now();
-    const auto elapsed = [&steady_start]() {
-        return std::chrono::duration<double>(SteadyClock::now() - steady_start)
-                   .count();
+    const auto to_seconds = [](auto d) {
+        return std::chrono::duration<double>(d).count();
+    };
+    double wall_start = 0.0;     // s desde a epoca, no relogio de parede
+    double last_elapsed = 0.0;   // maior tempo decorrido ja' medido
+
+    // Amostra, a cada 10 ms durante 0,5 s, o instante (de parede) que
+    // corresponde a steady_ref. Fora de um salto todas as amostras coincidem
+    // (o monotono so' deriva ~10% ao longo de minutos, nao em 0,5 s); dentro
+    // de um salto ficam ~30 s abaixo. A maior e' a correta: um salto dura
+    // 0,2 s, entao ao menos 0,3 s das amostras caem fora dele.
+    const auto start_clock = [&]() {
+        const SteadyClock::time_point steady_ref = SteadyClock::now();
+        double best = -1e300;
+        for(int i = 0; i < 50; ++i) {
+            const double wall = to_seconds(WallClock::now().time_since_epoch());
+            const double since_ref = to_seconds(SteadyClock::now() - steady_ref);
+            best = std::max(best, wall - since_ref);
+            std::this_thread::sleep_for(std::chrono::milliseconds{10});
+        }
+        // Inicio = instante de parede de steady_ref + o que passou desde ele.
+        wall_start = best + to_seconds(SteadyClock::now() - steady_ref);
+        last_elapsed = 0.0;
     };
 
-    // Criterios de parada: tempo (monotono) e, se pedido, geracoes. A API
+    const auto elapsed = [&]() {
+        const double t =
+            to_seconds(WallClock::now().time_since_epoch()) - wall_start;
+        last_elapsed = std::max(last_elapsed, t);
+        return last_elapsed;
+    };
+
+    // Criterios de parada: tempo (real, ver RELOGIO) e, se pedido, geracoes. A API
     // consulta esta funcao varias vezes por geracao, inclusive LOGO ANTES de
     // decidir se chama o IPR.
     //
@@ -389,12 +427,12 @@ int main(int argc, char* argv[]) try {
     // Execucao
     ////////////////////////////////////////////////////////////////////////////
 
-    steady_start = SteadyClock::now();
+    start_clock();
     const BRKGA::AlgorithmStatus status =
         algorithm.run(control_params, quiet ? nullptr : &std::cout);
     const double total_time = elapsed();
 
-    // Tempos medidos no relogio monotono (os da API usam o relogio de parede).
+    // Tempos medidos pelo nosso relogio (real, ver RELOGIO), nao pelos da API.
     const double last_update_time =
         convergence.empty() ? 0.0 : convergence.back().time;
 

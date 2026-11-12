@@ -1,0 +1,3 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+zurich-city,brkga-mp-ipr,2,improvement,1,0.0416,17
+zurich-city,brkga-mp-ipr,2,end,55090,1673.6664,17

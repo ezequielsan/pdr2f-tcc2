@@ -1,0 +1,6 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+rio-de-janeiro,brkga-mp,4,improvement,1,0.0334,49
+rio-de-janeiro,brkga-mp,4,improvement,6,0.1031,48
+rio-de-janeiro,brkga-mp,4,improvement,9,0.1585,47
+rio-de-janeiro,brkga-mp,4,improvement,12,0.2157,45
+rio-de-janeiro,brkga-mp,4,end,12,0.2157,45

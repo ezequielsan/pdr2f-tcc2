@@ -1,0 +1,6 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+pittsburgh,brkga-mp-ipr,3,improvement,1,0.0858,49
+pittsburgh,brkga-mp-ipr,3,improvement,2,0.1400,47
+pittsburgh,brkga-mp-ipr,3,improvement,5,0.3129,46
+pittsburgh,brkga-mp-ipr,3,improvement,9,0.5401,45
+pittsburgh,brkga-mp-ipr,3,end,9,0.5401,45

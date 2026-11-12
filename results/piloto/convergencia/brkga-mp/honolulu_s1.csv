@@ -1,0 +1,5 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+honolulu,brkga-mp,1,improvement,1,0.0198,32
+honolulu,brkga-mp,1,improvement,4,0.0637,31
+honolulu,brkga-mp,1,improvement,5,0.0771,30
+honolulu,brkga-mp,1,end,5,0.0771,30

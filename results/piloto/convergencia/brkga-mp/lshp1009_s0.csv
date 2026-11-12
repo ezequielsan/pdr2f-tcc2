@@ -1,0 +1,10 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+lshp1009,brkga-mp,0,improvement,1,0.2712,541
+lshp1009,brkga-mp,0,improvement,19,2.5733,540
+lshp1009,brkga-mp,0,improvement,22,2.9596,539
+lshp1009,brkga-mp,0,improvement,41,5.3703,538
+lshp1009,brkga-mp,0,improvement,61,7.8519,536
+lshp1009,brkga-mp,0,improvement,102,13.1383,534
+lshp1009,brkga-mp,0,improvement,736,95.6813,530
+lshp1009,brkga-mp,0,improvement,11614,1469.8514,529
+lshp1009,brkga-mp,0,end,13334,1707.6818,529

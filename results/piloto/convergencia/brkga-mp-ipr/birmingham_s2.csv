@@ -1,0 +1,3 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+birmingham,brkga-mp-ipr,2,improvement,1,0.0709,87
+birmingham,brkga-mp-ipr,2,end,1,0.0709,87

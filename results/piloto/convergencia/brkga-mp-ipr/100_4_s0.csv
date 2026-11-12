@@ -1,0 +1,6 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+100_4,brkga-mp-ipr,0,improvement,1,0.0798,62
+100_4,brkga-mp-ipr,0,improvement,3,0.1867,61
+100_4,brkga-mp-ipr,0,improvement,7,0.4229,60
+100_4,brkga-mp-ipr,0,improvement,15,0.8653,59
+100_4,brkga-mp-ipr,0,end,29921,1673.6913,59

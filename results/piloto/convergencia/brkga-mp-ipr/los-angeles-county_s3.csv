@@ -1,0 +1,16 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+los-angeles-county,brkga-mp-ipr,3,improvement,1,0.2314,168
+los-angeles-county,brkga-mp-ipr,3,improvement,3,0.4769,166
+los-angeles-county,brkga-mp-ipr,3,improvement,4,0.6061,161
+los-angeles-county,brkga-mp-ipr,3,improvement,5,0.7507,159
+los-angeles-county,brkga-mp-ipr,3,improvement,7,1.0138,156
+los-angeles-county,brkga-mp-ipr,3,improvement,9,1.2814,155
+los-angeles-county,brkga-mp-ipr,3,improvement,11,1.5034,153
+los-angeles-county,brkga-mp-ipr,3,improvement,12,1.6652,151
+los-angeles-county,brkga-mp-ipr,3,improvement,13,1.7981,149
+los-angeles-county,brkga-mp-ipr,3,improvement,16,2.1878,148
+los-angeles-county,brkga-mp-ipr,3,improvement,18,2.4394,147
+los-angeles-county,brkga-mp-ipr,3,improvement,20,2.6839,145
+los-angeles-county,brkga-mp-ipr,3,improvement,23,3.0831,144
+los-angeles-county,brkga-mp-ipr,3,improvement,31,3.9912,143
+los-angeles-county,brkga-mp-ipr,3,end,13026,1677.2298,143

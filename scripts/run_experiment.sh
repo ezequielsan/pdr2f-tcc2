@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 ###############################################################################
 # run_experiment.sh: bateria de experimentos do BRKGA-MP(-IPR) no PDR2F.
+# OBSOLETO (12/11/2026): a bateria final usa scripts/bateria.sh. Este script
+# fica so' como referencia de baterias exploratorias.
 #
 # Roda o main_complete para cada combinacao de instancia, decodificador e
 # semente, acumulando um CSV unico. Respeita o protocolo do artigo do VNS:

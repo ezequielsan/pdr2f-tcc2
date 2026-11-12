@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+olympia,brkga-mp,3,improvement,1,0.0203,34
+olympia,brkga-mp,3,improvement,4,0.0544,33
+olympia,brkga-mp,3,end,4,0.0544,33

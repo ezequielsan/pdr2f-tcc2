@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+brooklyn,brkga-mp-ipr,2,improvement,1,0.0634,30
+brooklyn,brkga-mp-ipr,2,improvement,2,0.1022,29
+brooklyn,brkga-mp-ipr,2,end,44034,1675.5643,29

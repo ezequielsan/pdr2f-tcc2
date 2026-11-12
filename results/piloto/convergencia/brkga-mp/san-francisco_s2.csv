@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+san-francisco,brkga-mp,2,improvement,1,0.0181,19
+san-francisco,brkga-mp,2,improvement,2,0.0260,18
+san-francisco,brkga-mp,2,end,2,0.0260,18

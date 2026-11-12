@@ -1,0 +1,5 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+minneapolis,brkga-mp,1,improvement,1,0.0325,42
+minneapolis,brkga-mp,1,improvement,5,0.0805,41
+minneapolis,brkga-mp,1,improvement,6,0.0955,39
+minneapolis,brkga-mp,1,end,6,0.0955,39

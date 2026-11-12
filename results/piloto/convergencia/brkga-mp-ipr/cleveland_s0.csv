@@ -1,0 +1,3 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+cleveland,brkga-mp-ipr,0,improvement,1,0.0424,21
+cleveland,brkga-mp-ipr,0,end,1,0.0424,21

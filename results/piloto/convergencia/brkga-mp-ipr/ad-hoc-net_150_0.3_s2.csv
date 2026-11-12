@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+ad-hoc-net_150_0.3,brkga-mp-ipr,2,improvement,1,0.1162,17
+ad-hoc-net_150_0.3,brkga-mp-ipr,2,improvement,5,0.4172,16
+ad-hoc-net_150_0.3,brkga-mp-ipr,2,end,5,0.4172,16

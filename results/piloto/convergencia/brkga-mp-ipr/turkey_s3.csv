@@ -1,0 +1,5 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+turkey,brkga-mp-ipr,3,improvement,1,0.0731,43
+turkey,brkga-mp-ipr,3,improvement,3,0.1700,41
+turkey,brkga-mp-ipr,3,improvement,6,0.3212,40
+turkey,brkga-mp-ipr,3,end,6,0.3212,40

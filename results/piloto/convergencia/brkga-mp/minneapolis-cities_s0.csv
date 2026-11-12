@@ -1,0 +1,10 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+minneapolis-cities,brkga-mp,0,improvement,1,0.0663,108
+minneapolis-cities,brkga-mp,0,improvement,4,0.1681,107
+minneapolis-cities,brkga-mp,0,improvement,5,0.1920,105
+minneapolis-cities,brkga-mp,0,improvement,9,0.3230,101
+minneapolis-cities,brkga-mp,0,improvement,24,0.7788,100
+minneapolis-cities,brkga-mp,0,improvement,25,0.8047,99
+minneapolis-cities,brkga-mp,0,improvement,30,0.9475,98
+minneapolis-cities,brkga-mp,0,improvement,55,1.6603,97
+minneapolis-cities,brkga-mp,0,end,58090,1677.1900,97

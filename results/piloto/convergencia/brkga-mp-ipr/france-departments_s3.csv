@@ -1,0 +1,6 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+france-departments,brkga-mp-ipr,3,improvement,1,0.0827,52
+france-departments,brkga-mp-ipr,3,improvement,4,0.2607,51
+france-departments,brkga-mp-ipr,3,improvement,7,0.4221,50
+france-departments,brkga-mp-ipr,3,improvement,11,0.6402,49
+france-departments,brkga-mp-ipr,3,end,11,0.6402,49

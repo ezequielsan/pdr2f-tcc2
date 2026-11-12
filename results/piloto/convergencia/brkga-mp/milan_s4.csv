@@ -1,0 +1,6 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+milan,brkga-mp,4,improvement,1,0.0296,44
+milan,brkga-mp,4,improvement,4,0.0727,43
+milan,brkga-mp,4,improvement,8,0.1400,42
+milan,brkga-mp,4,improvement,18,0.2861,41
+milan,brkga-mp,4,end,18,0.2861,41

@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+china,brkga-mp,2,improvement,1,0.0193,19
+china,brkga-mp,2,improvement,2,0.0322,18
+china,brkga-mp,2,end,2,0.0322,18

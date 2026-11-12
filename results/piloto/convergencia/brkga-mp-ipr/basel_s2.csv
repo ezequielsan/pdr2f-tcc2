@@ -1,0 +1,5 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+basel,brkga-mp-ipr,2,improvement,1,0.0858,47
+basel,brkga-mp-ipr,2,improvement,2,0.1495,46
+basel,brkga-mp-ipr,2,improvement,3,0.2117,44
+basel,brkga-mp-ipr,2,end,3,0.2117,44

@@ -1,0 +1,11 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+san-diego,brkga-mp,2,improvement,1,0.0427,66
+san-diego,brkga-mp,2,improvement,4,0.0966,65
+san-diego,brkga-mp,2,improvement,5,0.1214,63
+san-diego,brkga-mp,2,improvement,13,0.3001,62
+san-diego,brkga-mp,2,improvement,14,0.3218,61
+san-diego,brkga-mp,2,improvement,17,0.3911,60
+san-diego,brkga-mp,2,improvement,20,0.4573,59
+san-diego,brkga-mp,2,improvement,23,0.5004,58
+san-diego,brkga-mp,2,improvement,32,0.6881,57
+san-diego,brkga-mp,2,end,32,0.6881,57

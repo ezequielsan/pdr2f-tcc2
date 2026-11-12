@@ -1,0 +1,10 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+can__161,brkga-mp,0,improvement,1,0.0568,66
+can__161,brkga-mp,0,improvement,7,0.2033,64
+can__161,brkga-mp,0,improvement,19,0.5041,63
+can__161,brkga-mp,0,improvement,26,0.6804,60
+can__161,brkga-mp,0,improvement,44,1.1026,59
+can__161,brkga-mp,0,improvement,51,1.2751,58
+can__161,brkga-mp,0,improvement,63,1.5710,57
+can__161,brkga-mp,0,improvement,83,2.0047,56
+can__161,brkga-mp,0,end,76763,1704.6339,56

@@ -1,0 +1,10 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+madrid,brkga-mp,4,improvement,1,0.0399,61
+madrid,brkga-mp,4,improvement,3,0.0755,60
+madrid,brkga-mp,4,improvement,4,0.0987,59
+madrid,brkga-mp,4,improvement,9,0.2033,58
+madrid,brkga-mp,4,improvement,12,0.2639,57
+madrid,brkga-mp,4,improvement,19,0.4185,56
+madrid,brkga-mp,4,improvement,31,0.6588,55
+madrid,brkga-mp,4,improvement,42,0.9004,54
+madrid,brkga-mp,4,end,82344,1676.8902,54

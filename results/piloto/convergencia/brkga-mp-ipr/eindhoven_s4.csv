@@ -1,0 +1,9 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+eindhoven,brkga-mp-ipr,4,improvement,1,0.1071,56
+eindhoven,brkga-mp-ipr,4,improvement,3,0.2442,54
+eindhoven,brkga-mp-ipr,4,improvement,6,0.4804,52
+eindhoven,brkga-mp-ipr,4,improvement,7,0.5532,51
+eindhoven,brkga-mp-ipr,4,improvement,10,0.7503,50
+eindhoven,brkga-mp-ipr,4,improvement,11,0.8116,49
+eindhoven,brkga-mp-ipr,4,improvement,12,0.8748,48
+eindhoven,brkga-mp-ipr,4,end,12,0.8748,48

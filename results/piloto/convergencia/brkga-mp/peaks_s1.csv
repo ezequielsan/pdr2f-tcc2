@@ -1,0 +1,7 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+peaks,brkga-mp,1,improvement,1,0.0364,46
+peaks,brkga-mp,1,improvement,4,0.0801,45
+peaks,brkga-mp,1,improvement,8,0.1525,44
+peaks,brkga-mp,1,improvement,10,0.1813,43
+peaks,brkga-mp,1,improvement,22,0.3624,42
+peaks,brkga-mp,1,end,22,0.3624,42

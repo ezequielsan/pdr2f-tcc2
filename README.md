@@ -12,7 +12,7 @@ de C. E. Andrade. Os resultados são comparados com:
 > Trabalho de Conclusão de Curso 2 — Engenharia de Software, UFC Quixadá.
 > Autor: Ezequiel dos Santos Melo. Orientador: Prof. Dr. Atílio Gomes Luiz.
 
-## Situação atual (09/11/2026)
+## Situação atual (12/11/2026)
 
 | Etapa | Situação |
 |---|---|
@@ -23,8 +23,8 @@ de C. E. Andrade. Os resultados são comparados com:
 | Protocolo experimental | fechado com o orientador em 04–06/11 (seção [Metodologia experimental](#metodologia-experimental)) |
 | **Calibração com irace** (uma por braço) | **concluída**: 3ª rodada em 07–08/11, validada nas 86 instâncias de treino em 09/11 (seção [Calibração](#calibração)) |
 | Configurações finais | **definidas**: `configs/brkga-mp/final_perm.conf` e `configs/brkga-mp-ipr/final_perm.conf` |
-| Piloto (categorias e limite de gerações) | a executar |
-| Bateria final | a executar (~28–42 h de relógio) |
+| Piloto (categorias e limite de gerações) | **concluído** em 10–11/11: faixas do artigo do VNS, regra 1,5 × máximo, 600 s mantidos (seção [Piloto](#piloto-categorias-e-limite-de-gerações)) |
+| Bateria final | **pronta para executar** (`scripts/bateria.sh`; estimativa ~29 h, teto ~38 h) |
 | Análise estatística e texto | a fazer |
 
 ## Estrutura
@@ -37,7 +37,8 @@ src/          código compartilhado
   distances/    função de distância para o IPR
   compat/       compatibilidade da API com GCC < 13
 apps/         programas: main_minimal, main_complete, ferramentas *_info e testes
-configs/      parâmetros: uma pasta por braço (dev_*.conf e final_perm.conf)
+configs/      parâmetros: uma pasta por braço (dev_*.conf e final_perm.conf) e
+              limites_geracoes.csv (limite de gerações por categoria, do piloto)
 irace/        calibração: cenário, parâmetros e base por braço, target-runner,
               treino, validação das finalistas, simulação de cobertura e
               historico/ com as três rodadas
@@ -204,7 +205,7 @@ O script confere que nenhum resultado do PLI ou do VNS fica abaixo de um alvo.
 | Braços | **BRKGA-MP** e **BRKGA-MP-IPR** | decodificador por permutação com busca local de redução; sem warm start |
 | Calibração | **uma por braço**, com irace | cada algoritmo é comparado na sua melhor configuração |
 | Execuções por instância | **10** (sementes 0–9) | as mesmas sementes nos dois braços (comparação pareada) |
-| Parada | **ótimo provado**, **limite de gerações da categoria** ou **600 s**, o que vier primeiro | o limite de gerações sai do piloto (abaixo) |
+| Parada | **ótimo provado**, **limite de gerações da categoria** ou **600 s**, o que vier primeiro | limites do piloto em `configs/limites_geracoes.csv` (abaixo) |
 | Execução | 1 thread por execução, 6 processos em paralelo | notebook Intel Core i5-1345U, WSL |
 | Registro | CSV por execução + curva de convergência | uma linha a cada melhora da melhor solução |
 
@@ -215,20 +216,92 @@ isso é declarado e os resultados são reportados também por faixa.
 
 ### Piloto: categorias e limite de gerações
 
-Antes da bateria, as duas configurações finais rodam nas **86 instâncias de
-treino**, com **5 sementes**, até **1800 s** e com a curva de convergência
-ligada (860 execuções, ~26 h). Com as curvas:
+Executado em 10–11/11/2026 (`scripts/piloto.sh`; análise em
+`scripts/analisa_piloto.py`, relatório em `results/piloto/relatorio.txt`).
+As duas configurações finais rodaram nas **86 instâncias de treino**, com
+**5 sementes**, até **1800 s**, parada no alvo, **sem** limite de gerações e
+com a curva de convergência gravada: 860 execuções, 25,5 h reais, nenhuma
+inviável. Os tempos foram convertidos para tempo real (o relógio monotônico
+atrasou ~10%; ver [Notas de ambiente](#notas-de-ambiente)).
 
-1. cortadas em 600 s: define-se, por braço, o limite de gerações de cada
-   categoria de tamanho (percentil 95 da geração da última melhora), e
-   escolhem-se os cortes de categoria com perda zero e maior economia;
-2. até 1800 s: mede-se quanto se ganharia com mais tempo (por exemplo, 800 s).
+**Método.** As curvas foram cortadas em 600 s (a bateria). Em cada execução,
+a medida-chave é **g\***, a geração da última melhora antes de 600 s: um
+limite de gerações ≥ g\* não muda o resultado daquela execução, só corta as
+gerações sem melhora; um limite < g\* piora a solução. Foram comparados 4
+cortes de categoria (300/700; as faixas do artigo do VNS, 29/99; tercis,
+59/114; categoria única) e 5 regras para o limite de cada categoria (p90, p95,
+p99, máximo e 1,5 × máximo de g\*). Cada combinação foi avaliada por quantas
+execuções pioram, quanto peso se perde e quanto tempo de CPU se economiza.
+
+Execuções que pioram / economia de CPU (cortes do VNS):
+
+| Regra | BRKGA-MP | BRKGA-MP-IPR |
+|---|---|---|
+| p90 | 43 / 64,4% | 42 / 71,6% |
+| p95 | 20 / 39,7% | 20 / 68,1% |
+| p99 | 3 / 20,4% | 3 / 42,1% |
+| máximo | 0 / 17,1% | 0 / 31,1% |
+| **1,5 × máximo** | **0 / 16,8%** | **0 / 22,4%** |
+
+Economia com a regra 1,5 × máximo (todas com perda zero), por corte:
+
+| Cortes | BRKGA-MP | BRKGA-MP-IPR |
+|---|---|---|
+| 300/700 | 2,5% | 16,0% |
+| **29/99 (artigo do VNS)** | **16,8%** | **22,4%** |
+| tercis (59/114) | 16,8% | 25,1% |
+| categoria única | 2,5% | 16,0% |
+
+**Escolha.**
+
+- **Regra 1,5 × máximo:** só o máximo e o 1,5 × máximo têm perda zero. A
+  margem de 50% protege as instâncias de teste, que podem melhorar um pouco
+  mais tarde que as 86 de treino, e custa pouco (MP: 17,1% → 16,8%).
+- **Faixas do artigo do VNS:** critério externo, da literatura, e não ajustado
+  à amostra de treino como os tercis; são as faixas em que o VNS reporta
+  resultados; a diferença para os tercis é de no máximo 2,7 pontos
+  percentuais; os tercis dariam limites frágeis para n ≤ 59 (23 gerações no
+  MP, 9 no IPR). Os cortes 300/700 economizam pouco porque 73 das 86
+  instâncias caem em n ≤ 300.
+
+**Limites resultantes** (`configs/limites_geracoes.csv`):
+
+| Braço | maior g\* (30–99) | limite n ≤ 99 | maior g\* (n ≥ 100) | limite n ≥ 100 |
+|---|---|---|---|---|
+| BRKGA-MP | 59 | **89** | 28 281 | **42 422** |
+| BRKGA-MP-IPR | 49 | **74** | 4 016 | **6 024** |
+
+O treino só tem instâncias com n ≥ 30, então a faixa n < 30 não tem dados no
+piloto e usa o limite de n ≤ 99: instâncias menores convergem em menos
+gerações, e as 82 de teste com n < 30 têm ótimo provado (param no alvo).
+Nas instâncias grandes quem para costuma ser o tempo (o MP faz ~7,5
+gerações/s com n ≥ 701, ~4500 em 600 s); o limite de gerações é uma segunda
+regra de parada que não piora a qualidade e evita gerações sem melhora.
+
+**Mais tempo não compensa.** Das execuções que chegaram a 600 s sem atingir o
+alvo (147 por braço, 30 instâncias):
+
+| Até | MP: melhoraram / ganho médio | IPR: melhoraram / ganho médio |
+|---|---|---|
+| 800 s | 6 / 0,04% | 8 / 0,03% |
+| 1200 s | 15 / 0,11% | 17 / 0,08% |
+| 1800 s | 21 / 0,13% | 18 / 0,09% |
+
+Os ganhos se concentram em cúbicas, `lshp1009` e harwell-boeing. Decisão:
+manter **600 s**.
 
 ### Bateria final
 
-201 instâncias de teste × 10 sementes × 2 braços = **4020 execuções**. Pior
-caso ~112 h; estimativa ~28–42 h, a partir do tempo até o ótimo medido na
-validação das configurações finais.
+201 instâncias de teste × 10 sementes × 2 braços = **4020 execuções**
+(`scripts/bateria.sh`, ver [Execução](#bateria-final-1)). Tempo de relógio
+com 6 processos, estimado a partir das curvas do piloto recortadas pelas
+regras da bateria (o mesmo método prevê 25,3 h para o próprio piloto, que
+levou 25,5 h):
+
+- estimativa central: **~29 h** (171 h de CPU; ~97% na faixa n ≥ 100);
+- teto realista: **~38 h** (as 67 instâncias com n ≥ 100 indo todas até 600 s);
+- pior caso nominal: 112 h, inatingível, porque os limites de 89/74 gerações
+  encerram as instâncias pequenas em segundos.
 
 ### Comparações previstas
 
@@ -427,10 +500,26 @@ em `irace/historico/`.
 
 ### Bateria final
 
-Ainda a preparar: o `scripts/run_experiment.sh` vai receber as 10 sementes em
-todas as classes, o alvo por instância, o limite de gerações por categoria e
-braço (do piloto) e a curva de convergência. Ele exclui as instâncias de
-treino e as duplicatas `gn-`, roda 6 processos de 1 thread e é retomável.
+```bash
+./scripts/bateria.sh -n     # simulação: 201 instâncias de teste, 4020 execuções
+./scripts/bateria.sh        # roda (retomável; rode de novo se for interrompida)
+```
+
+`scripts/bateria.sh` roda as duas configurações finais nas **201 instâncias de
+teste** (as 287 com alvo menos as 86 de treino; as duplicatas `gn-` já não
+entram), com 10 sementes (0 a 9, as mesmas nos dois braços), 6 processos de 1
+thread e sem warm start. Cada execução para no primeiro destes eventos: 600 s
+de tempo real, alvo atingido (ótimo do PLI ou ⌈2n/3⌉ das cúbicas) ou o limite
+de gerações da categoria em `configs/limites_geracoes.csv`:
+
+| braço | n ≤ 99 | n ≥ 100 |
+|---|---|---|
+| BRKGA-MP | 89 | 42422 |
+| BRKGA-MP-IPR | 74 | 6024 |
+
+Saídas: `results/bateria/execucoes.csv` (uma linha por execução) e
+`results/bateria/convergencia/<braço>/<instância>_s<semente>.csv`. O antigo
+`scripts/run_experiment.sh` ficou obsoleto.
 
 ### PLI (Julia + CPLEX)
 
@@ -459,8 +548,14 @@ estão consolidados em `results/baseline/pli_todas.csv`.
   `[wsl2]` / `processors=7`). Com SMT, dois processos no mesmo núcleo físico
   dividem o núcleo e cada um faz menos trabalho no mesmo limite de tempo; pelo
   mesmo motivo, evite tarefas pesadas durante a calibração e a bateria.
-- **Relógio da WSL:** salta ~30 s periodicamente; ver
-  `scripts/diagnostico_relogio.py`. O `main_complete` não depende dele.
+- **Relógio da WSL:** o relógio de parede recua ~30 s por 0,2 s a cada ~24 s
+  (`scripts/diagnostico_relogio.py`), e o monotônico atrasa ~10% em relação
+  ao tempo real sob carga prolongada. O `main_complete` mede o tempo no relógio
+  de parede (o tempo real) com duas proteções: o instante inicial é estimado
+  por 50 amostras em 0,5 s (fica a maior) e o tempo decorrido nunca diminui.
+  O erro máximo é de 0,2 s por execução. A calibração e o piloto ainda usavam
+  o monotônico (120 s nominais ≈ 125–131 s reais; o piloto foi convertido
+  para tempo real na análise).
 - Rode as tarefas longas no `tmux` e deixe uma janela do Ubuntu aberta: se a
   WSL não tiver nenhuma janela, ela pode ser encerrada com tudo o que estiver
   rodando.

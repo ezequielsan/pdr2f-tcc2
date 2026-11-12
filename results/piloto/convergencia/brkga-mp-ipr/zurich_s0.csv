@@ -1,0 +1,9 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+zurich,brkga-mp-ipr,0,improvement,1,0.1446,91
+zurich,brkga-mp-ipr,0,improvement,3,0.3315,87
+zurich,brkga-mp-ipr,0,improvement,7,0.6941,86
+zurich,brkga-mp-ipr,0,improvement,8,0.7854,84
+zurich,brkga-mp-ipr,0,improvement,11,1.0180,82
+zurich,brkga-mp-ipr,0,improvement,14,1.2622,81
+zurich,brkga-mp-ipr,0,improvement,18,1.5879,80
+zurich,brkga-mp-ipr,0,end,20050,1704.6588,80

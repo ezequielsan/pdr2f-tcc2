@@ -1,0 +1,7 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+amsterdam,brkga-mp-ipr,2,improvement,1,0.0924,49
+amsterdam,brkga-mp-ipr,2,improvement,2,0.1642,48
+amsterdam,brkga-mp-ipr,2,improvement,3,0.2187,47
+amsterdam,brkga-mp-ipr,2,improvement,4,0.2785,46
+amsterdam,brkga-mp-ipr,2,improvement,8,0.5046,45
+amsterdam,brkga-mp-ipr,2,end,8,0.5046,45

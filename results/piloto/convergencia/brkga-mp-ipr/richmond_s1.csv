@@ -1,0 +1,9 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+richmond,brkga-mp-ipr,1,improvement,1,0.1247,75
+richmond,brkga-mp-ipr,1,improvement,3,0.2643,73
+richmond,brkga-mp-ipr,1,improvement,4,0.3207,71
+richmond,brkga-mp-ipr,1,improvement,8,0.6342,69
+richmond,brkga-mp-ipr,1,improvement,11,0.8183,68
+richmond,brkga-mp-ipr,1,improvement,15,1.1047,67
+richmond,brkga-mp-ipr,1,improvement,20,1.4586,66
+richmond,brkga-mp-ipr,1,end,23402,1704.6557,66

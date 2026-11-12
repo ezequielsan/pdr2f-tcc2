@@ -1,0 +1,10 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+canberra,brkga-mp,2,improvement,1,0.0404,53
+canberra,brkga-mp,2,improvement,3,0.0877,52
+canberra,brkga-mp,2,improvement,4,0.1114,50
+canberra,brkga-mp,2,improvement,7,0.1808,49
+canberra,brkga-mp,2,improvement,8,0.2033,48
+canberra,brkga-mp,2,improvement,13,0.3114,47
+canberra,brkga-mp,2,improvement,19,0.4193,46
+canberra,brkga-mp,2,improvement,29,0.5975,45
+canberra,brkga-mp,2,end,29,0.5975,45

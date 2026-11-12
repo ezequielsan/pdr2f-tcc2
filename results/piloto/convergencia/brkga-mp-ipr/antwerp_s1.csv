@@ -1,0 +1,4 @@
+Instance,Algorithm,Seed,Event,Generation,Time,Weight
+antwerp,brkga-mp-ipr,1,improvement,1,0.1026,32
+antwerp,brkga-mp-ipr,1,improvement,2,0.1858,31
+antwerp,brkga-mp-ipr,1,end,2,0.1858,31
